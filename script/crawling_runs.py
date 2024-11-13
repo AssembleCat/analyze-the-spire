@@ -3,7 +3,7 @@ from datetime import datetime
 from script import user_data_handler, summary_handler
 
 current_date = datetime.now().strftime('%Y%m%d-%H%M%S')
-current_path = os.path.join(os.getcwd(), "data", current_date)
+current_path = os.path.join(os.getcwd(), "data", "raw", current_date)
 
 if not os.path.exists(current_path):
     os.makedirs(current_path, exist_ok=True)
@@ -33,7 +33,8 @@ with open(summary_path, "w") as file:
     total_count = ironclad + silent + defect + watcher
     total_true_count = sum(len(value) for value in run_map.values())
 
-    summary_handler.write_summary(file, current_date, total_count, total_true_count, run_map, ironclad, silent, defect, watcher)
+    summary_handler.write_summary(file, current_date, total_count, total_true_count, run_map, ironclad, silent, defect,
+                                  watcher)
 
 for key, data in run_map.items():
     user_data_handler.save_run(current_path, f"{key}.json", data)

@@ -14,8 +14,7 @@ def get_user_id(start=1, end=200):
     ironclad, silent, defect, watcher = 0, 0, 0, 0
 
     for user_id in range(start, end):
-        response = requests.get(f'{server_url}/rest/v1/players?select=*&id=eq.{user_id}',
-                                headers=headers).json()
+        response = requests.get(f'{server_url}/rest/v1/players?select=*&id=eq.{user_id}', headers=headers).json()
 
         # 공백 검사
         if str(response) == "[]":
@@ -46,8 +45,7 @@ def get_run(user_id, play_count):
 
     while offset < total_play_count:
         response = requests.get(
-            f'{server_url}/rest/v1/stored_runs?select=*&uid=eq.{user_id}&offset={offset}',
-            headers=headers).json()
+            f'{server_url}/rest/v1/stored_runs?select=*&uid=eq.{user_id}&offset={offset}', headers=headers).json()
 
         all_runs.extend(response)
         offset += request_size
@@ -57,16 +55,16 @@ def get_run(user_id, play_count):
     return all_runs
 
 
-# 단일 run에 대한 정보 확인
 def single_run_summary(run):
     victory, character = False, None
 
-    # 15승천 미만, 옛날 빌드버전, 일일도전, 시드플레이 제외
-    if run.get('ascension_level') < 15:
-        return None
-
+    # 빌드버전으로 필터링하면  데이터 대부분을 잃어서 조건에서 제외
     # if run.get('build_version') != '2022-12-18':
     #     return None
+
+    # 15승천 미만, 일일도전, 시드플레이 제외
+    if run.get('ascension_level') < 15:
+        return None
 
     if run.get('is_daily') or run.get('chose_seed'):
         return None
