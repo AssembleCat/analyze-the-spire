@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from script import user_data_handler, summary_handler
+from script import user_data_handler, summary_handler, json_handler
 
 current_date = datetime.now().strftime('%Y%m%d-%H%M%S')
 current_path = os.path.join(os.getcwd(), "data", "raw", current_date)
@@ -9,7 +9,7 @@ if not os.path.exists(current_path):
     os.makedirs(current_path, exist_ok=True)
     print(f"create folder name \"{current_date}\" in {current_path}")
 
-user_infos, ironclad, silent, defect, watcher = user_data_handler.get_user_id(1, 200)
+user_infos, ironclad, silent, defect, watcher = user_data_handler.get_user_id()
 
 run_map = {}
 
@@ -37,6 +37,6 @@ with open(summary_path, "w") as file:
                                   watcher)
 
 for key, data in run_map.items():
-    user_data_handler.save_run(current_path, f"{key}.json", data)
+    json_handler.save_json(current_path, f"{key}.json", data)
 
 print("end")
