@@ -57,12 +57,11 @@ def count_path_taken(paths):
 
 
 def run(df):
+    # 여러 특성을 함께 계산하거나 특성이 확장되는 케이스
     df[['act1_boss_relic', 'act2_boss_relic']] = df['boss_relics'].apply(extract_boss_relics)
-    df['average_damage_taken'] = df.apply(lambda x: calculate_average_damage(x['damage_taken'], x['floor_reached']),
-                                          axis=1)
+    df['average_damage_taken'] = df.apply(lambda x: calculate_average_damage(x['damage_taken'], x['floor_reached']), axis=1)
     df['gold_usage'] = df.apply(lambda x: x['gold_earned'] - x['gold'], axis=1)
-    df[['card_purchased_count', 'relic_purchased_count', 'potion_purchased_count']] = df['items_purchased'].apply(
-        count_items_purchased)
+    df[['card_purchased_count', 'relic_purchased_count', 'potion_purchased_count']] = df['items_purchased'].apply(count_items_purchased)
     df[['monster_count', 'unknown_event_count', 'store_count', 'elite_count']] = df['path_taken'].apply(count_path_taken)
 
     # 단일특성으로 연산가능한 경우
@@ -86,9 +85,8 @@ def run(df):
         else:
             df[col] = func(df[col])
 
-    drop_features = ['boss_relics', 'damage_taken', 'floor_reached',
-                     'gold', 'gold_earned', 'items_purchased', 'path_taken']
-
+    # 전처리 후 특성 삭제
+    drop_features = ['boss_relics', 'damage_taken', 'floor_reached', 'gold', 'gold_earned', 'items_purchased', 'path_taken']
     df.drop(columns=drop_features, inplace=True)
 
     return df

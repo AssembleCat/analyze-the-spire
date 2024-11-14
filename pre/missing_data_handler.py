@@ -11,12 +11,12 @@ def replace_row(data):
     print(missing_per_column)
 
     missing_columns = missing_per_column[missing_per_column > 0]
-    print("\nColumns with missing values: ")
+    print("Columns with missing values: ")
     print(missing_columns)
 
     origin_row = df.shape[0]
-    print("\nRemove rows for missing values")
-    print(f"\n0. origin: {origin_row}")
+    print("Remove rows for missing values")
+    print(f"0. origin: {origin_row}")
 
     df['neow_bonus'] = df['neow_bonus'].replace('', np.nan)
     df['neow_cost'] = df['neow_cost'].replace('', np.nan)
@@ -25,6 +25,6 @@ def replace_row(data):
 
     step1_row = df.shape[0]
 
-    print(f"\n1. drop neow missing value: {step1_row}")
+    print(f"1. drop neow missing value: {step1_row}")
 
     return df
