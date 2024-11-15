@@ -1,4 +1,7 @@
 
+def get_character_list():
+    return ['ironclad', 'silent', 'defect', 'watcher']
+
 def get_character_type(value):
     match value:
         case "ironclad" | "IRONCLAD" | "THE_IRONCLAD":

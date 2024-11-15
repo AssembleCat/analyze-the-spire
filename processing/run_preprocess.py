@@ -4,8 +4,7 @@ import missing_data_handler as miss_handler
 import preprocessor as preprocess
 from datetime import datetime
 
-json_name = ['ironclad_clear', 'ironclad_fail', 'silent_clear', 'silent_fail',
-             'defect_clear', 'defect_fail', 'watcher_clear', 'watcher_fail']
+json_file_name = ['ironclad', 'silent', 'defect', 'watcher']
 drop_target_name = [
     'uid', 'ascension_level', 'build_version', 'campfire_choices', 'chose_seed', 'circlet_count',
     'current_hp_per_floor', 'event_choices', 'gold_per_floor', 'is_ascension_mode', 'is_beta', 'is_daily', 'is_endless',
@@ -41,22 +40,23 @@ project_root = os.path.abspath(os.path.join(os.getcwd(), '..'))
 save_folder = os.path.join(project_root, 'data', 'processed')
 target_folder = get_data_target(project_root, 'raw')
 
-# Raw데이터 읽기
-file_clear = pd.read_json(os.path.join(target_folder, 'silent_clear.json'))
-file_fail = pd.read_json(os.path.join(target_folder, 'silent_fail.json'))
-raw_df = pd.concat([file_clear, file_fail])
+for name in json_file_name:
+    # Raw데이터 읽기
+    file_clear = pd.read_json(os.path.join(target_folder, f'{name}_clear.json'))
+    file_fail = pd.read_json(os.path.join(target_folder, f'{name}_fail.json'))
+    raw_df = pd.concat([file_clear, file_fail])
 
-# 연산에 포함되지않는 특성 제거
-df = raw_df.drop(columns=drop_target_name + temp_drop_name, inplace=False)
-before_drop, after_drop = raw_df.shape, df.shape
+    # 연산에 포함되지않는 특성 제거
+    df = raw_df.drop(columns=drop_target_name + temp_drop_name, inplace=False)
+    before_drop, after_drop = raw_df.shape, df.shape
 
-print(f"before: {before_drop}, after: {after_drop} you drop {before_drop[1] - after_drop[1]} features")
+    print(f"before: {before_drop}, after: {after_drop} you drop {before_drop[1] - after_drop[1]} features")
 
-# 결측치 제거
-df = miss_handler.replace_row(df)
+    # 결측치 제거
+    df = miss_handler.replace_row(df)
 
-# 전처리
-processed_df = preprocess.run(df)
+    # 전처리
+    processed_df = preprocess.run(df)
 
-# 저장
-processed_df.to_json(os.path.join(save_folder, 'silent.json'), orient='records')
+    # 저장
+    processed_df.to_json(os.path.join(save_folder, f'{name}.json'), orient='records')
