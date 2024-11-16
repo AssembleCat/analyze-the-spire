@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import category_encoders as ce
 from sklearn.preprocessing import LabelEncoder
 
 
@@ -13,6 +14,11 @@ def create_and_drop_feature(df, new_col_name, col1, col2, operation):
 def categorical_encoding(col):
     encoder = LabelEncoder()
     return encoder.fit_transform(col)
+
+
+def target_encoding(col, target):
+    encoder = ce.TargetEncoder(cols=[col.name])
+    return encoder.fit_transform(col, target)
 
 
 def extract_boss_relics(boss_relics):
@@ -64,6 +70,13 @@ def run(df):
     df[['card_purchased_count', 'relic_purchased_count', 'potion_purchased_count']] = df['items_purchased'].apply(count_items_purchased)
     df[['monster_count', 'unknown_event_count', 'store_count', 'elite_count']] = df['path_taken'].apply(count_path_taken)
 
+    # target encoding
+    target = df['victory']
+    df['neow_bonus_encode'] = target_encoding(df['neow_bonus'], target)
+    df['neow_cost_encode'] = target_encoding(df['neow_cost'], target)
+    df['act1_boss_relic_encode'] = target_encoding(df['act1_boss_relic'], target)
+    df['act2_boss_relic_encode'] = target_encoding(df['act2_boss_relic'], target)
+
     # 단일특성으로 연산가능한 경우
     preprocessing_rules = {
         'act1_boss_relic': categorical_encoding,
@@ -86,7 +99,8 @@ def run(df):
             df[col] = func(df[col])
 
     # 전처리 후 특성 삭제
-    drop_features = ['boss_relics', 'damage_taken', 'floor_reached', 'gold', 'gold_earned', 'items_purchased', 'path_taken']
+    drop_features = ['boss_relics', 'damage_taken', 'floor_reached', 'gold', 'gold_earned', 'items_purchased', 'path_taken', 'neow_bonus',
+                     'neow_cost', 'act1_boss_relic', 'act2_boss_relic']
     df.drop(columns=drop_features, inplace=True)
 
     return df
