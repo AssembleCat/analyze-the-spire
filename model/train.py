@@ -7,24 +7,23 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import StandardScaler
-from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 
 from type import Character
 
-CLASS_WEIGHT = {False: 1, True: 1}
+CLASS_WEIGHT = {False: 1, True: 3}
 
 characters = Character.get_character_list()
 data_path = os.path.join(os.getcwd(), '..', 'data', 'processed')
 
-df = pd.read_json(os.path.join(data_path, 'silent.json'))
+df = pd.read_json(os.path.join(data_path, 'summary.json'))
 x = df.drop('victory', axis=1)
 y = df['victory']
 
 models = [
-    LogisticRegression(max_iter=5000, class_weight=CLASS_WEIGHT),
-    RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=-1, class_weight=CLASS_WEIGHT),
-    AdaBoostClassifier(DecisionTreeClassifier(max_depth=1, class_weight=CLASS_WEIGHT), n_estimators=100, algorithm='SAMME', learning_rate=0.8)
+    LogisticRegression(max_iter=5000, C=10, penalty='l1', solver='saga'),
+    RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=-1, max_depth=None),
+    AdaBoostClassifier(DecisionTreeClassifier(max_depth=2), learning_rate=1.0, n_estimators=200)
 ]
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, stratify=y, test_size=0.2, random_state=42)

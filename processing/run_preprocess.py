@@ -40,6 +40,9 @@ project_root = os.path.abspath(os.path.join(os.getcwd(), '..'))
 save_folder = os.path.join(project_root, 'data', 'processed')
 target_folder = get_data_target(project_root, 'raw')
 
+# 모든정보를 모으는 빈 df 객체
+summary_df = pd.DataFrame()
+
 for name in json_file_name:
     # Raw데이터 읽기
     file_clear = pd.read_json(os.path.join(target_folder, f'{name}_clear.json'))
@@ -57,6 +60,9 @@ for name in json_file_name:
 
     # 전처리
     processed_df = preprocess.run(df)
+    summary_df = pd.concat([summary_df, processed_df])
 
     # 저장
     processed_df.to_json(os.path.join(save_folder, f'{name}.json'), orient='records')
+
+summary_df.to_json(os.path.join(save_folder, 'summary.json'), orient='records')
