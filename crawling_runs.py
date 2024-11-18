@@ -3,7 +3,7 @@ from datetime import datetime
 from script import user_data_handler, summary_handler, json_handler
 
 current_date = datetime.now().strftime('%Y%m%d-%H%M%S')
-current_path = os.path.join(os.getcwd(), "data", "raw", current_date)
+current_path = os.path.join(os.getcwd(), "data", "crawler", current_date)
 
 if not os.path.exists(current_path):
     os.makedirs(current_path, exist_ok=True)

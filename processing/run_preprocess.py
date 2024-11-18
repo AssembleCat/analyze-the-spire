@@ -38,7 +38,7 @@ def get_data_target(root_path, data_type):
 # 저장경로, Raw데이터 경로
 project_root = os.path.abspath(os.path.join(os.getcwd(), '..'))
 save_folder = os.path.join(project_root, 'data', 'processed')
-target_folder = get_data_target(project_root, 'raw')
+target_folder = get_data_target(project_root, 'crawler')
 
 # 모든정보를 모으는 빈 df 객체
 summary_df = pd.DataFrame()
