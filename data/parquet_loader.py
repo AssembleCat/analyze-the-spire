@@ -1,7 +1,7 @@
 import os
 
 
-def get_file_paths(root_path='default', reverse=False):
+def get_file_paths(root_path='default', reverse=False, folder_type='CompressedData'):
     """
     Get all .parquet file paths in the root folder, sorted by year, month, and file name.
 
@@ -10,11 +10,14 @@ def get_file_paths(root_path='default', reverse=False):
 
     Returns:
         list: A list of sorted .parquet file paths.
+        :param folder_type: folder type('Compressed', 'Filtered')
         :param root_path: root folder path
         :param reverse: default is False, but if True is given, the most recent data is returned.
     """
     if root_path == 'default':
-        root_path = 'C:/Users/groov/AnalyzeTheSpire/CompressedData'
+        root_path = 'C:/Users/groov/AnalyzeTheSpire'
+
+    root_path = os.path.join(root_path, folder_type)
 
     file_paths = []
     for year in sorted(os.listdir(root_path), reverse=reverse):
@@ -31,7 +34,7 @@ def get_file_paths(root_path='default', reverse=False):
 
 if __name__ == "__main__":
     root_folder_path = input("Enter the root folder path: ").strip()
-    
+
     if os.path.exists(root_folder_path):
         parquet_paths = get_file_paths(root_folder_path)
         print(f"Found .parquet files: {len(parquet_paths)} count")

@@ -3,6 +3,7 @@ from data import parquet_loader
 import pandas as pd
 import numpy as np
 import multiprocessing
+import datetime
 
 
 # 파일 처리 함수
@@ -47,10 +48,10 @@ def combine_results(results):
 
 # 병렬 처리 실행
 if __name__ == '__main__':
-    file_paths = parquet_loader.get_file_paths(reverse=True)
+    file_paths = parquet_loader.get_file_paths(reverse=True, folder_type='FilteredData')
     total_files = len(file_paths)
 
-    print(f"Starting processing {total_files} files...")
+    print(f"Start processing {total_files} files...")
 
     with multiprocessing.Manager() as manager:
         counter = manager.Value('i', 0)
@@ -68,6 +69,7 @@ if __name__ == '__main__':
     # 결과 출력
     output_file = 'data_preview.txt'
     with open(output_file, 'w') as f:
+        f.write(f'Preview time: {datetime.datetime.now()}\n')
         for category, counts in final_counts.items():
             f.write(f'{category}:\n')
             for value, count in sorted(counts.items()):
