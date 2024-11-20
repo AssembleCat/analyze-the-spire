@@ -1,9 +1,9 @@
+import json
 from concurrent.futures import ProcessPoolExecutor
 from data import parquet_loader
 import pandas as pd
 import numpy as np
 import multiprocessing
-import datetime
 
 
 # 파일 처리 함수
@@ -19,10 +19,10 @@ def process_file(path, counter, progress_queue):
         progress_queue.put(counter.value)  # 진행 상황을 큐에 추가
 
         return {
-            'character_chosen': dict(zip(char_vals, char_counts)),
-            'ascension_level': dict(zip(asc_vals, asc_counts)),
-            'floor_reached': dict(zip(floor_vals, floor_counts)),
-            'victory': dict(zip(vic_vals, vic_counts)),
+            'character_chosen': dict(zip(char_vals, char_counts.tolist())),
+            'ascension_level': dict(zip(asc_vals.tolist(), asc_counts.tolist())),
+            'floor_reached': dict(zip(floor_vals.tolist(), floor_counts.tolist())),
+            'victory': dict(zip(vic_vals.astype(dtype=str), vic_counts.tolist())),
         }
     except Exception as e:
         print(f"Error processing file {path}: {e}")
@@ -63,14 +63,11 @@ if __name__ == '__main__':
             )
         while not progress_queue.empty():
             print(f"Progress: {progress_queue.get()} / {total_files} files processed")
+
     # 결과 병합
     final_counts = combine_results(results)
 
     # 결과 출력
-    output_file = 'data_preview.txt'
+    output_file = './data_preview.json'
     with open(output_file, 'w') as f:
-        f.write(f'Preview time: {datetime.datetime.now()}\n')
-        for category, counts in final_counts.items():
-            f.write(f'{category}:\n')
-            for value, count in sorted(counts.items()):
-                f.write(f'  {value}: {count}\n')
+        json.dump(final_counts, f, indent=2)

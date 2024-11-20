@@ -1,3 +1,4 @@
+import json
 import os
 from concurrent.futures import ProcessPoolExecutor
 import datetime
@@ -93,8 +94,6 @@ if __name__ == '__main__':
 
     final_counts = combine_results(result)
 
-    output_file = 'data_filtering.txt'
+    output_file = 'data_filtering.json'
     with open(output_file, 'w') as f:
-        f.write(f'Filtering time: {datetime.datetime.now()}\n')
-        for category, count in final_counts.items():
-            f.write(f'{category}: {count}\n')
+        json.dumps(final_counts, f, indent=2)
