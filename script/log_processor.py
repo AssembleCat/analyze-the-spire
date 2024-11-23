@@ -12,7 +12,7 @@ logging.basicConfig(
 
 
 # 전투 요약 
-def process_battle(run, current_deck, current_relics, current_battle, max_hp_list, current_hp_list, potion_used_list, ascension, character):
+def process_battle(run, current_deck, current_relics, current_battle, max_hp_list, current_hp_list, potion_used_list, ascension, character) -> dict:
     current_floor = current_battle['floor']
     return {
         'deck': current_deck,
@@ -28,7 +28,25 @@ def process_battle(run, current_deck, current_relics, current_battle, max_hp_lis
     }
 
 
-# 카드 선택이벤트 
+# '?' 이벤트
+def process_event(current_deck, current_relics, event):
+    if 'cards_obtained' in event:
+        current_deck.extend(event['cards_obtained'])
+    if 'cards_removed' in event:
+        current_deck.remove(event['cards_removed'])
+    if 'cards_upgraded' in event:
+        smith_card(current_deck, event['cards_upgraded'])
+    if 'relics_lost' in event:
+        current_relics.remove(event['relics_lost'])
+    if 'relics_obtained' in event:
+        current_relics.extend(event['relics_obtained'])
+    if event['event_name'] is 'Vampires':
+        current_relics.remove('Blood Vial')
+        current_deck[:] = [card for card in current_deck if not card.startswith('Strike')]
+        current_deck.extend(['Bite', 'Bite', 'Bite', 'Bite', 'Bite'])
+
+
+# 카드 선택이벤트
 def process_card_choice(current_deck, card_event, relics):
     # 카드선택 이벤트가 스킵 또는 노래하는 그릇(Singing Bowl)일 경우, 카드추가 X
     if card_event['picked'] == 'SKIP' or card_event['picked'] == 'Singing Bowl':
@@ -47,12 +65,17 @@ def process_card_choice(current_deck, card_event, relics):
     current_deck.append(picked_card)
 
 
+# 카드 강화
+def smith_card(current_deck, target_card):
+    smith_card_index = current_deck.index(target_card)
+    current_deck[smith_card_index] += '+1'
+
+
 # 불 이벤트 
 def process_campfire(current_deck, campfire_event):
     event = campfire_event['key']
     if event is 'SMITH':
-        smith_card_idx = current_deck.index(campfire_event['data'])
-        current_deck[smith_card_idx] = campfire_event['data'] + '+1'
+        smith_card(current_deck, campfire_event['data'])
     elif event is 'PURGE':
         current_deck.remove(campfire_event['data'])
 
@@ -71,8 +94,8 @@ def process_neow_event(neow_bonus, current_relics, master_relics):
 
 # 상점 카드제거 
 def process_item_purge(current_deck, current_floor, run):
-    purge_list = run.get('items_purged')                # 제거된 카드 리스트
-    purge_floor_list = run.get('items_purged_floors')   # 제거된 층 리스트
+    purge_list = run.get('items_purged')  # 제거된 카드 리스트
+    purge_floor_list = run.get('items_purged_floors')  # 제거된 층 리스트
 
     if current_floor not in purge_floor_list:
         logging.debug(f'Current floor is not included in the purge target: {current_floor} floor, id:{run.get('play_id')}')
@@ -230,7 +253,7 @@ def is_corrupted_run(run) -> (bool, str):
 # data: run을 1개이상 담고있는 json list
 if __name__ == '__main__':
     print(get_basic_deck({'character_chosen': 'THE_SILENT'}))
-    with open('./preprocessed/ironclad_test.json', 'r') as f:
+    with open('../preprocessed/ironclad_test.json', 'r') as f:
         data = json.load(f)
     print(get_floorwise_relics(data))
     print(get_floorwise_data(data, 'potions_obtained'))
