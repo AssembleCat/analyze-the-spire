@@ -1,0 +1,501 @@
+{
+  "gold_per_floor": [
+    15, 15, 15, 29, 40, 40, 71, 71, 139, 149, 168, 197, 207, 233, 233, 309, 309,
+    323, 90, 119, 130, 140, 140, 156, 167, 167, 167, 69, 98, 42, 62, 62, 134,
+    134, 148, 148, 48, 64, 64, 64, 91, 91, 138, 149, 165, 191, 191, 191, 191,
+    191, 191, 191, 191, 10, 42, 42
+  ],
+  "floor_reached": 57,
+  "playtime": 3392,
+  "items_purged": ["Strike_G", "All Out Attack", "Predator"],
+  "score": 2879,
+  "play_id": "85bf8903-e748-49c5-8e9c-9ba475a8c3d8",
+  "local_time": "20240526184321",
+  "is_ascension_mode": true,
+  "campfire_choices": [
+    { "data": "Concentrate", "floor": 6.0, "key": "SMITH" },
+    { "floor": 8.0, "key": "REST" },
+    { "data": "Neutralize", "floor": 15.0, "key": "SMITH" },
+    { "floor": 23, "key": "REST" },
+    { "data": "Acrobatics", "floor": 27, "key": "SMITH" },
+    { "floor": 32, "key": "REST" },
+    { "data": "Calculated Gamble", "floor": 40, "key": "SMITH" },
+    { "data": "1", "floor": 42, "key": "LIFT" },
+    { "data": "Wraith Form v2", "floor": 47, "key": "SMITH" },
+    { "floor": 49, "key": "RECALL" },
+    { "data": "2", "floor": 53, "key": "LIFT" }
+  ],
+  "neow_cost": "NO_GOLD",
+  "seed_source_timestamp": 28839303701400,
+  "circlet_count": 0,
+  "master_deck": [
+    "AscendersBane",
+    "Survivor",
+    "Neutralize+1",
+    "Panache",
+    "Skewer+1",
+    "Backflip",
+    "Concentrate+1",
+    "Underhanded Strike",
+    "Tactician",
+    "A Thousand Cuts",
+    "Calculated Gamble+1",
+    "Acrobatics+1",
+    "Envenom",
+    "Escape Plan",
+    "Acrobatics",
+    "Adrenaline",
+    "Deflect",
+    "Reflex",
+    "Wraith Form v2+1",
+    "Flechettes",
+    "Reflex",
+    "Footwork+1",
+    "Reflex",
+    "Adrenaline",
+    "Backflip+1"
+  ],
+  "special_seed": 0,
+  "relics": [
+    "Ring of the Snake",
+    "Strawberry",
+    "Meat on the Bone",
+    "Paper Crane",
+    "Ice Cream",
+    "Runic Pyramid",
+    "Centennial Puzzle",
+    "Red Mask",
+    "Question Card",
+    "Happy Flower",
+    "Pandora\u0027s Box",
+    "Girya",
+    "Bag of Preparation",
+    "StrikeDummy"
+  ],
+  "potions_floor_usage": [18, 20, 29, 31, 33, 50, 56, 56],
+  "damage_taken": [
+    { "damage": 0.0, "enemies": "Small Slimes", "floor": 1.0, "turns": 4.0 },
+    { "damage": 0.0, "enemies": "Cultist", "floor": 4.0, "turns": 2.0 },
+    { "damage": 0.0, "enemies": "2 Louse", "floor": 5.0, "turns": 2.0 },
+    { "damage": 25.0, "enemies": "Lagavulin", "floor": 7.0, "turns": 8.0 },
+    { "damage": 0.0, "enemies": "Gremlin Gang", "floor": 10.0, "turns": 3.0 },
+    { "damage": 8.0, "enemies": "Large Slime", "floor": 11.0, "turns": 4.0 },
+    { "damage": 20.0, "enemies": "3 Sentries", "floor": 12.0, "turns": 6.0 },
+    { "damage": 7.0, "enemies": "Lots of Slimes", "floor": 13.0, "turns": 4.0 },
+    { "damage": 3.0, "enemies": "Lagavulin", "floor": 14.0, "turns": 6.0 },
+    { "damage": 7, "enemies": "The Guardian", "floor": 16, "turns": 12 },
+    { "damage": 6, "enemies": "Chosen", "floor": 18, "turns": 6 },
+    { "damage": 19, "enemies": "Masked Bandits", "floor": 20, "turns": 4 },
+    { "damage": 1, "enemies": "Spheric Guardian", "floor": 21, "turns": 3 },
+    { "damage": 26, "enemies": "Cultist and Chosen", "floor": 22, "turns": 5 },
+    { "damage": 2, "enemies": "3 Cultists", "floor": 24, "turns": 3 },
+    { "damage": 1, "enemies": "Centurion and Healer", "floor": 25, "turns": 6 },
+    { "damage": 9, "enemies": "Gremlin Leader", "floor": 29, "turns": 4 },
+    { "damage": 27, "enemies": "Cultist and Chosen", "floor": 31, "turns": 6 },
+    { "damage": 6, "enemies": "Champ", "floor": 33, "turns": 9 },
+    { "damage": 0, "enemies": "3 Shapes", "floor": 35, "turns": 2 },
+    { "damage": 0, "enemies": "Orb Walker", "floor": 38, "turns": 2 },
+    { "damage": 0, "enemies": "Reptomancer", "floor": 41, "turns": 4 },
+    { "damage": 0, "enemies": "4 Shapes", "floor": 44, "turns": 3 },
+    { "damage": 0, "enemies": "Sphere and 2 Shapes", "floor": 45, "turns": 2 },
+    { "damage": 5, "enemies": "Nemesis", "floor": 46, "turns": 3 },
+    { "damage": 20, "enemies": "Time Eater", "floor": 50, "turns": 7 },
+    { "damage": 0, "enemies": "Awakened One", "floor": 51, "turns": 3 },
+    { "damage": 0, "enemies": "Shield and Spear", "floor": 55, "turns": 1 },
+    { "damage": 35, "enemies": "The Heart", "floor": 56, "turns": 5 }
+  ],
+  "seed_played": "-6521008631667113403",
+  "potions_obtained": [
+    { "floor": 1.0, "key": "Explosive Potion" },
+    { "floor": 5.0, "key": "Poison Potion" },
+    { "floor": 11.0, "key": "Dexterity Potion" },
+    { "floor": 13.0, "key": "Block Potion" },
+    { "floor": 18, "key": "Explosive Potion" },
+    { "floor": 22, "key": "CultistPotion" },
+    { "floor": 29, "key": "SneckoOil" },
+    { "floor": 33, "key": "Explosive Potion" },
+    { "floor": 38, "key": "EssenceOfSteel" },
+    { "floor": 45, "key": "Energy Potion" }
+  ],
+  "is_trial": false,
+  "path_per_floor": [
+    "M",
+    "?",
+    "?",
+    "M",
+    "M",
+    "R",
+    "E",
+    "R",
+    "T",
+    "M",
+    "M",
+    "E",
+    "M",
+    "E",
+    "R",
+    "B",
+    null,
+    "M",
+    "$",
+    "?",
+    "M",
+    "M",
+    "R",
+    "M",
+    "M",
+    "T",
+    "R",
+    "$",
+    "E",
+    "$",
+    "M",
+    "R",
+    "B",
+    null,
+    "M",
+    "?",
+    "$",
+    "M",
+    "?",
+    "R",
+    "E",
+    "R",
+    "T",
+    "M",
+    "M",
+    "E",
+    "R",
+    "?",
+    "R",
+    "B",
+    "B",
+    null,
+    "R",
+    "$",
+    "E",
+    "B",
+    null
+  ],
+  "character_chosen": "THE_SILENT",
+  "items_purchased": [
+    "Centennial Puzzle",
+    "Escape Plan",
+    "Acrobatics",
+    "Strength Potion",
+    "ColorlessPotion"
+  ],
+  "campfire_rested": 3,
+  "item_purchase_floors": [19, 28, 28, 30, 54],
+  "current_hp_per_floor": [
+    59, 59, 59, 59, 59, 59, 41, 62, 62, 62, 54, 46, 39, 48, 48, 41, 65, 59, 59,
+    40, 39, 25, 46, 44, 43, 43, 43, 43, 46, 46, 31, 52, 46, 66, 66, 66, 66, 66,
+    66, 66, 66, 66, 66, 66, 66, 61, 61, 79, 79, 59, 59, 74, 74, 74, 74, 51
+  ],
+  "gold": 42,
+  "neow_bonus": "RANDOM_COLORLESS_2",
+  "is_prod": false,
+  "is_daily": false,
+  "chose_seed": false,
+  "campfire_upgraded": 5,
+  "win_rate": 0,
+  "timestamp": 1716716601,
+  "path_taken": [
+    "M",
+    "?",
+    "?",
+    "?",
+    "M",
+    "R",
+    "E",
+    "R",
+    "T",
+    "M",
+    "M",
+    "E",
+    "M",
+    "E",
+    "R",
+    "BOSS",
+    "M",
+    "?",
+    "?",
+    "M",
+    "M",
+    "R",
+    "M",
+    "M",
+    "T",
+    "R",
+    "$",
+    "E",
+    "$",
+    "M",
+    "R",
+    "BOSS",
+    "M",
+    "?",
+    "$",
+    "?",
+    "?",
+    "R",
+    "E",
+    "R",
+    "T",
+    "M",
+    "M",
+    "E",
+    "R",
+    "?",
+    "R",
+    "BOSS",
+    "BOSS",
+    "R",
+    "$",
+    "E",
+    "BOSS"
+  ],
+  "build_version": "2022-12-18",
+  "purchased_purges": 3,
+  "victory": true,
+  "max_hp_per_floor": [
+    66, 66, 66, 66, 66, 66, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
+    73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
+    69, 69, 69, 69, 69, 69, 69, 69, 69, 79, 79, 79, 79, 79, 79, 79, 79, 79
+  ],
+  "card_choices": [
+    {
+      "not_picked": ["Magnetism", "Mayhem"],
+      "picked": "Panache",
+      "floor": 0.0
+    },
+    {
+      "not_picked": ["Flechettes", "Underhanded Strike"],
+      "picked": "All Out Attack",
+      "floor": 1.0
+    },
+    {
+      "not_picked": ["Sucker Punch", "Accuracy"],
+      "picked": "Backflip",
+      "floor": 4.0
+    },
+    {
+      "not_picked": ["Deflect", "Dodge and Roll"],
+      "picked": "Concentrate",
+      "floor": 5.0
+    },
+    {
+      "not_picked": ["Quick Slash", "Choke"],
+      "picked": "Underhanded Strike",
+      "floor": 7.0
+    },
+    {
+      "not_picked": ["Outmaneuver", "Flying Knee", "Sucker Punch"],
+      "picked": "SKIP",
+      "floor": 10.0
+    },
+    {
+      "not_picked": ["Poisoned Stab", "Quick Slash", "Cloak And Dagger"],
+      "picked": "SKIP",
+      "floor": 11.0
+    },
+    {
+      "not_picked": ["Concentrate", "Poisoned Stab", "Storm of Steel"],
+      "picked": "SKIP",
+      "floor": 12.0
+    },
+    {
+      "not_picked": ["Deadly Poison", "Outmaneuver"],
+      "picked": "Tactician",
+      "floor": 13.0
+    },
+    {
+      "not_picked": ["Catalyst", "Cloak And Dagger", "Endless Agony"],
+      "picked": "SKIP",
+      "floor": 14.0
+    },
+    {
+      "not_picked": ["Grand Finale", "Wraith Form v2"],
+      "picked": "A Thousand Cuts",
+      "floor": 16
+    },
+    {
+      "not_picked": ["Dagger Spray", "Dodge and Roll"],
+      "picked": "Calculated Gamble",
+      "floor": 18
+    },
+    {
+      "not_picked": ["Flying Knee", "Bane"],
+      "picked": "Acrobatics",
+      "floor": 20
+    },
+    {
+      "not_picked": ["Slice", "Predator", "Deflect"],
+      "picked": "SKIP",
+      "floor": 21
+    },
+    {
+      "not_picked": ["Deadly Poison", "Dodge and Roll"],
+      "picked": "Envenom",
+      "floor": 22
+    },
+    {
+      "not_picked": ["Accuracy", "Noxious Fumes", "Deflect"],
+      "picked": "SKIP",
+      "floor": 24
+    },
+    {
+      "not_picked": ["Backflip", "Distraction", "Dagger Spray"],
+      "picked": "SKIP",
+      "floor": 25
+    },
+    {
+      "not_picked": ["Burst", "Masterful Stab", "Quick Slash", "Dagger Spray"],
+      "picked": "SKIP",
+      "floor": 29
+    },
+    {
+      "not_picked": [
+        "Well Laid Plans",
+        "Underhanded Strike",
+        "Calculated Gamble",
+        "Bane"
+      ],
+      "picked": "SKIP",
+      "floor": 31
+    },
+    {
+      "not_picked": ["Flying Knee", "Acrobatics", "Blade Dance", "Backflip+1"],
+      "picked": "SKIP",
+      "floor": 35
+    },
+    {
+      "not_picked": ["Sucker Punch", "Backflip", "Flying Knee"],
+      "picked": "Reflex",
+      "floor": 38
+    },
+    {
+      "not_picked": ["Glass Knife", "Blade Dance", "PiercingWail"],
+      "picked": "Footwork+1",
+      "floor": 41
+    },
+    {
+      "not_picked": ["Prepared", "Sucker Punch", "Dagger Spray", "Setup"],
+      "picked": "SKIP",
+      "floor": 44
+    },
+    {
+      "not_picked": ["Dagger Spray+1", "Skewer", "Blur"],
+      "picked": "Reflex",
+      "floor": 45
+    },
+    {
+      "not_picked": ["PiercingWail+1", "Choke", "Infinite Blades+1"],
+      "picked": "Adrenaline",
+      "floor": 46
+    },
+    {
+      "not_picked": ["Dash+1", "Deflect+1", "Dagger Throw"],
+      "picked": "Backflip+1",
+      "floor": 55
+    }
+  ],
+  "player_experience": 1256746,
+  "relics_obtained": [
+    { "floor": 7.0, "key": "Strawberry" },
+    { "floor": 9.0, "key": "Meat on the Bone" },
+    { "floor": 12.0, "key": "Paper Crane" },
+    { "floor": 14.0, "key": "Ice Cream" },
+    { "floor": 20, "key": "Red Mask" },
+    { "floor": 26, "key": "Question Card" },
+    { "floor": 29, "key": "Happy Flower" },
+    { "floor": 41, "key": "Girya" },
+    { "floor": 46, "key": "Bag of Preparation" },
+    { "floor": 55, "key": "StrikeDummy" }
+  ],
+  "event_choices": [
+    {
+      "damage_healed": 0.0,
+      "max_hp_gain": 0.0,
+      "max_hp_loss": 0.0,
+      "gold_gain": 0.0,
+      "cards_transformed": ["Strike_G"],
+      "event_name": "Living Wall",
+      "player_choice": "Change",
+      "floor": 2.0,
+      "gold_loss": 0.0,
+      "damage_taken": 0.0,
+      "cards_obtained": ["Skewer"]
+    },
+    {
+      "damage_healed": 0.0,
+      "max_hp_gain": 0.0,
+      "max_hp_loss": 0.0,
+      "gold_gain": 0.0,
+      "event_name": "Accursed Blacksmith",
+      "player_choice": "Forge",
+      "floor": 3.0,
+      "gold_loss": 0.0,
+      "damage_taken": 0.0,
+      "cards_upgraded": ["Skewer"]
+    },
+    {
+      "damage_healed": 0,
+      "gold_gain": 0,
+      "player_choice": "Fought Bandits",
+      "damage_taken": 0,
+      "max_hp_gain": 0,
+      "max_hp_loss": 0,
+      "event_name": "Masked Bandits",
+      "floor": 20,
+      "gold_loss": 0
+    },
+    {
+      "cards_removed": ["Bane"],
+      "damage_healed": 0,
+      "gold_gain": 0,
+      "player_choice": "Purged",
+      "damage_taken": 0,
+      "max_hp_gain": 0,
+      "max_hp_loss": 0,
+      "event_name": "Purifier",
+      "floor": 36,
+      "gold_loss": 0
+    },
+    {
+      "damage_healed": 0,
+      "gold_gain": 0,
+      "player_choice": "Max HP",
+      "damage_taken": 0,
+      "max_hp_gain": 0,
+      "max_hp_loss": 4,
+      "event_name": "Winding Halls",
+      "floor": 39,
+      "gold_loss": 0
+    },
+    {
+      "cards_removed": ["Glass Knife"],
+      "damage_healed": 8,
+      "gold_gain": 0,
+      "player_choice": "Offered Rare",
+      "damage_taken": 0,
+      "max_hp_gain": 10,
+      "max_hp_loss": 0,
+      "event_name": "Bonfire Elementals",
+      "floor": 48,
+      "gold_loss": 0
+    }
+  ],
+  "is_beta": false,
+  "boss_relics": [
+    { "not_picked": ["WristBlade", "Empty Cage"], "picked": "Runic Pyramid" },
+    {
+      "not_picked": ["Runic Dome", "SacredBark"],
+      "picked": "Pandora\u0027s Box"
+    }
+  ],
+  "items_purged_floors": [19, 37, 54],
+  "is_endless": false,
+  "potions_floor_spawned": [1, 5, 11, 13, 18, 22, 29, 33, 38, 44, 45],
+  "ascension_level": 20
+}

@@ -147,7 +147,7 @@ BASE_GAME_POTIONS = {'BloodPotion', 'Poison Potion', 'FocusPotion', 'BottledMira
                      'GamblersBrew', 'EssenceOfSteel', 'DuplicationPotion', 'DistilledChaos', 'LiquidMemories', 'HeartOfIron', 'GhostInAJar',
                      'EssenceOfDarkness', 'Ambrosia', 'CultistPotion', 'Fruit Juice', 'SneckoOil', 'FairyPotion', 'SmokeBomb', 'EntropicBrew'}
 # 공격 카드 122종류
-BASE_GAME_ATTACKS = {'Immolate', 'Anger', 'Cleave', 'Reaper', 'Iron Wave', 'Reckless Charge', 'Hemokinesis', 'Body Slam', 'Blood for Blood', 'Clash',
+BASE_ATTACK_CARD = {'Immolate', 'Anger', 'Cleave', 'Reaper', 'Iron Wave', 'Reckless Charge', 'Hemokinesis', 'Body Slam', 'Blood for Blood', 'Clash',
                      'Thunderclap', 'Pummel', 'Pommel Strike', 'Twin Strike', 'Bash', 'Clothesline', 'Rampage', 'Sever Soul', 'Whirlwind',
                      'Fiend Fire', 'Headbutt', 'Wild Strike', 'Heavy Blade', 'Searing Blow', 'Feed', 'Bludgeon', 'Perfected Strike', 'Carnage',
                      'Dropkick', 'Sword Boomerang', 'Uppercut', 'Strike_R', 'Grand Finale', 'Glass Knife', 'Underhanded Strike', 'Dagger Spray',
@@ -162,7 +162,7 @@ BASE_GAME_ATTACKS = {'Immolate', 'Anger', 'Cleave', 'Reaper', 'Iron Wave', 'Reck
                      'Strike_P', 'EmptyFist', 'Shiv', 'Dramatic Entrance', 'RitualDagger', 'Bite', 'Smite', 'Expunger', 'HandOfGreed',
                      'Flash of Steel', 'ThroughViolence', 'Swift Strike', 'Mind Blast'}
 # 스킬 카드 171종류
-BASE_GAME_SKILLS = {'Spot Weakness', 'Warcry', 'Offering', 'Exhume', 'Power Through', 'Dual Wield', 'Flex', 'Infernal Blade', 'Intimidate',
+BASE_SKILL_CARD = {'Spot Weakness', 'Warcry', 'Offering', 'Exhume', 'Power Through', 'Dual Wield', 'Flex', 'Infernal Blade', 'Intimidate',
                     'True Grit', 'Impervious', 'Shrug It Off', 'Flame Barrier', 'Burning Pact', 'Shockwave', 'Seeing Red', 'Disarm', 'Armaments',
                     'Havoc', 'Rage', 'Limit Break', 'Entrench', 'Defend_R', 'Sentinel', 'Battle Trance', 'Second Wind', 'Bloodletting',
                     'Ghostly Armor', 'Double Tap', 'Crippling Poison', 'Cloak And Dagger', 'Storm of Steel', 'Deadly Poison', 'Leg Sweep',
@@ -182,7 +182,7 @@ BASE_GAME_SKILLS = {'Spot Weakness', 'Warcry', 'Offering', 'Exhume', 'Power Thro
                     'Transmutation', 'Ghostly', 'Chrysalis', 'Discovery', 'Finesse', 'Master of Strategy', 'Good Instincts', 'Jack Of All Trades',
                     'Safety', 'Metamorphosis', 'Thinking Ahead', 'Madness'}
 # 파워 카드 58종류
-BASE_GAME_POWERS = {'Inflame', 'Brutality', 'Juggernaut', 'Berserk', 'Metallicize', 'Combust', 'Dark Embrace', 'Barricade', 'Feel No Pain',
+BASE_POWER_CARD = {'Inflame', 'Brutality', 'Juggernaut', 'Berserk', 'Metallicize', 'Combust', 'Dark Embrace', 'Barricade', 'Feel No Pain',
                     'Corruption', 'Rupture', 'Demon Form', 'Fire Breathing', 'Evolve', 'A Thousand Cuts', 'After Image', 'Tools of the Trade',
                     'Caltrops', 'Wraith Form v2', 'Envenom', 'Well Laid Plans', 'Noxious Fumes', 'Infinite Blades', 'Accuracy', 'Footwork', 'Storm',
                     'Hello World', 'Creative AI', 'Echo Form', 'Self Repair', 'Loop', 'Static Discharge', 'Heatsinks', 'Buffer', 'Electrodynamics',
@@ -190,7 +190,7 @@ BASE_GAME_POWERS = {'Inflame', 'Brutality', 'Juggernaut', 'Berserk', 'Metalliciz
                     'Establishment', 'Fasting2', 'Adaptation', 'MentalFortress', 'Study', 'Devotion', 'Nirvana', 'MasterReality', 'Sadistic Nature',
                     'LiveForever', 'BecomeAlmighty', 'Panache', 'Mayhem', 'Magnetism', 'Omega'}
 # 저주 카드 14종류
-BASE_GAME_CURSES = {'Regret', 'Writhe', 'AscendersBane', 'Decay', 'Necronomicurse', 'Pain', 'Parasite', 'Doubt', 'Injury', 'Clumsy', 'CurseOfTheBell',
+BASE_CURSE_CARD = {'Regret', 'Writhe', 'AscendersBane', 'Decay', 'Necronomicurse', 'Pain', 'Parasite', 'Doubt', 'Injury', 'Clumsy', 'CurseOfTheBell',
                     'Normality', 'Pride', 'Shame'}
 # 기본 카드 + 업그레이드 카드 730종류
 BASE_GAME_CARDS_AND_UPGRADES = {'A Thousand Cuts', 'A Thousand Cuts+1', 'Accuracy', 'Accuracy+1', 'Acrobatics', 'Acrobatics+1', 'Adaptation',
