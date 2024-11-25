@@ -263,5 +263,4 @@ poetry.toml
 pyrightconfig.json
 
 data/crawler
-data/crawler
 data/processed
