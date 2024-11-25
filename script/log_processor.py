@@ -3,6 +3,7 @@ import logging
 import sts_static
 
 # process_event 작성, process neow 나머지 분기 대응
+# 원인불명의 카드강화, 유물출처를 기록하고 사후 적용해야함.
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)s:%(message)s',
@@ -11,20 +12,84 @@ logging.basicConfig(
 )
 
 
-# 전투 요약 
-def process_battle(run, current_deck, current_relics, current_battle, max_hp_list, current_hp_list, potion_used_list, ascension, character) -> dict:
-    current_floor = current_battle['floor']
+def process_run(run):
+    if is_corrupted_run(run):
+        logging.debug(f'I found corrupted run! id: {run.get('play_id')}')
+
+    relics = get_floorwise_relics(run)
+    campfires = get_floorwise_data('campfire_choices', run)
+    battles = get_floorwise_data('damage_taken', run)
+    cards = get_floorwise_data('card_choices', run)
+    events = get_floorwise_data('event_choices', run)
+    purchases = get_floorwise_data_by_list('item_purchase_floors', run)
+    purges = get_floorwise_data_by_list('items_purged_floors', run)
+
+    print(f'''
+    campfire: {campfires}
+    relics: {relics}
+    battle: {battles}
+    card: {cards}
+    event: {events}
+    ''')
+
+    current_deck = get_basic_deck(run)
+    current_relics = get_basic_relic(run)
+    process_neow_event(current_relics, run)
+
+    print(f'''
+    starting deck = {current_deck}
+    starting relics = {current_relics}
+    ''')
+
+    battles_log = list()
+    floor_reached = int(run.get('floor_reached'))
+
+    for current_floor in range(1, floor_reached + 1):
+        if current_floor in battles.keys():
+            single_battle_summary = process_battle(run, current_deck, current_relics, battles[current_floor], current_floor)
+            battles_log.append(single_battle_summary)
+        if current_floor in cards.keys():
+            process_card_choice(current_deck, current_relics, cards[current_floor])
+        if current_floor in relics.keys():
+            obtain_relic(current_relics, relics[current_floor].get('key'))
+        if current_floor in campfires.keys():
+            process_campfire(current_deck, campfires[current_floor])
+        if current_floor in events.keys():
+            process_event(current_deck, current_relics, events[current_floor])
+        if current_floor in purchases:
+            process_item_purchase(current_deck, current_relics, current_floor, run)
+        if current_floor in purges:
+            process_item_purge(current_deck, current_floor, run)
+
+    print(battles_log)
+    print(f'''
+    original deck: {sorted(run.get('master_deck'))}
+    original relics: {sorted(run.get('relics'))}
+    
+    processed deck: {sorted(current_deck)}
+    processed relics: {sorted(current_relics)}
+    ''')
+
+
+# 전투 요약
+def process_battle(run, current_deck, current_relics, current_battle, current_floor) -> dict:
+    max_hp_list = run.get('max_hp_per_floor')
+    current_hp_list = run.get('current_hp_per_floor')
+    potion_used_list = run.get('potions_floor_usage')
+    ascension = run.get('ascension_level')
+    character = run.get('character_chosen')
+
     return {
-        'deck': current_deck,
-        'relics': current_relics,
-        'damage_taken': current_battle['damage'],
-        'floor': current_floor,
-        'max_hp': max_hp_list[current_floor - 1],
-        'entering_hp': current_hp_list[current_floor - 1],
-        'enemy': current_battle['enemies'],
-        'potion_used': current_floor in potion_used_list,
         'ascension': ascension,
         'character': character,
+        'floor': current_floor,
+        'deck': current_deck,
+        'relics': current_relics,
+        'enemy': current_battle['enemies'],
+        'damage_taken': int(current_battle['damage']),
+        'max_hp': max_hp_list[current_floor - 1],
+        'entering_hp': current_hp_list[current_floor - 1],
+        'potion_used': current_floor in potion_used_list,
     }
 
 
@@ -33,21 +98,23 @@ def process_event(current_deck, current_relics, event):
     if 'cards_obtained' in event:
         current_deck.extend(event['cards_obtained'])
     if 'cards_removed' in event:
-        current_deck.remove(event['cards_removed'])
+        for target_card in event['cards_removed']:
+            current_deck.remove(target_card)
     if 'cards_upgraded' in event:
-        smith_card(current_deck, event['cards_upgraded'])
+        for target_card in event['cards_upgraded']:
+            smith_card(current_deck, target_card)
     if 'relics_lost' in event:
         current_relics.remove(event['relics_lost'])
     if 'relics_obtained' in event:
         current_relics.extend(event['relics_obtained'])
-    if event['event_name'] is 'Vampires':
+    if event['event_name'] == 'Vampires':
         current_relics.remove('Blood Vial')
         current_deck[:] = [card for card in current_deck if not card.startswith('Strike')]
         current_deck.extend(['Bite', 'Bite', 'Bite', 'Bite', 'Bite'])
 
 
 # 카드 선택이벤트
-def process_card_choice(current_deck, card_event, relics):
+def process_card_choice(current_deck, current_relics, card_event):
     # 카드선택 이벤트가 스킵 또는 노래하는 그릇(Singing Bowl)일 경우, 카드추가 X
     if card_event['picked'] == 'SKIP' or card_event['picked'] == 'Singing Bowl':
         return
@@ -55,11 +122,11 @@ def process_card_choice(current_deck, card_event, relics):
     # 알 시리즈('Molten Egg', 'Frozen Egg', 'Toxic Egg') 업그레이드 적용
     picked_card = card_event['picked']
     is_upgraded = '+1' in picked_card
-    if 'Molten Egg' in relics and picked_card in sts_static.BASE_ATTACK_CARD and ~is_upgraded:
+    if 'Molten Egg 2' in current_relics and picked_card in sts_static.BASE_ATTACK_CARD and ~is_upgraded:
         picked_card = picked_card + '+1'
-    elif 'Frozen Egg' in relics and picked_card in sts_static.BASE_POWER_CARD and ~is_upgraded:
+    elif 'Frozen Egg 2' in current_relics and picked_card in sts_static.BASE_POWER_CARD and ~is_upgraded:
         picked_card = picked_card + '+1'
-    elif 'Toxic Egg' in relics and picked_card in sts_static.BASE_SKILL_CARD and ~is_upgraded:
+    elif 'Toxic Egg 2' in current_relics and picked_card in sts_static.BASE_SKILL_CARD and ~is_upgraded:
         picked_card = picked_card + '+1'
 
     current_deck.append(picked_card)
@@ -68,20 +135,30 @@ def process_card_choice(current_deck, card_event, relics):
 # 카드 강화
 def smith_card(current_deck, target_card):
     smith_card_index = current_deck.index(target_card)
-    current_deck[smith_card_index] += '+1'
+
+    # 이미 업그레이드된 카드일 경우 기존강화 +1 -> Only for 'Searing Blow'
+    if '+' in current_deck[smith_card_index]:
+        card_name = current_deck[smith_card_index].rsplit('+')[0]
+        upgrade_count = int(current_deck[smith_card_index].rsplit('+')[1]) + 1
+
+        current_deck[smith_card_index] = f'{card_name}+{upgrade_count}'
+    else:
+        current_deck[smith_card_index] += '+1'
 
 
 # 불 이벤트 
 def process_campfire(current_deck, campfire_event):
     event = campfire_event['key']
-    if event is 'SMITH':
+    if event == 'SMITH':
         smith_card(current_deck, campfire_event['data'])
-    elif event is 'PURGE':
+    elif event == 'PURGE':
         current_deck.remove(campfire_event['data'])
 
 
 # 0층 니오우 보너스
-def process_neow_event(neow_bonus, current_relics, master_relics):
+def process_neow_event(current_relics, run):
+    neow_bonus = run.get('neow_bonus')
+    master_relics = run.get('relics')
     if neow_bonus == 'ONE_RARE_RELIC' or neow_bonus == 'RANDOM_COMMON_RELIC':
         current_relics.append(master_relics[1])
     if neow_bonus == 'BOSS_RELIC':
@@ -108,7 +185,7 @@ def process_item_purge(current_deck, current_floor, run):
 # 아이템 구매
 def process_item_purchase(current_deck, current_relics, current_floor, run):
     purchase_list = run.get('items_purchased')
-    purchase_floor_list = run.get('items_purchased_floors')
+    purchase_floor_list = run.get('item_purchase_floors')
 
     if current_floor not in purchase_floor_list:
         logging.debug(f'Current floor is not included in the purchase target: {current_floor} floor, id:{run.get('play_id')}')
@@ -126,19 +203,19 @@ def process_item_purchase(current_deck, current_relics, current_floor, run):
 
 # 유물 획득 제어
 def obtain_relic(current_relics, obtained_relic):
-    if obtained_relic is 'Black Blood':
+    if obtained_relic == 'Black Blood':
         current_relics.remove('Burning Blood')
         current_relics.append('Black Blood')
         return
-    elif obtained_relic is 'Ring of the Serpent':
+    elif obtained_relic == 'Ring of the Serpent':
         current_relics.remove('Ring of the Snake')
         current_relics.append('Ring of the Serpent')
         return
-    elif obtained_relic is 'Frozen Core':
+    elif obtained_relic == 'Frozen Core':
         current_relics.remove('Cracked Core')
         current_relics.append('Frozen Core')
         return
-    elif obtained_relic is 'Holy Water':
+    elif obtained_relic == 'Holy Water':
         current_relics.remove('Pure Water')
         current_relics.append('Holy Water')
         return
@@ -147,7 +224,7 @@ def obtain_relic(current_relics, obtained_relic):
 
 
 # 층별 이벤트를 dict로 변환하여 제공
-def get_floorwise_data(run, key) -> dict:
+def get_floorwise_data(key, run) -> dict:
     data = dict()
     if key not in run:
         return data
@@ -161,13 +238,13 @@ def get_floorwise_data(run, key) -> dict:
     return data
 
 
-def get_floorwise_data_by_list(run, key) -> list:
+def get_floorwise_data_by_list(key, run) -> list:
     return run.get(key)
 
 
 # 보스유물을 포함한 유물 dict를 반환
 def get_floorwise_relics(run) -> dict:
-    relics = get_floorwise_data(run, 'relics_obtained')
+    relics = get_floorwise_data('relics_obtained', run)
     boss_relics = run.get('boss_relics')
     if len(boss_relics) >= 1:
         relics[17] = {'key': boss_relics[0]['picked']}
@@ -238,15 +315,15 @@ def is_corrupted_run(run) -> (bool, str):
                         'item_purchase_floors', 'items_purchased', 'items_purged', 'items_purged_floors', 'master_deck', 'relics', 'relics_obtained']
     for field in necessary_fields:
         if field not in run:
-            return True, 'Necessary field missing'
+            return True
 
     # 시드플레이 제외
-    if 'chose_seed' not in run or run.get['chose_seed'] is True:
-        return True, 'chose_seed is True'
+    if 'chose_seed' not in run or run.get('chose_seed') is True:
+        return True
 
-    # 최종점수 10점 제외
-    if 'score' not in run or run.get['score'] < 10:
-        return True, 'score is less than 100'
+    # 최종점수 10점 이하 제외
+    if 'score' not in run or run.get('score') < 10:
+        return True
 
 
 # run: 단일 json 플레이로그
@@ -255,7 +332,5 @@ if __name__ == '__main__':
     print(get_basic_deck({'character_chosen': 'THE_SILENT'}))
     with open('../preprocessed/ironclad_test.json', 'r') as f:
         data = json.load(f)
-    print(get_floorwise_relics(data))
-    print(get_floorwise_data(data, 'potions_obtained'))
-    print(get_floorwise_data(data, 'campfire_choices'))
-    print(get_floorwise_data_by_list(data, 'potions_floor_usage'))
+
+    process_run(data)
