@@ -1,6 +1,6 @@
 import pandas as pd
 
-import sts_static
+from type import sts_static
 
 
 def event_choices_set(data_path):
