@@ -1,5 +1,5 @@
-# 층별 이벤트를 dict로 변환하여 제공
 def get_floorwise_data(key, run) -> dict:
+    """층별 이벤트를 dict로 변환하여 제공"""
     data = dict()
     if key not in run:
         return data
@@ -18,8 +18,8 @@ def get_floorwise_data_by_list(key, run) -> list:
     return run.get(key)
 
 
-# 보스유물을 포함한 유물 dict를 반환
 def get_floorwise_relics(run) -> dict:
+    """보스유물을 포함한 유물 dict를 반환"""
     relics = get_floorwise_data("relics_obtained", run)
     boss_relics = run.get("boss_relics")
     if len(boss_relics) >= 1:
@@ -30,8 +30,8 @@ def get_floorwise_relics(run) -> dict:
     return relics
 
 
-# 손상된, Lazy 데이터 확인
-def is_corrupted_run(run) -> (bool, str):
+def is_corrupted_run(run) -> bool:
+    """손상된, Lazy 데이터 확인"""
     # 필수 필드 누락
     necessary_fields = ["boss_relics", "campfire_choices", "card_choices", "character_chosen", "damage_taken", "event_choices", "floor_reached",
                         "item_purchase_floors", "items_purchased", "items_purged", "items_purged_floors", "master_deck", "relics", "relics_obtained"]

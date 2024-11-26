@@ -1,10 +1,6 @@
 import json
 import logging
-
 from script import run_handler as rh, simulation_processor as sp
-
-# process_event 작성, process neow 나머지 분기 대응
-# 원인불명의 카드강화, 유물출처를 기록하고 사후 적용해야함.
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s:%(message)s",
@@ -13,7 +9,7 @@ logging.basicConfig(
 )
 
 
-def process_run(run):
+def process_run(run, ignore_mismatch=False):
     # 유효하지 않은 로그 제외
     if rh.is_corrupted_run(run):
         logging.debug(f"I found corrupted run! id: {run.get("play_id")}")
@@ -28,14 +24,6 @@ def process_run(run):
     purchases = rh.get_floorwise_data_by_list("item_purchase_floors", run)
     purges = rh.get_floorwise_data_by_list("items_purged_floors", run)
 
-    print(f"""
-    campfire: {campfires}
-    relics: {relics}
-    battle: {battles}
-    card: {cards}
-    event: {events}
-    """)
-
     # starting 덱, 유물
     unknowns = dict()
     current_deck = get_basic_deck(run)
@@ -43,11 +31,6 @@ def process_run(run):
 
     # 0층 이벤트, neow 적용
     sp.process_neow_event(current_relics, run, unknowns)
-    print(f"""
-    starting deck = {current_deck}
-    starting relics = {current_relics}
-    """)
-
     battles_log = list()
     floor_reached = int(run.get("floor_reached"))
 
@@ -59,7 +42,11 @@ def process_run(run):
         if current_floor in cards.keys():
             sp.process_card_choice(current_deck, current_relics, cards[current_floor])
         if current_floor in relics.keys():
-            sp.obtain_relic(current_deck, current_relics, current_floor, relics[current_floor].get("key"), unknowns)
+            if type(relics[current_floor].get("key")) is list:
+                for relic in relics[current_floor].get("key"):
+                    sp.obtain_relic(current_deck, current_relics, current_floor, relic, unknowns)
+            else:
+                sp.obtain_relic(current_deck, current_relics, current_floor, relics[current_floor].get("key"), unknowns)
         if current_floor in campfires.keys():
             sp.process_campfire(current_deck, campfires[current_floor])
         if current_floor in events.keys():
@@ -70,24 +57,20 @@ def process_run(run):
             sp.process_item_purge(current_deck, current_floor, run)
 
     print(f"""
-    original deck: {sorted(run.get("master_deck"))}
-    original relics: {sorted(run.get("relics"))}
-    
-    processed deck: {sorted(current_deck)}
-    processed relics: {sorted(current_relics)}
+    current_deck: {current_deck}
+    master_deck: {run.get("master_deck")}
     """)
 
-    if current_deck != run.get("master_deck") or current_relics != run.get("relics"):
-        improved_run = sp.sync_unknown_data(current_deck, run.get("master_deck"), current_relics, run.get("relics"), run, unknowns)
+    # 원본/전처리 덱과 유물간에 차이가 있을경우 unknown data에 대한 동기화 1회 적용
+    if ignore_mismatch is False and (current_deck != run.get("master_deck") or current_relics != run.get("relics")):
+        improved_run = sp.sync_unknown_data(current_deck, current_relics, run.get("master_deck"), run.get("relics"), run, unknowns)
+        # process_run(improved_run, True)
+    else:
+        print("run 저장")
 
-        if improved_run is None:
-            raise Exception()
 
-        # process_run(improved_run)
-
-
-# 기본덱 생성
 def get_basic_deck(run) -> list:
+    """기본덱 생성"""
     character = run.get("character_chosen")
 
     # 직업 공통 Strike 4장, Defend 4장
@@ -117,15 +100,15 @@ def get_basic_deck(run) -> list:
     return deck
 
 
-# Strike, Defend suffix 추가
 def add_character_suffix(deck, suffix):
+    """Strike, Defend suffix 추가"""
     for index, card in enumerate(deck):
         if card == "Strike" or card == "Defend":
             deck[index] = card + suffix
 
 
-# 기본 유물 생성
 def get_basic_relic(run) -> list:
+    """기본 유물 생성"""
     character = run.get("character_chosen")
 
     if character == "IRONCLAD":

@@ -147,6 +147,7 @@ BASE_GAME_POTIONS = {'BloodPotion', 'Poison Potion', 'FocusPotion', 'BottledMira
                      'Explosive Potion', 'Fire Potion', 'Strength Potion', 'Swift Potion', 'Weak Potion', 'FearPotion', 'AttackPotion', 'SkillPotion',
                      'PowerPotion', 'ColorlessPotion', 'SteroidPotion', 'SpeedPotion', 'BlessingOfTheForge', 'TestModSTS:PlaceholderPotion',
                      'ElixirPotion', 'CunningPotion', 'PotionOfCapacity', 'StancePotion', 'Regen Potion', 'Ancient Potion', 'LiquidBronze',
+                     'ElixirPotion', 'CunningPotion', 'PotionOfCapacity', 'StancePotion', 'Regen Potion', 'Ancient Potion', 'LiquidBronze',
                      'GamblersBrew', 'EssenceOfSteel', 'DuplicationPotion', 'DistilledChaos', 'LiquidMemories', 'HeartOfIron', 'GhostInAJar',
                      'EssenceOfDarkness', 'Ambrosia', 'CultistPotion', 'Fruit Juice', 'SneckoOil', 'FairyPotion', 'SmokeBomb', 'EntropicBrew'}
 # 공격 카드 122종류
@@ -268,7 +269,11 @@ BASE_GAME_CARDS_AND_UPGRADES = {'A Thousand Cuts', 'A Thousand Cuts+1', 'Accurac
                                 'Reinforced Body+1', 'Reprogram', 'Reprogram+1', 'Riddle With Holes', 'Riddle With Holes+1', 'Rip and Tear',
                                 'Rip and Tear+1', 'RitualDagger', 'RitualDagger+1', 'Rupture', 'Rupture+1', 'Sadistic Nature', 'Sadistic Nature+1',
                                 'Safety', 'Safety+1', 'Sanctity', 'Sanctity+1', 'SandsOfTime', 'SandsOfTime+1', 'SashWhip', 'SashWhip+1', 'Scrape',
-                                'Scrape+1', 'Scrawl', 'Scrawl+1', 'Searing Blow', 'Searing Blow+1', 'Second Wind', 'Second Wind+1',
+                                'Scrape+1', 'Scrawl', 'Scrawl+1', 'Searing Blow', 'Searing Blow+1', 'Searing Blow+2', 'Searing Blow+3',
+                                'Searing Blow+4', 'Searing Blow+5', 'Searing Blow+6', 'Searing Blow+7', 'Searing Blow+8', 'Searing Blow+9',
+                                'Searing Blow+10', 'Searing Blow+11', 'Searing Blow+12', 'Searing Blow+13', 'Searing Blow+14', 'Searing Blow+15',
+                                'Searing Blow+16', 'Searing Blow+17', 'Searing Blow+18', 'Searing Blow+19', 'Searing Blow+20', 'Second Wind',
+                                'Second Wind+1',
                                 'Secret Technique', 'Secret Technique+1', 'Secret Weapon', 'Secret Weapon+1', 'Seeing Red', 'Seeing Red+1', 'Seek',
                                 'Seek+1', 'Self Repair', 'Self Repair+1', 'Sentinel', 'Sentinel+1', 'Setup', 'Setup+1', 'Sever Soul', 'Sever Soul+1',
                                 'Shame', 'Shiv', 'Shiv+1', 'Shockwave', 'Shockwave+1', 'Shrug It Off', 'Shrug It Off+1', 'SignatureMove',
