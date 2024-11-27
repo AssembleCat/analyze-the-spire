@@ -1,6 +1,6 @@
 import json
 import logging
-from script import run_handler as rh, simulation_processor as sp
+from script import run_handler as rh, simulation_processor as sp, unknown_handler as nh
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s:%(message)s",
@@ -9,7 +9,7 @@ logging.basicConfig(
 )
 
 
-def process_run(run, ignore_mismatch=False):
+def process_run(run):
     # 유효하지 않은 로그 제외
     if rh.is_corrupted_run(run):
         logging.debug(f"I found corrupted run! id: {run.get("play_id")}")
@@ -61,10 +61,10 @@ def process_run(run, ignore_mismatch=False):
     master_deck: {run.get("master_deck")}
     """)
 
-    # 원본/전처리 덱과 유물간에 차이가 있을경우 unknown data에 대한 동기화 1회 적용
-    if ignore_mismatch is False and (current_deck != run.get("master_deck") or current_relics != run.get("relics")):
-        improved_run = sp.sync_unknown_data(current_deck, current_relics, run.get("master_deck"), run.get("relics"), run, unknowns)
-        # process_run(improved_run, True)
+    # 원본/전처리 덱과 유물간에 차이가 있을경우 unknown data에 대한 동기화 적용
+    if current_deck != run.get("master_deck") or current_relics != run.get("relics"):
+        synced_run = nh.sync_unknown_data(current_deck, current_relics, run.get("master_deck"), run.get("relics"), run, unknowns)
+        # process_run(synced_run)
     else:
         print("run 저장")
 

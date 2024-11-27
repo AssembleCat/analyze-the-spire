@@ -1,4 +1,3 @@
-from collections import Counter
 from type import sts_static
 
 
@@ -93,7 +92,7 @@ def process_campfire(current_deck, campfire_event):
 
 
 def process_neow_event(current_relics, run, unknowns):
-    """0층 니오우 보너스"""
+    """0층 니오우 보너스, 페널티"""
     neow_bonus = run.get("neow_bonus")
     neow_cost = run.get("neow_cost")
     master_relics = run.get("relics")
@@ -111,9 +110,9 @@ def process_neow_event(current_relics, run, unknowns):
     if neow_bonus == "UPGRADE_CARD":
         unknowns["upgrade"] = {0: ["unknown"]}
     if neow_bonus == "TRANSFORM_CARD":
-        unknowns["transform"] = {0: ["unknown"]}
+        unknowns["transform"] = {0: 1}
     if neow_bonus in ["THREE_CARDS", "THREE_RARE_CARDS", "ONE_RANDOM_RARE_CARD"]:
-        unknowns["add"] = {0: ["unknown"]}
+        unknowns["add"] = {0: ["card"]}
 
     if neow_cost == "CURSE":
         unknowns["add"] = {0: ["curse"]}
@@ -180,132 +179,6 @@ def obtain_relic(current_deck, current_relics, current_floor, obtained_relic, un
     current_relics.append(obtained_relic)
 
 
-def sync_unknown_data(current_deck, current_relics, master_deck, master_relics, run, unknowns):
-    """
-    원본 - 전처리 데이터 간의 차이점을 채우기 위한 함수
-    임의로 sort하여 전달하면 안됨!!!!! -> 기존 run의 순서를 알아야함!
-    제거, 변환, 강화, 카드 추가, 유물 추가
-    """
-    # 강화
-    if "upgrade" in unknowns.keys():
-        upgrade_target = find_upgrade_target(current_deck, master_deck)
-        for floor, upgrade_list in unknowns["upgrade"].items():
-            current_upgrade_target = find_upgrade_target_for_current_floor(upgrade_target, upgrade_list)
-            run["campfire_choices"][floor] = {"data": current_upgrade_target, "key": "SMITH"}
-    # 변환
-    if "transform" in unknowns.keys():
-        print("변환 찾고 수정")
-    # 제거
-    if "purge" in unknowns.keys():
-        purge_target = find_purge_target(current_deck, master_deck)
-        for floor, purge_count in unknowns["purge"].items():
-            current_purge_target = find_purge_target_for_current_floor(purge_target, purge_count)
-            run["items_purged_floors"].extend([floor] * purge_count)
-            run["items_purged"].extend(current_purge_target)
-    # 유물
-    if "relic" in unknowns.keys():
-        relic_target = list((Counter(master_relics) - Counter(current_relics)).elements())
-        for floor, relic_count in unknowns["relic"].items():
-            current_relic_target = find_relics_for_current_floor(relic_target, relic_count)
-            run["relics_obtained"][floor] = {"key": current_relic_target}
-
-    return run
-
-
-def unknown_card_classification(current_deck, master_deck):
-    master_count = Counter(master_deck)
-    current_count = Counter(current_deck)
-
-    # 업그레이드 대상
-    upgrade_target_cards = []
-
-    for card, count in master_count.items():
-        if '+' in card:
-            base_card = card.rsplit('+')[0]
-            if base_card in current_count:
-                downgraded_count = min(count, current_count[base_card])
-                upgrade_target_cards.extend([base_card] * downgraded_count)
-
-    temp_upgraded_deck = current_deck.copy()
-
-    # 임시로 전처리덱 강화
-    for card in upgrade_target_cards:
-        smith_card(temp_upgraded_deck, card)
-
-    transform_target_cards = []
-
-    purge_targets = list((Counter(temp_upgraded_deck) - Counter(master_deck)).elements())
-
-
-def find_upgrade_target(current_deck, master_deck):
-    """원본/전처리 덱 간의 차이점으로 업그레이드가 필요한 카드 추출"""
-    master_count = Counter(master_deck)
-    current_count = Counter(current_deck)
-
-    upgrade_target_cards = []
-
-    for card, count in master_count.items():
-        if '+' in card:
-            base_card = card.rsplit('+')[0]
-            if base_card in current_count:
-                downgraded_count = min(count, current_count[base_card])
-                upgrade_target_cards.extend([base_card] * downgraded_count)
-
-    return upgrade_target_cards
-
-
-def find_upgrade_target_for_current_floor(upgrade_target, current_upgrade_type):
-    """
-    upgrade_target: 강화가 필요한 카드 리스트
-    current_upgrade_type: 현재 층에서 강화해야할 카드 타입 리스트("skill", "attack", "power")
-    "unknown" 업그레이드 타입에 대해서는 "unknown_upgradable_card"를 반환함. 후처리 필요!
-    """
-    current_upgrade_target = []
-
-    if "unknown" in current_upgrade_type:
-        return ["unknown_upgradable_card"]
-
-    # 강화타입과 일치하는 대상카드를 찾음
-    for current_card_type in current_upgrade_type:
-        for card in upgrade_target:
-            if card_type(card) == current_card_type:
-                current_upgrade_target.append(card)
-                break
-
-    # 강화할 카드를 찾으면 강화대상에서 제거
-    for remove_from_upgrade_target in current_upgrade_target:
-        upgrade_target.remove(remove_from_upgrade_target)
-
-    return current_upgrade_target
-
-
-def find_purge_target(current_deck, master_deck):
-    """Master 덱에는 없지만 전처리 덱에는 있는 카드를 찾아냄. 즉, 제거해야할 카드 리스트"""
-    upgrade_targets = find_upgrade_target(current_deck, master_deck)
-    _current_deck = current_deck.copy()
-
-    # 임시로 전처리덱 강화
-    for card in upgrade_targets:
-        smith_card(_current_deck, card)
-
-    purge_targets = Counter(_current_deck) - Counter(master_deck)
-    return list(purge_targets.elements())
-
-
-def find_purge_target_for_current_floor(purge_target, purge_count):
-    current_purge_target = purge_target[:purge_count]
-    del purge_target[:purge_count]
-
-    return current_purge_target
-
-
-def find_relics_for_current_floor(relics, relic_count):
-    current_relics = relics[:relic_count]
-    del relics[:relic_count]
-
-    return current_relics
-
-
 def card_type(card):
     if card in sts_static.BASE_SKILL_CARD:
         return "skill"
@@ -320,19 +193,8 @@ def card_type(card):
 
 
 if __name__ == "__main__":
-    master = ['Defend_R', 'Defend_R', 'Defend_R', 'Feel No Pain', 'Fiend Fire+1', 'Fiend Fire+1', 'Flame Barrier', 'Ghostly Armor', 'Power Through+1',
+    master = ['Attack_R', 'Defend_R', 'Defend_R', 'Defend_R', 'Feel No Pain', 'Fiend Fire+1', 'Fiend Fire+1', 'Flame Barrier', 'Ghostly Armor',
+              'Power Through+1',
               'Feel No Pain+1']
     current = ['Defend_R', 'Defend_R', 'Defend_R', 'Defend_R', 'Feel No Pain', 'Fiend Fire', 'Fiend Fire', 'Flame Barrier', 'Ghostly Armor',
                'Power Through', 'Feel No Pain']
-    update_target = find_upgrade_target(current, master)
-    upgrade_types = ['skill', 'power']
-    print(f'업그레이드 대상: {find_upgrade_target(current, master)}')
-    print(f'이번층 업그레이드할 대상: {find_upgrade_target_for_current_floor(update_target, upgrade_types)}')
-    print(f'제거 대상: {find_purge_target(current, master)}')
-
-    purge_target = ['Defend_R', 'Defend_R', 'Defend_R', 'Feel No Pain']
-    current_purge = find_purge_target_for_current_floor(purge_target, 2)
-    print(f"""
-    current: {current_purge}
-    origin: {purge_target}
-    """)
