@@ -1,4 +1,5 @@
 from type import sts_static
+from script import mismatch_handler
 
 
 def process_battle(run, current_deck, current_relics, current_battle, current_floor) -> dict:
@@ -28,7 +29,10 @@ def process_battle(run, current_deck, current_relics, current_battle, current_fl
 def process_event(current_deck, current_relics, event):
     """"?" 이벤트"""
     if "cards_obtained" in event:
-        current_deck.extend(event["cards_obtained"])
+        if event["event_name"] == "Duplicator":
+            current_deck.extend(event["cards_obtained"])
+        else:
+            current_deck.extend(event["cards_obtained"])
     if "cards_removed" in event:
         for target_card in event["cards_removed"]:
             current_deck.remove(target_card)
@@ -45,7 +49,7 @@ def process_event(current_deck, current_relics, event):
         current_deck.extend(["Bite", "Bite", "Bite", "Bite", "Bite"])
 
 
-def process_card_choice(current_deck, current_relics, card_event):
+def process_card_choice(current_deck, current_relics, card_event, mismatch):
     """카드 선택이벤트"""
     # 카드선택 이벤트가 스킵 또는 노래하는 그릇(Singing Bowl)일 경우, 카드추가 X
     if card_event["picked"] == "SKIP" or card_event["picked"] == "Singing Bowl":
@@ -60,6 +64,14 @@ def process_card_choice(current_deck, current_relics, card_event):
         picked_card = picked_card + "+1"
     elif "Toxic Egg 2" in current_relics and picked_card in sts_static.BASE_SKILL_CARD and ~is_upgraded:
         picked_card = picked_card + "+1"
+
+    # 획득한 카드가 강화 불일치 대상일 경우 강화
+    if picked_card in mismatch["upgrade"]:
+        picked_card += "+1"
+
+    if picked_card in mismatch["purge"]:
+        mismatch["purge"].remove(picked_card)
+        del mismatch["purge"]
 
     current_deck.append(picked_card)
 
@@ -91,11 +103,11 @@ def process_campfire(current_deck, campfire_event):
         current_deck.remove(campfire_event["data"])
 
 
-def process_neow_event(current_relics, run, unknowns):
+def process_neow_event(current_relics, run):
     """0층 니오우 보너스, 페널티"""
-    neow_bonus = run.get("neow_bonus")
-    neow_cost = run.get("neow_cost")
-    master_relics = run.get("relics")
+    neow_bonus = run["neow_bonus"]
+    neow_cost = run["neow_cost"]
+    master_relics = run["relics"]
 
     if neow_bonus == "ONE_RARE_RELIC" or neow_bonus == "RANDOM_COMMON_RELIC":
         current_relics.append(master_relics[1])
@@ -103,19 +115,6 @@ def process_neow_event(current_relics, run, unknowns):
         current_relics[0] = master_relics[0]
     if neow_bonus == "THREE_ENEMY_KILL":
         current_relics.append("NeowsBlessing")
-    if neow_bonus == "REMOVE_CARD":
-        unknowns["purge"] = ({0: 1})
-    if neow_bonus == "REMOVE_TWO":
-        unknowns["purge"] = ({0: 2})
-    if neow_bonus == "UPGRADE_CARD":
-        unknowns["upgrade"] = {0: ["unknown"]}
-    if neow_bonus == "TRANSFORM_CARD":
-        unknowns["transform"] = {0: 1}
-    if neow_bonus in ["THREE_CARDS", "THREE_RARE_CARDS", "ONE_RANDOM_RARE_CARD"]:
-        unknowns["add"] = {0: ["card"]}
-
-    if neow_cost == "CURSE":
-        unknowns["add"] = {0: ["curse"]}
 
 
 def process_item_purge(current_deck, current_floor, run):
@@ -130,7 +129,7 @@ def process_item_purge(current_deck, current_floor, run):
         current_deck.remove(purge_card)
 
 
-def process_item_purchase(current_deck, current_relics, current_floor, run, unknowns):
+def process_item_purchase(current_deck, current_relics, current_floor, run):
     """아이템 구매"""
     purchase_list = run.get("items_purchased")
     purchase_floor_list = run.get("item_purchase_floors")
@@ -142,10 +141,28 @@ def process_item_purchase(current_deck, current_relics, current_floor, run, unkn
         if purchase_item in sts_static.ALL_CARDS:
             current_deck.append(purchase_item)
         elif purchase_item in sts_static.ALL_RELICS:
-            obtain_relic(current_deck, current_relics, current_floor, purchase_item, unknowns)
+            obtain_relic(current_deck, current_relics, current_floor, purchase_item)
 
 
-def obtain_relic(current_deck, current_relics, current_floor, obtained_relic, unknowns):
+def process_card_transform(current_deck, transform_summary):
+    original, target = transform_summary
+    card_idx = current_deck.index[original]
+    current_deck[card_idx] = target
+
+
+def process_card_add(current_deck, add_cards):
+    current_deck.extend(add_cards)
+
+
+def process_relic(current_deck, current_relics, current_floor, obtained_relic, mismatch):
+    if type(obtained_relic) is list:
+        for relic in obtained_relic:
+            obtain_relic(current_deck, current_relics, current_floor, relic, mismatch)
+    else:
+        obtain_relic(current_deck, current_relics, current_floor, obtained_relic, mismatch)
+
+
+def obtain_relic(current_deck, current_relics, current_floor, obtained_relic, mismatch):
     """유물 획득 제어"""
     if obtained_relic == "Black Blood":
         current_relics.remove("Burning Blood")
@@ -165,15 +182,13 @@ def obtain_relic(current_deck, current_relics, current_floor, obtained_relic, un
         return
 
     if obtained_relic == "Empty Cage":
-        unknowns["purge"] = {current_floor: 2}
+        print("제거 2개")
     if obtained_relic == "War Paint":
-        unknowns.setdefault("upgrade", {}).setdefault(current_floor, [])
-        unknowns["upgrade"][current_floor].extend(["skill", "skill"])
+        print("스킬 강화 2개")
     if obtained_relic == "Whetstone":
-        unknowns.setdefault("upgrade", {}).setdefault(current_floor, [])
-        unknowns["upgrade"][current_floor].extend(["attack", "attack"])
+        print("공격 강화 2개")
     if obtained_relic == "Calling Bell":
-        unknowns["relic"][current_floor] = 3
+        current_relics.extend(mismatch["relic"])
         current_deck.append("CurseOfTheBell")
 
     current_relics.append(obtained_relic)

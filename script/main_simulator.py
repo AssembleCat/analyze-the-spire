@@ -1,6 +1,6 @@
 import json
 import logging
-from script import run_handler as rh, simulation_processor as sp, unknown_handler as nh
+from script import run_handler as rh, simulation_processor as sp, mismatch_handler as mh
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s:%(message)s",
@@ -9,7 +9,7 @@ logging.basicConfig(
 )
 
 
-def process_run(run):
+def process_run(run, mismatch=None):
     # 유효하지 않은 로그 제외
     if rh.is_corrupted_run(run):
         logging.debug(f"I found corrupted run! id: {run.get("play_id")}")
@@ -25,34 +25,29 @@ def process_run(run):
     purges = rh.get_floorwise_data_by_list("items_purged_floors", run)
 
     # starting 덱, 유물
-    unknowns = dict()
     current_deck = get_basic_deck(run)
     current_relics = get_basic_relic(run)
 
     # 0층 이벤트, neow 적용
-    sp.process_neow_event(current_relics, run, unknowns)
+    sp.process_neow_event(current_relics, run)
     battles_log = list()
     floor_reached = int(run.get("floor_reached"))
 
-    # 1층 ~ 마지막층별 이벤트 검사
-    for current_floor in range(1, floor_reached + 1):
+    # 0층 ~ 마지막층별 이벤트 검사
+    for current_floor in range(0, floor_reached + 1):
         if current_floor in battles.keys():
             single_battle_summary = sp.process_battle(run, current_deck, current_relics, battles[current_floor], current_floor)
             battles_log.append(single_battle_summary)
-        if current_floor in cards.keys():
-            sp.process_card_choice(current_deck, current_relics, cards[current_floor])
-        if current_floor in relics.keys():
-            if type(relics[current_floor].get("key")) is list:
-                for relic in relics[current_floor].get("key"):
-                    sp.obtain_relic(current_deck, current_relics, current_floor, relic, unknowns)
-            else:
-                sp.obtain_relic(current_deck, current_relics, current_floor, relics[current_floor].get("key"), unknowns)
         if current_floor in campfires.keys():
             sp.process_campfire(current_deck, campfires[current_floor])
+        if current_floor in cards.keys():
+            sp.process_card_choice(current_deck, current_relics, cards[current_floor], mismatch)
+        if current_floor in relics.keys():
+            sp.process_relic(current_deck, current_relics, current_floor, relics[current_floor]["key"])
         if current_floor in events.keys():
             sp.process_event(current_deck, current_relics, events[current_floor])
         if current_floor in purchases:
-            sp.process_item_purchase(current_deck, current_relics, current_floor, run, unknowns)
+            sp.process_item_purchase(current_deck, current_relics, current_floor, run)
         if current_floor in purges:
             sp.process_item_purge(current_deck, current_floor, run)
 
@@ -61,17 +56,17 @@ def process_run(run):
     master_deck: {run.get("master_deck")}
     """)
 
-    # 원본/전처리 덱과 유물간에 차이가 있을경우 unknown data에 대한 동기화 적용
-    if current_deck != run.get("master_deck") or current_relics != run.get("relics"):
-        synced_run = nh.sync_unknown_data(current_deck, current_relics, run.get("master_deck"), run.get("relics"), run, unknowns)
-        # process_run(synced_run)
+    # 원본/전처리 덱과 유물간에 차이가 있을경우 동기화 적용!
+    if mh.need_sync(current_deck, current_relics, run["master_deck"], run["relics"]):
+        mismatch = mh.create_mismatch_data(current_deck, current_relics, run["master_deck"], run["relics"])
+        process_run(run, mismatch)
     else:
         print("run 저장")
 
 
 def get_basic_deck(run) -> list:
     """기본덱 생성"""
-    character = run.get("character_chosen")
+    character = run["character_chosen"]
 
     # 직업 공통 Strike 4장, Defend 4장
     deck = ["Strike", "Strike", "Strike", "Strike", "Defend", "Defend", "Defend", "Defend"]
