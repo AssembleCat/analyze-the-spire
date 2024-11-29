@@ -55,9 +55,9 @@ def process_run(run, mismatch=mh.create_default_mismatch_data()):
     if mh.need_sync(current_deck, current_relics, run["master_deck"], run["relics"]):
         mismatch = mh.create_mismatch_data(current_deck, current_relics, run["master_deck"], run["relics"])
 
-        process_run(run, mismatch)
+        return process_run(run, mismatch)
     else:
-        print("run 저장")
+        return battles_log
 
 
 def get_basic_deck(run, mismatch) -> list:
@@ -124,4 +124,5 @@ if __name__ == "__main__":
     with open("../preprocessed/ironclad_test.json", "r") as f:
         data = json.load(f)
 
-    process_run(data)
+    result = process_run(data)
+    print(result)
