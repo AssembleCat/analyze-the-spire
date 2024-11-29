@@ -1,7 +1,7 @@
 import os
 
 
-def get_file_paths(root_path='default', reverse=False, folder_type='CompressedData'):
+def get_file_paths(root_path='default', reverse=False, folder_type='FilteredData'):
     """
     Get all .parquet file paths in the root folder, sorted by year, month, and file name.
 

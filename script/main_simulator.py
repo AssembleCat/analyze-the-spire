@@ -121,8 +121,9 @@ def get_basic_relic(run) -> list:
 # run: 단일 json 플레이로그
 # data: run을 1개이상 담고있는 json list
 if __name__ == "__main__":
-    with open("../preprocessed/ironclad_test.json", "r") as f:
+    with open("../sample/ironclad_test.json", "r") as f:
         data = json.load(f)
 
     result = process_run(data)
-    print(result)
+    for row in result:
+        print(row)

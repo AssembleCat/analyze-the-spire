@@ -26,7 +26,7 @@ def card_set(data_path):
 
 
 if __name__ == '__main__':
-    card_set = card_set('../preprocessed/sample.parquet')
+    card_set = card_set('../sample/sample.parquet')
 
     print(len(card_set))
 
