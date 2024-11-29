@@ -9,10 +9,10 @@ logging.basicConfig(
 )
 
 
-def process_run(run, mismatch=None):
+def process_run(run, mismatch=mh.create_default_mismatch_data()):
     # 유효하지 않은 로그 제외
     if rh.is_corrupted_run(run):
-        logging.debug(f"I found corrupted run! id: {run.get("play_id")}")
+        logging.debug(f"I found corrupted run! id: {run["play_id"]}")
         return
 
     # 이벤트, 전투, 카드, 유물 정보
@@ -25,13 +25,13 @@ def process_run(run, mismatch=None):
     purges = rh.get_floorwise_data_by_list("items_purged_floors", run)
 
     # starting 덱, 유물
-    current_deck = get_basic_deck(run)
+    current_deck = get_basic_deck(run, mismatch)
     current_relics = get_basic_relic(run)
 
     # 0층 이벤트, neow 적용
     sp.process_neow_event(current_relics, run)
     battles_log = list()
-    floor_reached = int(run.get("floor_reached"))
+    floor_reached = int(run["floor_reached"])
 
     # 0층 ~ 마지막층별 이벤트 검사
     for current_floor in range(0, floor_reached + 1):
@@ -43,28 +43,24 @@ def process_run(run, mismatch=None):
         if current_floor in cards.keys():
             sp.process_card_choice(current_deck, current_relics, cards[current_floor], mismatch)
         if current_floor in relics.keys():
-            sp.process_relic(current_deck, current_relics, current_floor, relics[current_floor]["key"])
+            sp.process_relic(current_deck, current_relics, relics[current_floor]["key"], mismatch)
         if current_floor in events.keys():
-            sp.process_event(current_deck, current_relics, events[current_floor])
+            sp.process_event(current_deck, current_relics, events[current_floor], mismatch)
         if current_floor in purchases:
-            sp.process_item_purchase(current_deck, current_relics, current_floor, run)
+            sp.process_item_purchase(current_deck, current_relics, current_floor, run, mismatch)
         if current_floor in purges:
             sp.process_item_purge(current_deck, current_floor, run)
-
-    print(f"""
-    current_deck: {current_deck}
-    master_deck: {run.get("master_deck")}
-    """)
 
     # 원본/전처리 덱과 유물간에 차이가 있을경우 동기화 적용!
     if mh.need_sync(current_deck, current_relics, run["master_deck"], run["relics"]):
         mismatch = mh.create_mismatch_data(current_deck, current_relics, run["master_deck"], run["relics"])
+
         process_run(run, mismatch)
     else:
         print("run 저장")
 
 
-def get_basic_deck(run) -> list:
+def get_basic_deck(run, mismatch) -> list:
     """기본덱 생성"""
     character = run["character_chosen"]
 
@@ -89,10 +85,14 @@ def get_basic_deck(run) -> list:
         deck = None
 
     # 10승천 이상 "등반자의 골칫거리" 저주카드 추가
-    if "ascension_level" in run and run.get("ascension_level") >= 10:
+    if "ascension_level" in run and run["ascension_level"] >= 10:
         deck.append("AscendersBane")
 
-    return deck
+    synced_deck = []
+    for card in deck:
+        mh.control_card_obtain(synced_deck, card, mismatch)
+
+    return synced_deck
 
 
 def add_character_suffix(deck, suffix):
@@ -104,7 +104,7 @@ def add_character_suffix(deck, suffix):
 
 def get_basic_relic(run) -> list:
     """기본 유물 생성"""
-    character = run.get("character_chosen")
+    character = run["character_chosen"]
 
     if character == "IRONCLAD":
         return ["Burning Blood"]

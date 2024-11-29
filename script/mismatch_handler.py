@@ -1,9 +1,18 @@
 from collections import Counter
-from script import simulation_processor as sm
+from script import simulation_processor as sp
 
 
 def need_sync(current_deck, current_relics, master_deck, master_relics) -> bool:
-    return not (Counter(current_deck) == Counter(master_deck) and Counter(current_relics) == Counter(master_relics))
+    return Counter(current_deck) != Counter(master_deck) or Counter(current_relics) != Counter(master_relics)
+
+
+def create_default_mismatch_data():
+    return {
+        "upgrade": [],
+        "purge": [],
+        "add": [],
+        "relic": []
+    }
 
 
 def create_mismatch_data(current_deck, current_relics, master_deck, master_relics) -> dict:
@@ -12,19 +21,18 @@ def create_mismatch_data(current_deck, current_relics, master_deck, master_relic
     임의로 sort하여 전달하면 안됨!!!!! -> 기존 run의 순서를 알아야함!
     """
 
-    upgrade_targets, transform_targets, purge_targets, add_targets = mismatch_card_classification(current_deck, master_deck)
+    upgrade_targets, purge_targets, add_targets = mismatch_card_classification(current_deck, master_deck)
     relic_difference = mismatch_relics(current_relics, master_relics)
 
     return {
         "upgrade": upgrade_targets,
-        "transform": transform_targets,
         "purge": purge_targets,
         "add": add_targets,
         "relic": relic_difference
     }
 
 
-def mismatch_card_classification(current_deck, master_deck) -> tuple[list, list, list, list]:
+def mismatch_card_classification(current_deck, master_deck) -> tuple[list, list, list]:
     master_count = Counter(master_deck)
     current_count = Counter(current_deck)
 
@@ -42,19 +50,13 @@ def mismatch_card_classification(current_deck, master_deck) -> tuple[list, list,
 
     # 임시로 전처리덱 강화
     for card in upgrade_targets:
-        sm.smith_card(_upgraded_deck, card)
-
-    _upgraded_count = Counter(_upgraded_deck)
+        sp.smith_card(_upgraded_deck, card)
 
     # 각 덱에만 존재하는 카드
-    only_in_master = list((master_count - _upgraded_count).elements())
-    only_in_current = list((_upgraded_count - master_count).elements())
+    add_targets = list((master_count - Counter(_upgraded_deck)).elements())
+    purge_targets = list((Counter(_upgraded_deck) - master_count).elements())
 
-    transform_targets = list(zip(only_in_current, only_in_master))
-    purge_targets = only_in_current[len(only_in_master):]
-    add_targets = only_in_master[len(only_in_current):]
-
-    return upgrade_targets, transform_targets, purge_targets, add_targets
+    return upgrade_targets, purge_targets, add_targets
 
 
 def mismatch_relics(current_relic, master_relic):
@@ -63,3 +65,23 @@ def mismatch_relics(current_relic, master_relic):
 
     return list((master_count - current_count).elements())
 
+
+def control_card_obtain(current_deck, obtained_card, mismatch):
+    purge, add, upgrade = mismatch["purge"], mismatch["add"], mismatch["upgrade"]
+    if obtained_card in upgrade:
+        upgrade.remove(obtained_card)
+        current_deck.append(sp.get_upgraded_card(obtained_card))
+    elif obtained_card in purge and add:
+        purge.remove(obtained_card)
+        current_deck.append(add.pop(0))
+    elif obtained_card in purge:
+        purge.remove(obtained_card)
+    else:
+        current_deck.append(obtained_card)
+
+
+if __name__ == '__main__':
+    master = ['Attack_R', 'Defend_R', 'Defend_R', 'Defend_R', 'Feel No Pain', 'Fiend Fire+1', 'Fiend Fire+1', 'Flame Barrier', 'Ghostly Armor',
+              'Power Through+1', 'Feel No Pain+1']
+    current = ['Defend_R', 'Defend_R', 'Defend_R', 'Defend_R', 'Feel No Pain', 'Fiend Fire', 'Fiend Fire', 'Flame Barrier', 'Ghostly Armor',
+               'Power Through', 'Feel No Pain']
