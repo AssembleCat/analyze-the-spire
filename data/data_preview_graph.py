@@ -3,7 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-with open('data_preview.json') as f:
+with open('json/FilteredData_data_preview.json') as f:
     preview_json = json.load(f)
 
 # 1. 캐릭터 플레이 횟수

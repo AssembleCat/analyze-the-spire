@@ -94,6 +94,6 @@ if __name__ == '__main__':
 
     final_counts = combine_results(result)
 
-    output_file = 'data_filtering.json'
+    output_file = './json/data_filtering.json'
     with open(output_file, 'w') as f:
         json.dumps(final_counts, f, indent=2)

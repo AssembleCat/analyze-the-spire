@@ -21,7 +21,7 @@ def get_floorwise_data_by_list(key, run) -> list:
 def get_floorwise_relics(run) -> dict:
     """보스유물을 포함한 유물 dict를 반환"""
     relics = get_floorwise_data("relics_obtained", run)
-    boss_relics = run.get("boss_relics")
+    boss_relics = run["boss_relics"]
     if len(boss_relics) >= 1:
         relics[17] = {"key": boss_relics[0]["picked"]}
     if len(boss_relics) == 2:

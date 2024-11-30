@@ -48,7 +48,8 @@ def combine_results(results):
 
 # 병렬 처리 실행
 if __name__ == '__main__':
-    file_paths = parquet_loader.get_file_paths(reverse=True, folder_type='FilteredData')
+    folder_type = 'FilteredData'
+    file_paths = parquet_loader.get_file_paths(reverse=True, folder_type=folder_type)
     total_files = len(file_paths)
 
     print(f"Start processing {total_files} files...")
@@ -68,6 +69,6 @@ if __name__ == '__main__':
     final_counts = combine_results(results)
 
     # 결과 출력
-    output_file = './data_preview.json'
+    output_file = f'./json/{folder_type}_data_preview.json'
     with open(output_file, 'w') as f:
         json.dump(final_counts, f, indent=2)

@@ -1,4 +1,4 @@
-import json
+import pandas as pd
 import logging
 from script import run_handler as rh, simulation_processor as sp, mismatch_handler as mh
 
@@ -9,11 +9,18 @@ logging.basicConfig(
 )
 
 
-def process_run(run, mismatch=mh.create_default_mismatch_data()):
+def simulate_entire_runs(data_dir):
+    print("할거 겁내 많네")
+
+
+def process_single_run(run, mismatch=None):
     # 유효하지 않은 로그 제외
     if rh.is_corrupted_run(run):
         logging.debug(f"I found corrupted run! id: {run["play_id"]}")
         return
+
+    if mismatch is None:
+        mismatch = mh.create_default_mismatch_data()
 
     # 이벤트, 전투, 카드, 유물 정보
     relics = rh.get_floorwise_relics(run)
@@ -55,7 +62,7 @@ def process_run(run, mismatch=mh.create_default_mismatch_data()):
     if mh.need_sync(current_deck, current_relics, run["master_deck"], run["relics"]):
         mismatch = mh.create_mismatch_data(current_deck, current_relics, run["master_deck"], run["relics"])
 
-        return process_run(run, mismatch)
+        return process_single_run(run, mismatch)
     else:
         return battles_log
 
@@ -121,9 +128,4 @@ def get_basic_relic(run) -> list:
 # run: 단일 json 플레이로그
 # data: run을 1개이상 담고있는 json list
 if __name__ == "__main__":
-    with open("../sample/ironclad_test.json", "r") as f:
-        data = json.load(f)
-
-    result = process_run(data)
-    for row in result:
-        print(row)
+    df = pd.read_parquet("../sample/sample.parquet")
