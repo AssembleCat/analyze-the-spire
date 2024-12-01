@@ -44,5 +44,6 @@ def process_and_save_files(data_paths):
 
 
 if __name__ == '__main__':
-    data_paths = parquet_loader.get_file_paths()
-    process_and_save_files(data_paths)
+    data_paths = parquet_loader.get_file_paths(folder_type="ClassifiedData")
+    for path in data_paths:
+        print(path)

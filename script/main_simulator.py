@@ -1,5 +1,9 @@
-import pandas as pd
+import json
 import logging
+import os
+
+import pandas as pd
+from data import parquet_loader as pl
 from script import run_handler as rh, simulation_processor as sp, mismatch_handler as mh
 
 logging.basicConfig(
@@ -9,15 +13,52 @@ logging.basicConfig(
 )
 
 
-def simulate_entire_runs(data_dir):
-    print("할거 겁내 많네")
+def simulate_entire_runs(data_paths):
+    count, end = 0, len(data_paths)
+
+    # 각 파일별로 실행
+    for file in data_paths:
+        count += 1
+        print(f"({count}/{end}) Processing for {os.path.basename(file)}")
+        try:
+            df = pd.read_parquet(file)
+
+            # file단위로 battle을 수집
+            result_collector = list()
+
+            total_row = df.shape[0]
+            # run별로 실행
+            for index, row in df.iterrows():
+                print(f"({index+1}/{total_row}) Run Processing")
+                result = process_single_run(row.to_dict())
+
+                if result is None:
+                    logging.debug(f"Run with index {index} is invalid.")
+                else:
+                    result_collector.extend(result)
+
+            # battle 저장
+            save_battles_summary(file, result_collector, count)
+
+        except Exception as e:
+            logging.error(f"Error processing file {file}: {e}")
+
+
+def save_battles_summary(file, battles, idx):
+    with open(f'../battles/{os.path.basename(file)}.json', 'w') as f:
+        json.dump(battles, f)
 
 
 def process_single_run(run, mismatch=None):
+    """
+    :param run: 단일 런 로그파일 key-value로 접근할 수 있도록 가공해야함.
+    :param mismatch: 자동으로 할당되는 원본-전처리덱간의 차이점 임의로 제공하지않아야함.
+    :return: 전투별 요약 리스트, 유효하지않은 런은 None 반환.
+    """
     # 유효하지 않은 로그 제외
     if rh.is_corrupted_run(run):
         logging.debug(f"I found corrupted run! id: {run["play_id"]}")
-        return
+        return None
 
     if mismatch is None:
         mismatch = mh.create_default_mismatch_data()
@@ -128,4 +169,10 @@ def get_basic_relic(run) -> list:
 # run: 단일 json 플레이로그
 # data: run을 1개이상 담고있는 json list
 if __name__ == "__main__":
-    df = pd.read_parquet("../sample/sample.parquet")
+    data_paths = pl.get_file_paths(folder_type="ClassifiedData")[0:1]
+    simulate_entire_runs(data_paths)
+
+    with open("../sample/ironclad_test.json", "r") as f:
+        data = json.load(f)
+
+    single_result = process_single_run(data)
