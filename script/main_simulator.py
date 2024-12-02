@@ -1,6 +1,8 @@
 import json
 import logging
 import os
+import traceback
+from collections import defaultdict
 
 import pandas as pd
 from data import parquet_loader as pl
@@ -14,34 +16,42 @@ logging.basicConfig(
 
 
 def simulate_entire_runs(data_paths):
+    # 검사 파일 갯수 추적
     count, end = 0, len(data_paths)
+
+    # 성공/실패 갯수 기록
+    simulation_count = defaultdict(int)
 
     # 각 파일별로 실행
     for file in data_paths:
         count += 1
-        print(f"({count}/{end}) Processing for {os.path.basename(file)}")
+        logging.debug(f"({count}/{end}) Processing for {os.path.basename(file)}")
         try:
             df = pd.read_parquet(file)
 
             # file단위로 battle을 수집
             result_collector = list()
 
-            total_row = df.shape[0]
+            simulation_count["total_run"] += df.shape[0]
             # run별로 실행
             for index, row in df.iterrows():
-                print(f"({index+1}/{total_row}) Run Processing")
+                # 오염된 로그를 제외 및 원인 기록
+                valid_check = rh.is_corrupted_run(row)
+                if valid_check is not None:
+                    simulation_count[valid_check] += 1
+                    continue
+
                 result = process_single_run(row.to_dict())
 
-                if result is None:
-                    logging.debug(f"Run with index {index} is invalid.")
-                else:
-                    result_collector.extend(result)
-
-            # battle 저장
+                simulation_count["processed"] += 1
+                result_collector.extend(result)
+            # battle list 저장
             save_battles_summary(file, result_collector, count)
-
         except Exception as e:
-            logging.error(f"Error processing file {file}: {e}")
+            logging.error(f"Error processing file {file}: from({type(e).__name__}) {e}")
+            logging.error(traceback.format_exc())
+    with open(f'../battles/simulation_summary.json', 'w') as f:
+        json.dump(simulation_count, f)
 
 
 def save_battles_summary(file, battles, idx):
@@ -49,17 +59,13 @@ def save_battles_summary(file, battles, idx):
         json.dump(battles, f)
 
 
-def process_single_run(run, mismatch=None):
+def process_single_run(run, mismatch=None, recursion=False):
     """
     :param run: 단일 런 로그파일 key-value로 접근할 수 있도록 가공해야함.
     :param mismatch: 자동으로 할당되는 원본-전처리덱간의 차이점 임의로 제공하지않아야함.
-    :return: 전투별 요약 리스트, 유효하지않은 런은 None 반환.
+    :param recursion: 현재 process가 재귀된 상태인지를 표현
+    :return: 전투별 요약 리스트
     """
-    # 유효하지 않은 로그 제외
-    if rh.is_corrupted_run(run):
-        logging.debug(f"I found corrupted run! id: {run["play_id"]}")
-        return None
-
     if mismatch is None:
         mismatch = mh.create_default_mismatch_data()
 
@@ -99,11 +105,13 @@ def process_single_run(run, mismatch=None):
         if current_floor in purges:
             sp.process_item_purge(current_deck, current_floor, run)
 
+    # 재귀된 process일 경우 검사없이 반환
+    if recursion:
+        return battles_log
     # 원본/전처리 덱과 유물간에 차이가 있을경우 동기화 적용!
-    if mh.need_sync(current_deck, current_relics, run["master_deck"], run["relics"]):
+    elif mh.need_sync(current_deck, current_relics, run["master_deck"], run["relics"]):
         mismatch = mh.create_mismatch_data(current_deck, current_relics, run["master_deck"], run["relics"])
-
-        return process_single_run(run, mismatch)
+        return process_single_run(run, mismatch, True)
     else:
         return battles_log
 
@@ -172,7 +180,10 @@ if __name__ == "__main__":
     data_paths = pl.get_file_paths(folder_type="ClassifiedData")[0:1]
     simulate_entire_runs(data_paths)
 
-    with open("../sample/ironclad_test.json", "r") as f:
-        data = json.load(f)
+    # single sample run
+    # with open("../sample/defect_test.json", "r") as f:
+    #    data = json.load(f)
 
-    single_result = process_single_run(data)
+    # single_result = process_single_run(data)
+    # with open("../sample/ironclad_test_output.json", "w") as f:
+    #     json.dump(single_result, f)

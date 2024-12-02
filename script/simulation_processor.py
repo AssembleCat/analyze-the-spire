@@ -6,13 +6,13 @@ from script import mismatch_handler as mh
 
 def process_battle(run, current_deck, current_relics, current_battle, current_floor) -> dict:
     """전투 요약"""
-    max_hp_list = run.get("max_hp_per_floor")
-    current_hp_list = run.get("current_hp_per_floor")
-    potion_used_list = run.get("potions_floor_usage")
-    ascension = run.get("ascension_level")
-    character = run.get("character_chosen")
-    max_hp = max_hp_list[0] if current_floor < 2 else max_hp_list[current_floor - 2]
-    entering_hp = current_hp_list[0] if current_floor < 2 else current_hp_list[current_floor - 2]
+    max_hp_list = run["max_hp_per_floor"]
+    current_hp_list = run["current_hp_per_floor"]
+    potion_used_list = run["potions_floor_usage"]
+    ascension = run["ascension_level"]
+    character = run["character_chosen"]
+    max_hp = max_hp_list[current_floor - 1]
+    entering_hp = current_hp_list[current_floor - 1]
 
     return {
         "ascension": ascension,
@@ -23,7 +23,7 @@ def process_battle(run, current_deck, current_relics, current_battle, current_fl
         "enemy": current_battle["enemies"],
         "damage_taken": int(current_battle["damage"]),
         "max_hp": max_hp,
-        "entering_hp": current_hp_list[current_floor - 2],
+        "entering_hp": entering_hp,
         "potion_used": current_floor in potion_used_list,
     }
 
@@ -38,22 +38,30 @@ def process_event(current_deck, current_relics, event, mismatch):
             mh.control_card_obtain(current_deck, event["cards_obtained"], mismatch)
     if "cards_removed" in event:
         for target_card in event["cards_removed"]:
-            current_deck.remove(target_card)
+            if target_card in current_deck:
+                purge_card(current_deck, target_card)
     if "cards_upgraded" in event:
         for target_card in event["cards_upgraded"]:
             smith_card(current_deck, target_card)
     if "relics_lost" in event:
-        current_relics.remove(event["relics_lost"])
+        if isinstance(event["relics_lost"], list):
+            current_relics[:] = [relic for relic in current_relics if relic not in event["relics_lost"]]
+        else:
+            current_relics.remove(event["relics_lost"])
     if "relics_obtained" in event:
         current_relics.extend(event["relics_obtained"])
     if event["event_name"] == "Vampires":
-        current_relics.remove("Blood Vial")
+        if "Blood Vial" in current_relics:
+            current_relics.remove("Blood Vial")
         current_deck[:] = [card for card in current_deck if not card.startswith("Strike")]
         current_deck.extend(["Bite", "Bite", "Bite", "Bite", "Bite"])
 
 
 def process_card_choice(current_deck, current_relics, card_event, mismatch):
     """카드 선택이벤트"""
+    if "picked" not in card_event:
+        return
+
     # 카드선택 이벤트가 스킵 또는 노래하는 그릇(Singing Bowl)일 경우, 카드추가 X
     if card_event["picked"] == "SKIP" or card_event["picked"] == "Singing Bowl":
         return
@@ -73,9 +81,19 @@ def process_card_choice(current_deck, current_relics, card_event, mismatch):
 
 def smith_card(current_deck, target_card):
     """카드 강화"""
+    if target_card not in current_deck:
+        return
+
     smith_card_index = current_deck.index(target_card)
 
     current_deck[smith_card_index] = get_upgraded_card(current_deck[smith_card_index])
+
+
+def purge_card(current_deck, target_card):
+    if target_card not in current_deck:
+        return
+
+    current_deck.remove(target_card)
 
 
 # 이미 업그레이드된 카드일 경우 기존강화 +1 -> Only for "Searing Blow"
@@ -99,7 +117,7 @@ def process_campfire(current_deck, campfire_event):
         else:
             smith_card(current_deck, campfire_event["data"])
     elif event == "PURGE":
-        current_deck.remove(campfire_event["data"])
+        purge_card(current_deck, campfire_event["data"])
 
 
 def process_neow_event(current_relics, run):
@@ -124,8 +142,9 @@ def process_item_purge(current_deck, current_floor, run):
     purge_items = [purge_list[i] for i in purge_item_index]
 
     for purge_item in purge_items:
-        purge_card = purge_list[purge_floor_list.index(current_floor)]
-        current_deck.remove(purge_card)
+        if purge_item in current_deck:
+            purge_target_card = purge_list[purge_floor_list.index(current_floor)]
+            purge_card(current_deck, purge_target_card)
 
 
 def process_item_purchase(current_deck, current_relics, current_floor, run, mismatch):
@@ -181,16 +200,17 @@ def obtain_relic(current_deck, current_relics, obtained_relic, mismatch):
         return
 
     if obtained_relic == "Empty Cage" and mismatch["purge"]:
-        current_deck.remove(mismatch["purge"][:2])
+        for target_card in mismatch["purge"][:2]:
+            purge_card(current_deck, target_card)
     if obtained_relic == "War Paint" and mismatch["upgrade"]:
         attack_card = [card for card in mismatch["upgrade"] if card_type(card) == "attack"][:2]
-        mismatch["upgrade"].remove(attack_card)
         for card in attack_card:
+            mismatch["upgrade"].remove(card)
             smith_card(current_deck, card)
     if obtained_relic == "Whetstone" and mismatch["upgrade"]:
         skill_card = [card for card in mismatch["upgrade"] if card_type(card) == "skill"][:2]
-        mismatch["upgrade"].remove(skill_card)
         for card in skill_card:
+            mismatch["upgrade"].remove(card)
             smith_card(current_deck, card)
     if obtained_relic == "Calling Bell" and mismatch["relic"]:
         current_relics.extend(mismatch["relic"])
