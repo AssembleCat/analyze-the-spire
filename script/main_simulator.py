@@ -21,6 +21,7 @@ def simulate_entire_runs(data_paths):
 
     # 성공/실패 갯수 기록
     simulation_count = defaultdict(int)
+    failed_files = []
 
     # 각 파일별로 실행
     for file in data_paths:
@@ -32,31 +33,40 @@ def simulate_entire_runs(data_paths):
             # file단위로 battle을 수집
             result_collector = list()
 
-            simulation_count["total_run"] += df.shape[0]
-            # run별로 실행
+            # 해당 파일에 대한 count 수집
+            local_simulation_count = defaultdict(int)
+            local_simulation_count["total_run"] += df.shape[0]
             for index, row in df.iterrows():
                 # 오염된 로그를 제외 및 원인 기록
                 valid_check = rh.is_corrupted_run(row)
                 if valid_check is not None:
-                    simulation_count[valid_check] += 1
+                    local_simulation_count[valid_check] += 1
                     continue
-
+                # 처리결과 저장
                 result = process_single_run(row.to_dict())
-
-                simulation_count["processed"] += 1
+                local_simulation_count["processed"] += 1
                 result_collector.extend(result)
             # battle list 저장
-            save_battles_summary(file, result_collector, count)
+            save_json(f'../battles/{os.path.basename(file)}.json', result_collector)
+
+            # global simulation_count에 반영
+            for key, value in local_simulation_count.items():
+                simulation_count[key] += value
+
         except Exception as e:
+            # 오류 발생시 실패한 리스트에 기록
+            failed_files.append(file)
             logging.error(f"Error processing file {file}: from({type(e).__name__}) {e}")
             logging.error(traceback.format_exc())
-    with open(f'../battles/simulation_summary.json', 'w') as f:
-        json.dump(simulation_count, f)
+
+    save_json("../battles/battle_summary.json", simulation_count)
+    if failed_files:
+        save_json("../battles/process_failed_list.json", failed_files)
 
 
-def save_battles_summary(file, battles, idx):
-    with open(f'../battles/{os.path.basename(file)}.json', 'w') as f:
-        json.dump(battles, f)
+def save_json(file_path, data):
+    with open(file_path, 'w') as f:
+        json.dump(data, f)
 
 
 def process_single_run(run, mismatch=None, recursion=False):
@@ -177,7 +187,8 @@ def get_basic_relic(run) -> list:
 # run: 단일 json 플레이로그
 # data: run을 1개이상 담고있는 json list
 if __name__ == "__main__":
-    data_paths = pl.get_file_paths(folder_type="ClassifiedData")[0:1]
+    # 총 384개 있음
+    data_paths = pl.get_file_paths(folder_type="ClassifiedData")[:100]
     simulate_entire_runs(data_paths)
 
     # single sample run

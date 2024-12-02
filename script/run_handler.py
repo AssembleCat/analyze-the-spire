@@ -73,6 +73,19 @@ def is_corrupted_run(run):
             if field not in event:
                 return "corrupted_?_event"
 
+    # 불 이벤트 필수 필드 확인
+    campfire_choice_fields = ["floor", "key"]
+    for campfire in run["campfire_choices"]:
+        for field in campfire_choice_fields:
+            if field not in campfire:
+                return "corrupted_campfire"
+
+    relic_fields = ["floor", "key"]
+    for relic in run["relics_obtained"]:
+        for field in relic_fields:
+            if field not in relic:
+                return "corrupted_relic"
+
     # hp 리스트와 도달층수의 기록이 틀린 경우 제외
     reached = run["floor_reached"]
     hp_length = len(run["max_hp_per_floor"])
