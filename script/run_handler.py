@@ -77,7 +77,7 @@ def is_corrupted_run(run):
     reached = run["floor_reached"]
     hp_length = len(run["max_hp_per_floor"])
     if run["victory"]:
-        if reached != hp_length or reached + 1 != hp_length:
+        if reached != hp_length and reached + 1 != hp_length:
             return "missing_hp_list"
     else:
         if reached + 1 != hp_length:
