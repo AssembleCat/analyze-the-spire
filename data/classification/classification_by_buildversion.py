@@ -1,5 +1,4 @@
 import os
-from multiprocessing import Pool
 from pathlib import Path
 
 import pandas as pd
@@ -43,7 +42,29 @@ def process_and_save_files(data_paths):
             print(f"Error processing {file}: {e}")
 
 
+def rename_files_in_place(data_paths):
+    folder_files = {}
+
+    # 파일을 폴더별로 그룹화
+    for path in data_paths:
+        folder_path = os.path.dirname(path)  # 파일의 폴더 경로
+        folder_name = os.path.basename(folder_path)  # 폴더 이름
+        if folder_path not in folder_files:
+            folder_files[folder_path] = []
+        folder_files[folder_path].append((folder_name, path))
+
+    # 파일 이름 변경
+    for folder_path, files in folder_files.items():
+        files.sort(key=lambda x: x[1])  # 원래 경로로 정렬
+        for idx, (folder_name, original_path) in enumerate(files, start=1):
+            new_name = f"{folder_name}_{idx}.parquet"  # 새 파일 이름
+            new_path = os.path.join(folder_path, new_name)
+
+            # 파일 이름 변경
+            os.rename(original_path, new_path)
+            print(f"Renamed: {original_path} -> {new_path}")
+
+
 if __name__ == '__main__':
     data_paths = parquet_loader.get_file_paths(folder_type="ClassifiedData")
-    for path in data_paths:
-        print(path)
+    rename_files_in_place(data_paths)

@@ -15,7 +15,7 @@ logging.basicConfig(
 )
 
 
-def simulate_entire_runs(data_paths):
+def simulate_entire_runs(data_paths, summary_start, summary_end):
     # 검사 파일 갯수 추적
     count, end = 0, len(data_paths)
 
@@ -59,9 +59,9 @@ def simulate_entire_runs(data_paths):
             logging.error(f"Error processing file {file}: from({type(e).__name__}) {e}")
             logging.error(traceback.format_exc())
 
-    save_json("../battles/battle_summary.json", simulation_count)
+    save_json(f"../battles/battle_summary_{summary_start}_{summary_end}.json", simulation_count)
     if failed_files:
-        save_json("../battles/process_failed_list.json", failed_files)
+        save_json(f"../battles/process_failed_list.json_{summary_start}_{summary_end}", failed_files)
 
 
 def save_json(file_path, data):
@@ -187,9 +187,8 @@ def get_basic_relic(run) -> list:
 # run: 단일 json 플레이로그
 # data: run을 1개이상 담고있는 json list
 if __name__ == "__main__":
-    # 총 384개 있음
     data_paths = pl.get_file_paths(folder_type="ClassifiedData")[:100]
-    simulate_entire_runs(data_paths)
+    simulate_entire_runs(data_paths, 0, 99)
 
     # single sample run
     # with open("../sample/defect_test.json", "r") as f:

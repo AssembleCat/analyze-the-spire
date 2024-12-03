@@ -127,7 +127,8 @@ def process_neow_event(current_relics, run):
     master_relics = run["relics"]
 
     if neow_bonus == "ONE_RARE_RELIC" or neow_bonus == "RANDOM_COMMON_RELIC":
-        current_relics.append(master_relics[1])
+        if len(master_relics) > 1:
+            current_relics.append(master_relics[1])
     if neow_bonus == "BOSS_RELIC":
         current_relics[0] = master_relics[0]
     if neow_bonus == "THREE_ENEMY_KILL":

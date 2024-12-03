@@ -52,39 +52,36 @@ def is_corrupted_run(run):
     if "score" not in run and run["score"] < 10:
         return "low_score"
 
-    # 카드 선택 이벤트 필수 필드 확인
-    card_choice_fields = ["picked", "not_picked", "floor"]
-    for card_event in run["card_choices"]:
-        for field in card_choice_fields:
-            if field not in card_event:
-                return "corrupted_card_choice"
+    validation_rules = {
+        "card_choices": {
+            "fields": ["picked", "not_picked", "floor"],
+            "error_message": "corrupted_card_choice"
+        },
+        "damage_taken": {
+            "fields": ["damage", "enemies", "floor", "turns"],
+            "error_message": "corrupted_battle"
+        },
+        "event_choices": {
+            "fields": ["floor", "event_name"],
+            "error_message": "corrupted_?_event"
+        },
+        "campfire_choices": {
+            "fields": ["floor", "key"],
+            "error_message": "corrupted_campfire"
+        },
+        "relics_obtained": {
+            "fields": ["floor", "key"],
+            "error_message": "corrupted_relic"
+        }
+    }
 
-    # 전투 필수 필드 확인
-    damage_taken_fields = ["damage", "enemies", "floor", "turns"]
-    for battle in run["damage_taken"]:
-        for field in damage_taken_fields:
-            if field not in battle:
-                return "corrupted_battle"
-
-    # ? 이벤트 필수 필드 확인
-    event_choice_fields = ["floor", "event_name"]
-    for event in run["event_choices"]:
-        for field in event_choice_fields:
-            if field not in event:
-                return "corrupted_?_event"
-
-    # 불 이벤트 필수 필드 확인
-    campfire_choice_fields = ["floor", "key"]
-    for campfire in run["campfire_choices"]:
-        for field in campfire_choice_fields:
-            if field not in campfire:
-                return "corrupted_campfire"
-
-    relic_fields = ["floor", "key"]
-    for relic in run["relics_obtained"]:
-        for field in relic_fields:
-            if field not in relic:
-                return "corrupted_relic"
+    # 검증 로직
+    for key, rule in validation_rules.items():
+        if run[key]:  # 데이터가 존재하고 빈 객체가 아닐때
+            for row in run[key]:
+                for field in rule["fields"]:
+                    if field not in row:  # 필드 누락 확인
+                        return rule["error_message"]
 
     # hp 리스트와 도달층수의 기록이 틀린 경우 제외
     reached = run["floor_reached"]
