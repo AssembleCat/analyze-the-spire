@@ -1,0 +1,4 @@
+["C:/Users/groov/AnalyzeTheSpire\\ClassifiedData\\2019-01-23\\2019-01-23_11.parquet",
+"C:/Users/groov/AnalyzeTheSpire\\ClassifiedData\\2019-01-23\\2019-01-23_65.parquet",
+"C:/Users/groov/AnalyzeTheSpire\\ClassifiedData\\2019-01-23\\2019-01-23_88.parquet",
+"C:/Users/groov/AnalyzeTheSpire\\ClassifiedData\\2020-01-27\\2020-01-27_14.parquet"]
