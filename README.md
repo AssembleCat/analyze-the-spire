@@ -10,3 +10,5 @@ Normal [2353] Non Target Version
 Target Version [3179] Valid
 Target Version [603] Invalid
 Target Version [94] Non Accessible
+
+![runs_filtering](https://github.com/user-attachments/assets/83113ddf-87e7-492a-9341-2c0dc3292a2b)
