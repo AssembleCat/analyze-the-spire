@@ -1,4 +1,4 @@
-# 모든 카드 714종류 (alpha, beta 같은 생성되는 카드와 저주카드를 포함.)
+# 모든 카드 714종류
 ALL_CARDS = ['A Thousand Cuts', 'A Thousand Cuts+1', 'Accuracy', 'Accuracy+1', 'Acrobatics', 'Acrobatics+1', 'Adaptation', 'Adaptation+1',
              'Adrenaline', 'Adrenaline+1', 'After Image', 'After Image+1', 'Aggregate', 'Aggregate+1', 'All For One', 'All For One+1',
              'All Out Attack', 'All Out Attack+1', 'Alpha', 'Alpha+1', 'Amplify', 'Amplify+1', 'Anger', 'Anger+1', 'Apotheosis', 'Apotheosis+1',
@@ -62,8 +62,7 @@ ALL_CARDS = ['A Thousand Cuts', 'A Thousand Cuts+1', 'Accuracy', 'Accuracy+1', '
              'RitualDagger+1', 'Rupture', 'Rupture+1', 'Sadistic Nature', 'Sadistic Nature+1', 'Safety', 'Safety+1', 'Sanctity', 'Sanctity+1',
              'SandsOfTime', 'SandsOfTime+1', 'SashWhip', 'SashWhip+1', 'Scrape', 'Scrape+1', 'Scrawl', 'Scrawl+1', 'Searing Blow', 'Searing Blow+1',
              'Searing Blow+2', 'Searing Blow+3', 'Searing Blow+4', 'Searing Blow+5', 'Searing Blow+6', 'Searing Blow+7', 'Searing Blow+8',
-             'Searing Blow+9', 'Searing Blow+10', 'Searing Blow+11', 'Searing Blow+12', 'Searing Blow+13', 'Searing Blow+14', 'Searing Blow+15',
-             'Searing Blow+16', 'Searing Blow+17', 'Searing Blow+18', 'Searing Blow+19', 'Searing Blow+20', 'Second Wind', 'Second Wind+1',
+             'Searing Blow+9', 'Searing Blow+10', 'Second Wind', 'Second Wind+1',
              'Secret Technique', 'Secret Technique+1', 'Secret Weapon', 'Secret Weapon+1', 'Seeing Red',
              'Seeing Red+1', 'Seek', 'Seek+1', 'Self Repair', 'Self Repair+1', 'Sentinel', 'Sentinel+1', 'Setup', 'Setup+1', 'Sever Soul',
              'Sever Soul+1', 'Shame', 'Shiv', 'Shiv+1', 'Shockwave', 'Shockwave+1', 'Shrug It Off', 'Shrug It Off+1', 'SignatureMove',
@@ -82,74 +81,8 @@ ALL_CARDS = ['A Thousand Cuts', 'A Thousand Cuts+1', 'Accuracy', 'Accuracy+1', '
              'Weave', 'Weave+1', 'Well Laid Plans', 'Well Laid Plans+1', 'WheelKick', 'WheelKick+1', 'Whirlwind', 'Whirlwind+1', 'White Noise',
              'White Noise+1', 'Wild Strike', 'Wild Strike+1', 'WindmillStrike', 'WindmillStrike+1', 'Wireheading', 'Wireheading+1', 'Wish', 'Wish+1',
              'Worship', 'Worship+1', 'Wound', 'Wound+1', 'Wraith Form v2', 'Wraith Form v2+1', 'WreathOfFlame', 'WreathOfFlame+1', 'Writhe', 'Zap',
-             'Zap+1']
-# 유물 179종류 -> 삭제된 유물 제거버전
-ALL_RELICS = ['Akabeko', 'Anchor', 'Ancient Tea Set', 'Art of War', 'Astrolabe', 'Bag of Marbles', 'Bag of Preparation', 'Bird Faced Urn',
-              'Black Blood', 'Black Star', 'Blood Vial', 'Bloody Idol', 'Blue Candle', 'Boot', 'Bottled Flame', 'Bottled Lightning',
-              'Bottled Tornado', 'Brimstone', 'Bronze Scales', 'Burning Blood', 'Busted Crown', 'Cables', 'Calipers', 'Calling Bell', 'CaptainsWheel',
-              'Cauldron', 'Centennial Puzzle', 'CeramicFish', 'Champion Belt', "Charon's Ashes", 'Chemical X', 'CloakClasp', 'ClockworkSouvenir',
-              'Coffee Dripper', 'Cracked Core', 'CultistMask', 'Cursed Key', 'Damaru', 'Darkstone Periapt', 'DataDisk', 'Dead Branch', 'Dodecahedron',
-              'DollysMirror', 'Dream Catcher', 'Du-Vu Doll', 'Ectoplasm', 'Emotion Chip', 'Empty Cage', 'Enchiridion', 'Eternal Feather',
-              'FaceOfCleric', 'FossilizedHelix', 'Frozen Egg 2', 'Frozen Eye', 'FrozenCore', 'Fusion Hammer', 'Gambling Chip', 'Ginger', 'Girya',
-              'Golden Idol', 'GoldenEye', 'Gremlin Horn', 'GremlinMask', 'HandDrill', 'Happy Flower', 'HolyWater', 'HornCleat', 'HoveringKite',
-              'Ice Cream', 'Incense Burner', 'InkBottle', 'Inserter', 'Juzu Bracelet', 'Kunai', 'Lantern', "Lee's Waffle", 'Letter Opener',
-              'Lizard Tail', 'Magic Flower', 'Mango', 'Mark of Pain', 'Mark of the Bloom', 'Matryoshka', 'MawBank', 'MealTicket', 'Meat on the Bone',
-              'Medical Kit', 'Melange', 'Membership Card', 'Mercury Hourglass', 'Molten Egg 2', 'Mummified Hand', 'MutagenicStrength', 'Necronomicon',
-              'NeowsBlessing', "Nilry's Codex", 'Ninja Scroll', "Nloth's Gift", 'NlothsMask', 'Nuclear Battery', 'Nunchaku', 'Odd Mushroom',
-              'Oddly Smooth Stone', 'Old Coin', 'Omamori', 'OrangePellets', 'Orichalcum', 'Ornamental Fan', 'Orrery', "Pandora's Box", 'Pantograph',
-              'Paper Crane', 'Paper Frog', 'Peace Pipe', 'Pear', 'Pen Nib', "Philosopher's Stone", 'Pocketwatch', 'Potion Belt', 'Prayer Wheel',
-              'PreservedInsect', 'PrismaticShard', 'PureWater', 'Question Card', 'Red Mask', 'Red Skull', 'Regal Pillow', 'Ring of the Serpent',
-              'Ring of the Snake', 'Runic Capacitor', 'Runic Cube', 'Runic Dome', 'Runic Pyramid', 'SacredBark', 'Self Forming Clay', 'Shovel',
-              'Shuriken', 'Singing Bowl', 'SlaversCollar', 'Sling', 'Smiling Mask', 'Snake Skull', 'Snecko Eye', 'Sozu', 'Spirit Poop',
-              'SsserpentHead', 'StoneCalendar', 'Strange Spoon', 'Strawberry', 'StrikeDummy', 'Sundial', 'Symbiotic Virus', 'TeardropLocket',
-              'The Courier', 'The Specimen', 'TheAbacus', 'Thread and Needle', 'Tingsha', 'Tiny Chest', 'Tiny House', 'Toolbox', 'Torii',
-              'Tough Bandages', 'Toxic Egg 2', 'Toy Ornithopter', 'TungstenRod', 'Turnip', 'TwistedFunnel', 'Unceasing Top', 'Vajra', 'Velvet Choker',
-              'VioletLotus', 'War Paint', 'WarpedTongs', 'Whetstone', 'White Beast Statue', 'WingedGreaves', 'WristBlade', 'Yang']
-# 모든 이벤트 72종류
-ALL_ENEMY = ['2 Fungi Beasts', '2 Louse', '2 Orb Walkers', '2 Thieves', '3 Byrds', '3 Cultists', '3 Darklings', '3 Louse', '3 Sentries',
-             '3 Shapes', '4 Byrds', '4 Shapes', 'Apologetic Slime', 'Automaton', 'Awakened One', 'Blue Slaver', 'Book of Stabbing',
-             'Centurion and Healer', 'Champ', 'Chosen', 'Chosen and Byrds', 'Collector', 'Colosseum Nobs', 'Colosseum Slavers', 'Cultist',
-             'Cultist and Chosen', 'Donu and Deca', 'Exordium Thugs', 'Exordium Wildlife', 'Flame Bruiser 1 Orb', 'Flame Bruiser 2 Orb',
-             'Giant Head', 'Gremlin Gang', 'Gremlin Leader', 'Gremlin Nob', 'Hexaghost', 'Jaw Worm', 'Jaw Worm Horde', 'Lagavulin',
-             'Lagavulin Event', 'Large Slime', 'Looter', 'Lots of Slimes', 'Masked Bandits', 'Maw', 'Mind Bloom Boss Battle',
-             'Mysterious Sphere', 'Nemesis', 'Orb Walker', 'Red Slaver', 'Reptomancer', 'Sentry and Sphere', 'Shell Parasite',
-             'Shelled Parasite and Fungi', 'Shield and Spear', 'Slaver and Parasite', 'Slavers', 'Slime Boss', 'Small Slimes', 'Snake Plant',
-             'Snecko', 'Snecko and Mystics', 'Sphere and 2 Shapes', 'Spheric Guardian', 'Spire Growth', 'The Eyes',
-             'The Guardian', 'The Heart', 'The Mushroom Lair', 'Time Eater', 'Transient', 'Writhing Mass']
-# 캐릭터 4종류
-ALL_CHARACTERS = ['DEFECT', 'IRONCLAD', 'THE_SILENT', 'WATCHER']
-# 유물 181종류
-BASE_GAME_RELICS = {'Burning Blood', 'Cracked Core', 'PureWater', 'Ring of the Snake', 'Akabeko', 'Anchor', 'Ancient Tea Set', 'Art of War',
-                    'Bag of Marbles', 'Bag of Preparation', 'Blood Vial', 'TestModSTS:BottledPlaceholderRelic', 'Bronze Scales', 'Centennial Puzzle',
-                    'CeramicFish', 'Damaru', 'DataDisk', 'Dream Catcher', 'Happy Flower', 'Juzu Bracelet', 'Lantern', 'MawBank', 'MealTicket',
-                    'Nunchaku', 'Oddly Smooth Stone', 'Omamori', 'Orichalcum', 'Pen Nib', 'TestModSTS:PlaceholderRelic2', 'Potion Belt',
-                    'PreservedInsect', 'Red Skull', 'Regal Pillow', 'TestModSTS:DefaultClickableRelic', 'Smiling Mask', 'Snake Skull', 'Strawberry',
-                    'Boot', 'Tiny Chest', 'Toy Ornithopter', 'Vajra', 'War Paint', 'Whetstone', 'Blue Candle', 'Bottled Flame', 'Bottled Lightning',
-                    'Bottled Tornado', 'Darkstone Periapt', 'Yang', 'Eternal Feather', 'Frozen Egg 2', 'Cables', 'Gremlin Horn', 'HornCleat',
-                    'InkBottle', 'Kunai', 'Letter Opener', 'Matryoshka', 'Meat on the Bone', 'Mercury Hourglass', 'Molten Egg 2', 'Mummified Hand',
-                    'Ninja Scroll', 'Ornamental Fan', 'Pantograph', 'Paper Crane', 'Paper Frog', 'Pear', 'Question Card', 'Self Forming Clay',
-                    'Shuriken', 'Singing Bowl', 'StrikeDummy', 'Sundial', 'Symbiotic Virus', 'TeardropLocket', 'The Courier', 'Toxic Egg 2',
-                    'White Beast Statue', 'Bird Faced Urn', 'Calipers', 'CaptainsWheel', 'Champion Belt', 'Charon\'s Ashes', 'CloakClasp',
-                    'Dead Branch', 'Du-Vu Doll', 'Emotion Chip', 'FossilizedHelix', 'Gambling Chip', 'Ginger', 'Girya', 'GoldenEye', 'Ice Cream',
-                    'Incense Burner', 'Lizard Tail', 'Magic Flower', 'Mango', 'Old Coin', 'Peace Pipe', 'Pocketwatch', 'Prayer Wheel', 'Shovel',
-                    'StoneCalendar', 'The Specimen', 'Thread and Needle', 'Tingsha', 'Torii', 'Tough Bandages', 'TungstenRod', 'Turnip',
-                    'Unceasing Top', 'WingedGreaves', 'Astrolabe', 'Black Blood', 'Black Star', 'Busted Crown', 'Calling Bell', 'Coffee Dripper',
-                    'Cursed Key', 'Ectoplasm', 'Empty Cage', 'FrozenCore', 'Fusion Hammer', 'HolyWater', 'HoveringKite', 'Inserter', 'Mark of Pain',
-                    'Nuclear Battery', 'Pandora\'s Box', 'Philosopher\'s Stone', 'Ring of the Serpent', 'Runic Cube', 'Runic Dome', 'Runic Pyramid',
-                    'SacredBark', 'SlaversCollar', 'Snecko Eye', 'Sozu', 'Tiny House', 'Velvet Choker', 'VioletLotus', 'WristBlade', 'Bloody Idol',
-                    'CultistMask', 'Enchiridion', 'FaceOfCleric', 'Golden Idol', 'GremlinMask', 'Mark of the Bloom', 'MutagenicStrength',
-                    'Nloth\'s Gift', 'NlothsMask', 'Necronomicon', 'NeowsBlessing', 'Nilry\'s Codex', 'Odd Mushroom', 'Red Mask', 'Spirit Poop',
-                    'SsserpentHead', 'WarpedTongs', 'Brimstone', 'Cauldron', 'Chemical X', 'ClockworkSouvenir', 'DollysMirror', 'Frozen Eye',
-                    'HandDrill', 'Lee\'s Waffle', 'Medical Kit', 'Melange', 'Membership Card', 'OrangePellets', 'Orrery', 'PrismaticShard',
-                    'Runic Capacitor', 'Sling', 'Strange Spoon', 'TheAbacus', 'Toolbox', 'TwistedFunnel'}
-# 포션 43종류
-BASE_GAME_POTIONS = {'BloodPotion', 'Poison Potion', 'FocusPotion', 'BottledMiracle', 'Block Potion', 'Dexterity Potion', 'Energy Potion',
-                     'Explosive Potion', 'Fire Potion', 'Strength Potion', 'Swift Potion', 'Weak Potion', 'FearPotion', 'AttackPotion', 'SkillPotion',
-                     'PowerPotion', 'ColorlessPotion', 'SteroidPotion', 'SpeedPotion', 'BlessingOfTheForge', 'TestModSTS:PlaceholderPotion',
-                     'ElixirPotion', 'CunningPotion', 'PotionOfCapacity', 'StancePotion', 'Regen Potion', 'Ancient Potion', 'LiquidBronze',
-                     'ElixirPotion', 'CunningPotion', 'PotionOfCapacity', 'StancePotion', 'Regen Potion', 'Ancient Potion', 'LiquidBronze',
-                     'GamblersBrew', 'EssenceOfSteel', 'DuplicationPotion', 'DistilledChaos', 'LiquidMemories', 'HeartOfIron', 'GhostInAJar',
-                     'EssenceOfDarkness', 'Ambrosia', 'CultistPotion', 'Fruit Juice', 'SneckoOil', 'FairyPotion', 'SmokeBomb', 'EntropicBrew'}
+             'Zap+1', 'Strike_R', 'Strike_R+1', 'Defend_R', 'Defend_R+1', 'Strike_G', 'Strike_G+1', 'Defend_G', 'Defend_G+1', 'Strike_B', 'Strike_B+1'
+    , 'Defend_B', 'Defend_B+1', 'Strike_P', 'Strike_P+1', 'Defend_P', 'Defend_P+1']
 # 공격 카드 122종류
 BASE_ATTACK_CARD = {'Immolate', 'Anger', 'Cleave', 'Reaper', 'Iron Wave', 'Reckless Charge', 'Hemokinesis', 'Body Slam', 'Blood for Blood', 'Clash',
                     'Thunderclap', 'Pummel', 'Pommel Strike', 'Twin Strike', 'Bash', 'Clothesline', 'Rampage', 'Sever Soul', 'Whirlwind',
@@ -193,6 +126,218 @@ BASE_POWER_CARD = {'Inflame', 'Brutality', 'Juggernaut', 'Berserk', 'Metallicize
                    'Machine Learning', 'Biased Cognition', 'Capacitor', 'Defragment', 'Wireheading', 'BattleHymn', 'DevaForm', 'LikeWater',
                    'Establishment', 'Fasting2', 'Adaptation', 'MentalFortress', 'Study', 'Devotion', 'Nirvana', 'MasterReality', 'Sadistic Nature',
                    'LiveForever', 'BecomeAlmighty', 'Panache', 'Mayhem', 'Magnetism', 'Omega'}
-# 저주 카드 14종류
-BASE_CURSE_CARD = {'Regret', 'Writhe', 'AscendersBane', 'Decay', 'Necronomicurse', 'Pain', 'Parasite', 'Doubt', 'Injury', 'Clumsy', 'CurseOfTheBell',
-                   'Normality', 'Pride', 'Shame'}
+
+
+def add_upgraded_cards(card_list):
+    upgraded_list = []
+    for card in card_list:
+        upgraded_list.append(card)
+        upgraded_list.append(card + "+1")
+    return upgraded_list
+
+
+# 직업별 [IRONCLAD, SILENT, DEFECT, WATCHER, COLORLESS]
+# 희귀도별 [BASIC, COMMON, UNCOMMON, RARE, SPECIAL]
+# 타입별 [ATTACK, SKILL, POWER]
+# 상태이상/저주카드 [STATUS, CURSE]
+
+# IRONCLAD
+# 일반 공격 16장
+IRONCLAD_ATTACK_COMMON = ["Anger", "Bash", "Body Slam", "Clash", "Cleave", "Clothesline", "Headbutt", "Heavy Blade", "Iron Wave", "Perfected Strike",
+                          "Pommel Strike", "Sword Boomerang", "Strike_R", "Thunderclap", "Twin Strike", "Wild Strike"]
+# 특별 공격 11장
+IRONCLAD_ATTACK_UNCOMMON = ["Blood for Blood", "Carnage", "Dropkick", "Hemokinesis", "Pummel", "Rampage", "Reckless Charge",
+                            "Searing Blow", "Sever Soul", "Uppercut", "Whirlwind"]
+# 희귀 공격 5장
+IRONCLAD_ATTACK_RARE = ["Bludgeon", "Feed", "Fiend Fire", "Immolate", "Reaper"]
+# 일반 스킬 7장
+IRONCLAD_SKILL_COMMON = ["Armaments", "Defend_R", "Flex", "Havoc", "Shrug It Off", "True Grit", "Warcry"]
+# 특별 스킬 17장
+IRONCLAD_SKILL_UNCOMMON = ["Battle Trance", "Bloodletting", "Burning Pact", "Disarm", "Dual Wield", "Entrench", "Flame Barrier", "Ghostly Armor",
+                           "Infernal Blade", "Intimidate", "Power Through", "Rage", "Second Wind", "Seeing Red", "Sentinel", "Shockwave",
+                           "Spot Weakness"]
+# 희귀 스킬 5장
+IRONCLAD_SKILL_RARE = ["Double Tap", "Exhume", "Impervious", "Limit Break", "Offering"]
+# 특별 파워 8장
+IRONCLAD_POWER_UNCOMMON = ["Combust", "Dark Embrace", "Evolve", "Feel No Pain", "Fire Breathing", "Inflame", "Metallicize", "Rupture"]
+# 희귀 파워 6장
+IRONCLAD_POWER_RARE = ["Barricade", "Berserk", "Brutality", "Corruption", "Demon Form", "Juggernaut"]
+
+# SILENT
+# 일반 공격 11장
+SILENT_ATTACK_COMMON = ["Bane", "Dagger Spray", "Dagger Throw", "Flying Knee", "Neutralize", "Poisoned Stab", "Quick Slash", "Slice", "Sneaky Strike",
+                        "Strike_G", "Sucker Punch"]
+# 특별 공격 13장
+SILENT_ATTACK_UNCOMMON = ["All-Out Attack", "Backstab", "Choke", "Dash", "Endless Agony", "Eviscerate", "Finisher", "Flechettes", "Heel Hook",
+                          "Masterful Stab", "Predator", "Riddle with Holes", "Skewer"]
+# 희귀 공격 4장
+SILENT_ATTACK_RARE = ["Die Die Die", "Glass Knife", "Grand Finale", "Unload"]
+# 일반 스킬 12장
+SILENT_SKILL_COMMON = ["Defend_G", "Acrobatics", "Backflip", "Blade Dance", "Cloak and Dagger", "Deadly Poison", "Deflect", "Dodge and Roll",
+                       "Outmaneuver", "Piercing Wail", "Prepared", "Survivor"]
+# 특별 스킬 14장
+SILENT_SKILL_UNCOMMON = ["Blur", "Bouncing Flask", "Calculated Gamble", "Catalyst", "Concentrate", "Crippling Cloud", "Distraction", "Escape Plan",
+                         "Expertise", "Leg Sweep", "Reflex", "Setup", "Tactician", "Terror"]
+# 희귀 스킬 10장
+SILENT_SKILL_RARE = ["Adrenaline", "Alchemize", "Bullet Time", "Burst", "Corpse Explosion", "Doppelganger", "Malaise", "Nightmare",
+                     "Phantasmal Killer", "Storm of Steel"]
+# 특별 파워 6장
+SILENT_POWER_UNCOMMON = ["Accuracy", "Caltrops", "Footwork", "Infinite Blades", "Noxious Fumes", "Well Laid Plans"]
+# 희귀 파워 5장
+SILENT_POWER_RARE = ["A Thousand Cuts", "After Image", "Envenom", "Tools of the Trade", "Wraith Form"]
+
+# DEFECT
+# 일반 공격 11장
+DEFECT_ATTACK_COMMON = ["Ball Lightning", "Barrage", "Beam Cell", "Claw", "Cold Snap", "Compile Driver", "Go for the Eyes", "Rebound", "Streamline",
+                        "Strike_B", "Sweeping Beam"]
+# 특별 공격 8장
+DEFECT_ATTACK_UNCOMMON = ["Blizzard", "Bullseye", "Doom and Gloom", "FTL", "Melter", "Rip and Tear", "Scrape", "Sunder"]
+# 희귀 공격 5장
+DEFECT_ATTACK_RARE = ["All for One", "Core Surge", "Hyperbeam", "Meteor Strike", "Thunder Strike"]
+# 일반 스킬 11장
+DEFECT_SKILL_COMMON = ["Charge Battery", "Coolheaded", "Defend_B", "Dualcast", "Hologram", "Leap", "Recursion", "Stack", "Steam Barrier", "TURBO",
+                       "Zap"]
+# 특별 스킬 20장
+DEFECT_SKILL_UNCOMMON = ["Aggregate", "Auto-Shields", "Boot Sequence", "Chaos", "Chill", "Consume", "Darkness", "Double Energy", "Equilibrium",
+                         "Force Field", "Fusion", "Genetic Algorithm", "Glacier", "Overclock", "Recycle", "Reinforced Body", "Reprogram", "Skim",
+                         "Tempest", "White Noise"]
+# 희귀 스킬 6장
+DEFECT_SKILL_RARE = ["Amplify", "Fission", "Multi-Cast", "Rainbow", "Reboot", "Seek"]
+# 특별 파워 8장
+DEFECT_POWER_UNCOMMON = ["Capacitor", "Defragment", "Heatsinks", "Hello World", "Loop", "Self Repair", "Static Discharge", "Storm"]
+# 희귀 파워 6장
+DEFECT_POWER_RARE = ["Biased Cognition", "Buffer", "Creative AI", "Echo Form", "Electrodynamics", "Machine Learning"]
+
+# WATCHER
+# 일반 공격 12장
+WATCHER_ATTACK_COMMON = ["Bowling Bash", "Consecrate", "Crush Joints", "Cut Through Fate", "Empty Fist", "Eruption", "Flurry of Blows",
+                         "Flying Sleeves",
+                         "Follow-Up", "Just Lucky", "Sash Whip", "Strike_P"]
+# 특별 공격 12장
+WATCHER_ATTACK_UNCOMMON = ["Carve Reality", "Conclude", "Fear No Evil", "Reach Heaven", "Sands of Time", "Signature Move", "Talk to the Hand",
+                           "Tantrum", "Wallop", "Weave", "Wheel Kick", "Windmill Strike"]
+# 희귀 공격 3장
+WATCHER_ATTACK_RARE = ["Brilliance", "Lesson Learned", "Ragnarok"]
+# 일반 스킬 11장
+WATCHER_SKILL_COMMON = ["Crescendo", "Defend_P", "Empty Body", "Evaluate", "Halt", "Pressure Points", "Prostrate", "Protect", "Third Eye",
+                        "Tranquility", "Vigilance"]
+# 특별 스킬 15장
+WATCHER_SKILL_UNCOMMON = ["Collect", "Deceive Reality", "Empty Mind", "Foreign Influence", "Indignation", "Inner Peace", "Meditate", "Perseverance",
+                          "Pray", "Sanctity", "Simmering Fury", "Swivel", "Wave of the Hand", "Worship", "Wreath of Flame"]
+# 희귀 스킬 10장
+WATCHER_SKILL_RARE = ["Alpha", "Blasphemy", "Conjure Blade", "Deus Ex Machina", "Judgment", "Omniscience", "Scrawl", "Spirit Shield", "Vault", "Wish"]
+# 특별 파워 8장
+WATCHER_POWER_UNCOMMON = ["Battle Hymn", "Fasting", "Foresight", "Like Water", "Mental Fortress", "Nirvana", "Rushdown", "Study"]
+# 희귀 파워 4장
+WATCHER_POWER_RARE = ["Deva Form", "Devotion", "Establishment", "Master Reality"]
+
+# COLORLESS
+# 특별 공격 4장
+COLORLESS_ATTACK_UNCOMMON = ["Dramatic Entrance", "Flash of Steel", "Mind Blast", "Swift Strike"]
+# 희귀 공격 1장
+COLORLESS_ATTACK_RARE = ["Hand of Greed"]
+# 스페셜 공격 6장
+COLORLESS_ATTACK_SPECIAL = ["Bite", "Expunger", "Ritual Dagger", "Shiv", "Smite", "Through Violence"]
+# 특별 스킬 16장
+COLORLESS_SKILL_UNCOMMON = ["Bandage Up", "Blind", "Dark Shackles", "Deep Breath", "Discovery", "Enlightenment", "Finesse", "Forethought",
+                            "Good Instincts", "Impatience", "Jack of All Trades", "Madness", "Panacea", "Panic Button", "Purity", "Trip"]
+# 희귀 스킬 10장
+COLORLESS_SKILL_RARE = ["Apotheosis", "Chrysalis", "Master of Strategy", "Metamorphosis", "Secret Technique", "Secret Weapon", "The Bomb",
+                        "Thinking Ahead", "Transmutation", "Violence"]
+# 스페셜 스킬 6장
+COLORLESS_SKILL_SPECIAL = ["Apparition", "Beta", "Insight", "J.A.X.", "Miracle", "Safety"]
+# 희귀 파워 4장
+COLORLESS_POWER_RARE = ["Magnetism", "Mayhem", "Panache", "Sadistic Nature"]
+# 스페셜 파워 1장
+COLORLESS_POWER_SPECIAL = ["Omega"]
+
+# STATUS/CURSE
+# 상태이상 5장
+BASE_STATUS_CARD = ["Burn", "Dazed", "Slimed", "Void", "Wound"]
+# 저주 14장
+BASE_CURSE_CARD = ['Regret', 'Writhe', 'AscendersBane', 'Decay', 'Necronomicurse', 'Pain', 'Parasite', 'Doubt', 'Injury', 'Clumsy', 'CurseOfTheBell',
+                   'Normality', 'Pride', 'Shame']
+
+# 카드 조합
+IRONCLAD_ATTACK_CARD = IRONCLAD_ATTACK_COMMON + IRONCLAD_ATTACK_UNCOMMON + IRONCLAD_ATTACK_RARE
+IRONCLAD_SKILL_CARD = IRONCLAD_SKILL_COMMON + IRONCLAD_SKILL_UNCOMMON + IRONCLAD_SKILL_RARE
+IRONCLAD_POWER_CARD = IRONCLAD_POWER_UNCOMMON + IRONCLAD_POWER_RARE
+IRONCLAD_COMMON_CARD = IRONCLAD_ATTACK_COMMON + IRONCLAD_SKILL_COMMON
+IRONCLAD_UNCOMMON_CARD = IRONCLAD_ATTACK_UNCOMMON + IRONCLAD_SKILL_UNCOMMON + IRONCLAD_POWER_UNCOMMON
+IRONCLAD_RARE_CARD = IRONCLAD_ATTACK_RARE + IRONCLAD_SKILL_RARE + IRONCLAD_POWER_RARE
+
+SILENT_ATTACK_CARD = SILENT_ATTACK_COMMON + SILENT_ATTACK_UNCOMMON + SILENT_ATTACK_RARE
+SILENT_SKILL_CARD = SILENT_SKILL_COMMON + SILENT_SKILL_UNCOMMON + SILENT_SKILL_RARE
+SILENT_POWER_CARD = SILENT_POWER_UNCOMMON + SILENT_POWER_RARE
+SILENT_COMMON_CARD = SILENT_ATTACK_COMMON + SILENT_SKILL_COMMON
+SILENT_UNCOMMON_CARD = SILENT_ATTACK_UNCOMMON + SILENT_SKILL_UNCOMMON + SILENT_POWER_UNCOMMON
+SILENT_RARE_CARD = SILENT_ATTACK_RARE + SILENT_SKILL_RARE + SILENT_POWER_RARE
+
+DEFECT_ATTACK_CARD = DEFECT_ATTACK_COMMON + DEFECT_ATTACK_UNCOMMON + DEFECT_ATTACK_RARE
+DEFECT_SKILL_CARD = DEFECT_SKILL_COMMON + DEFECT_SKILL_UNCOMMON + DEFECT_SKILL_RARE
+DEFECT_POWER_CARD = DEFECT_POWER_UNCOMMON + DEFECT_POWER_RARE
+DEFECT_COMMON_CARD = DEFECT_ATTACK_COMMON + DEFECT_SKILL_COMMON
+DEFECT_UNCOMMON_CARD = DEFECT_ATTACK_UNCOMMON + DEFECT_SKILL_UNCOMMON + DEFECT_POWER_UNCOMMON
+DEFECT_RARE_CARD = DEFECT_ATTACK_RARE + DEFECT_SKILL_RARE + DEFECT_POWER_RARE
+
+WATCHER_ATTACK_CARD = WATCHER_ATTACK_COMMON + WATCHER_ATTACK_UNCOMMON + WATCHER_ATTACK_RARE
+WATCHER_SKILL_CARD = WATCHER_SKILL_COMMON + WATCHER_SKILL_UNCOMMON + WATCHER_SKILL_RARE
+WATCHER_POWER_CARD = WATCHER_POWER_UNCOMMON + WATCHER_POWER_RARE
+WATCHER_COMMON_CARD = WATCHER_ATTACK_COMMON + WATCHER_SKILL_COMMON
+WATCHER_UNCOMMON_CARD = WATCHER_ATTACK_UNCOMMON + WATCHER_SKILL_UNCOMMON + WATCHER_POWER_UNCOMMON
+WATCHER_RARE_CARD = WATCHER_ATTACK_RARE + WATCHER_SKILL_RARE + WATCHER_POWER_RARE
+
+COLORLESS_ATTACK_CARD = COLORLESS_ATTACK_UNCOMMON + COLORLESS_ATTACK_RARE + COLORLESS_ATTACK_SPECIAL
+COLORLESS_SKILL_CARD = COLORLESS_SKILL_UNCOMMON + COLORLESS_SKILL_RARE + COLORLESS_SKILL_SPECIAL
+COLORLESS_POWER_CARD = COLORLESS_POWER_RARE + COLORLESS_POWER_SPECIAL
+COLORLESS_UNCOMMON_CARD = COLORLESS_ATTACK_UNCOMMON + COLORLESS_SKILL_UNCOMMON
+COLORLESS_RARE_CARD = COLORLESS_ATTACK_RARE + COLORLESS_SKILL_RARE + COLORLESS_POWER_RARE
+COLORLESS_SPECIAL_CARD = COLORLESS_ATTACK_SPECIAL + COLORLESS_SKILL_SPECIAL + COLORLESS_POWER_SPECIAL
+
+BASE_ATTACK_CARD_ = IRONCLAD_ATTACK_CARD + SILENT_ATTACK_CARD + DEFECT_ATTACK_CARD + WATCHER_ATTACK_CARD + COLORLESS_ATTACK_CARD
+BASE_SKILL_CARD_ = IRONCLAD_SKILL_CARD + SILENT_SKILL_CARD + DEFECT_SKILL_CARD + WATCHER_SKILL_CARD + COLORLESS_SKILL_CARD
+BASE_POWER_CARD_ = IRONCLAD_POWER_CARD + SILENT_POWER_CARD + DEFECT_POWER_CARD + WATCHER_POWER_CARD + COLORLESS_POWER_CARD
+BASE_COMMON_CARD_ = IRONCLAD_COMMON_CARD + SILENT_COMMON_CARD + DEFECT_COMMON_CARD + WATCHER_COMMON_CARD
+BASE_UNCOMMON_CARD = IRONCLAD_UNCOMMON_CARD + SILENT_UNCOMMON_CARD + DEFECT_UNCOMMON_CARD + WATCHER_UNCOMMON_CARD + COLORLESS_UNCOMMON_CARD
+BASE_RARE_CARD = IRONCLAD_RARE_CARD + SILENT_RARE_CARD + DEFECT_RARE_CARD + WATCHER_RARE_CARD + COLORLESS_RARE_CARD
+BASE_SPECIAL_CARD = COLORLESS_SPECIAL_CARD
+
+# 덱에 존재할 수 있는 모든카드(강화카드 포함)
+ALL_CARDS_ = add_upgraded_cards(BASE_ATTACK_CARD_ + BASE_SKILL_CARD_ + BASE_POWER_CARD_) + BASE_CURSE_CARD
+
+# 캐릭터 4종류
+ALL_CHARACTERS = ['DEFECT', 'IRONCLAD', 'THE_SILENT', 'WATCHER']
+
+# 유물 178종류 -> 삭제된 유물 제거버전 ('Circlet(관)', 'Dodecahedron(룬 12면체 2020/01/14 삭제 유물) <- 근데 정보가 있네? 일단 넣어', 'Discerning Monocle(2018/01/21 삭제 유물)')
+ALL_RELICS = ['Akabeko', 'Anchor', 'Ancient Tea Set', 'Art of War', 'Astrolabe', 'Bag of Marbles', 'Bag of Preparation', 'Bird Faced Urn',
+              'Black Blood', 'Black Star', 'Blood Vial', 'Bloody Idol', 'Blue Candle', 'Boot', 'Bottled Flame', 'Bottled Lightning',
+              'Bottled Tornado', 'Brimstone', 'Bronze Scales', 'Burning Blood', 'Busted Crown', 'Cables', 'Calipers', 'Calling Bell', 'CaptainsWheel',
+              'Cauldron', 'Centennial Puzzle', 'CeramicFish', 'Champion Belt', "Charon's Ashes", 'Chemical X', 'CloakClasp', 'ClockworkSouvenir',
+              'Coffee Dripper', 'Cracked Core', 'CultistMask', 'Cursed Key', 'Damaru', 'Darkstone Periapt', 'DataDisk', 'Dead Branch', 'Dodecahedron',
+              'DollysMirror', 'Dream Catcher', 'Du-Vu Doll', 'Ectoplasm', 'Emotion Chip', 'Empty Cage', 'Enchiridion', 'Eternal Feather',
+              'FaceOfCleric', 'FossilizedHelix', 'Frozen Egg 2', 'Frozen Eye', 'FrozenCore', 'Fusion Hammer', 'Gambling Chip', 'Ginger', 'Girya',
+              'Golden Idol', 'GoldenEye', 'Gremlin Horn', 'GremlinMask', 'HandDrill', 'Happy Flower', 'HolyWater', 'HornCleat', 'HoveringKite',
+              'Ice Cream', 'Incense Burner', 'InkBottle', 'Inserter', 'Juzu Bracelet', 'Kunai', 'Lantern', "Lee's Waffle", 'Letter Opener',
+              'Lizard Tail', 'Magic Flower', 'Mango', 'Mark of Pain', 'Mark of the Bloom', 'Matryoshka', 'MawBank', 'MealTicket', 'Meat on the Bone',
+              'Medical Kit', 'Melange', 'Membership Card', 'Mercury Hourglass', 'Molten Egg 2', 'Mummified Hand', 'MutagenicStrength', 'Necronomicon',
+              'NeowsBlessing', "Nilry's Codex", 'Ninja Scroll', "Nloth's Gift", 'NlothsMask', 'Nuclear Battery', 'Nunchaku', 'Odd Mushroom',
+              'Oddly Smooth Stone', 'Old Coin', 'Omamori', 'OrangePellets', 'Orichalcum', 'Ornamental Fan', 'Orrery', "Pandora's Box", 'Pantograph',
+              'Paper Crane', 'Paper Frog', 'Peace Pipe', 'Pear', 'Pen Nib', "Philosopher's Stone", 'Pocketwatch', 'Potion Belt', 'Prayer Wheel',
+              'PreservedInsect', 'PrismaticShard', 'PureWater', 'Question Card', 'Red Mask', 'Red Skull', 'Regal Pillow', 'Ring of the Serpent',
+              'Ring of the Snake', 'Runic Capacitor', 'Runic Cube', 'Runic Dome', 'Runic Pyramid', 'SacredBark', 'Self Forming Clay', 'Shovel',
+              'Shuriken', 'Singing Bowl', 'SlaversCollar', 'Sling', 'Smiling Mask', 'Snake Skull', 'Snecko Eye', 'Sozu', 'Spirit Poop',
+              'SsserpentHead', 'StoneCalendar', 'Strange Spoon', 'Strawberry', 'StrikeDummy', 'Sundial', 'Symbiotic Virus', 'TeardropLocket',
+              'The Courier', 'The Specimen', 'TheAbacus', 'Thread and Needle', 'Tingsha', 'Tiny Chest', 'Tiny House', 'Toolbox', 'Torii',
+              'Tough Bandages', 'Toxic Egg 2', 'Toy Ornithopter', 'TungstenRod', 'Turnip', 'TwistedFunnel', 'Unceasing Top', 'Vajra', 'Velvet Choker',
+              'VioletLotus', 'War Paint', 'WarpedTongs', 'Whetstone', 'White Beast Statue', 'WingedGreaves', 'WristBlade', 'Yang']
+# 모든 이벤트 72종류
+ALL_ENEMY = ['2 Fungi Beasts', '2 Louse', '2 Orb Walkers', '2 Thieves', '3 Byrds', '3 Cultists', '3 Darklings', '3 Louse', '3 Sentries',
+             '3 Shapes', '4 Byrds', '4 Shapes', 'Apologetic Slime', 'Automaton', 'Awakened One', 'Blue Slaver', 'Book of Stabbing',
+             'Centurion and Healer', 'Champ', 'Chosen', 'Chosen and Byrds', 'Collector', 'Colosseum Nobs', 'Colosseum Slavers', 'Cultist',
+             'Cultist and Chosen', 'Donu and Deca', 'Exordium Thugs', 'Exordium Wildlife', 'Flame Bruiser 1 Orb', 'Flame Bruiser 2 Orb',
+             'Giant Head', 'Gremlin Gang', 'Gremlin Leader', 'Gremlin Nob', 'Hexaghost', 'Jaw Worm', 'Jaw Worm Horde', 'Lagavulin',
+             'Lagavulin Event', 'Large Slime', 'Looter', 'Lots of Slimes', 'Masked Bandits', 'Maw', 'Mind Bloom Boss Battle',
+             'Mysterious Sphere', 'Nemesis', 'Orb Walker', 'Red Slaver', 'Reptomancer', 'Sentry and Sphere', 'Shell Parasite',
+             'Shelled Parasite and Fungi', 'Shield and Spear', 'Slaver and Parasite', 'Slavers', 'Slime Boss', 'Small Slimes', 'Snake Plant',
+             'Snecko', 'Snecko and Mystics', 'Sphere and 2 Shapes', 'Spheric Guardian', 'Spire Growth', 'The Eyes',
+             'The Guardian', 'The Heart', 'The Mushroom Lair', 'Time Eater', 'Transient', 'Writhing Mass']
