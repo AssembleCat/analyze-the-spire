@@ -1,14 +1,21 @@
 import json
+import os
 from datetime import datetime
+
+import numpy as np
 from sklearn.preprocessing import MaxAbsScaler
+
+
+def scale_data(features, labels):
+    return scale_features(features), scale_labels(labels)
 
 
 def scale_features(features):
     # 표준화
     sc = MaxAbsScaler()
     scaled_features = sc.fit_transform(features)
-    # 결과를 저장
-    save_battle_cache(scaled_features.tolist(), f"feature_{datetime.now().strftime('%Y%m%d')}")
+    # 결과 저장
+    np.save("scaled_x.npy", scaled_features)
 
     return scaled_features
 
@@ -20,9 +27,6 @@ def scale_labels(labels):
     label_copy[label_copy < -1] = -1
     label_copy[label_copy > 1] = 1
 
+    np.save("scaled_y.npy", label_copy)
+
     return label_copy
-
-
-def save_battle_cache(data, file_name):
-    with open(f"../battles/cache/{file_name}.json", "w") as f:
-        json.dump(data, f)

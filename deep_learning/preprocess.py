@@ -17,7 +17,7 @@ def preprocess_battle(data):
     processed_battles, label = [], []
 
     for idx, battle in enumerate(data):
-        if idx % 100 == 0:
+        if idx % 2000 == 0:
             print(f"{idx / len(data) * 100:.2f}% complete, {idx} in {len(data)}")
 
         label.append(battle["damage_taken"])
