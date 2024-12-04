@@ -65,7 +65,7 @@ Test metric: {test_scores[1]}
 """)
 
 # 모델 저장
-model.save("./model/analyze_the_spire.h5")
+model.save("./model/analyze_the_spire.keras")
 
 """
     1. battle이 3~4억개가 예상되는데 있는 정보에 대해서 모두 학습하는게 좋은 방향인지?

@@ -15,7 +15,7 @@ def scale_features(features):
     sc = MaxAbsScaler()
     scaled_features = sc.fit_transform(features)
     # 결과 저장
-    np.save("scaled_x.npy", scaled_features)
+    np.save("cache/scaled_x.npy", scaled_features)
 
     return scaled_features
 
@@ -27,6 +27,6 @@ def scale_labels(labels):
     label_copy[label_copy < -1] = -1
     label_copy[label_copy > 1] = 1
 
-    np.save("scaled_y.npy", label_copy)
+    np.save("cache/scaled_y.npy", label_copy)
 
     return label_copy
