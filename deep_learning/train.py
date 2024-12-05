@@ -10,7 +10,6 @@ import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from deep_learning import preprocess, scale
 
-# 472,600,000 battle
 x, y = None, None
 
 # cache 데이터 체크
@@ -66,12 +65,3 @@ Test metric: {test_scores[1]}
 
 # 모델 저장
 model.save("./model/analyze_the_spire.keras")
-
-"""
-    1. battle이 3~4억개가 예상되는데 있는 정보에 대해서 모두 학습하는게 좋은 방향인지?
-    2. 적절한 epoch? -> 학습이 정체되면 그만!?
-    3. Layer를 어떻게 구성하는게 좋은가?
-    4. OneHotEncoding하면 너무 많은 노드가 생기는데 적절한 수치인지? (982, )
-    5. 직업별로 나누는게 더 나은 방향일지?
-    6. 방학중에 학교의 인프라를 사용할 수 있는지?
-"""

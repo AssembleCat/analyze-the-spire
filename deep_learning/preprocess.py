@@ -116,22 +116,3 @@ def remove_basic_card_suffix(cards):
         if card.startswith("Strike_") or card.startswith("Defend_"):
             cards[idx] = card.split("_")[0]
     return cards
-
-
-# 예시 데이터
-battle = {
-    "deck": [
-        "Strike_R", "Strike_R", "Strike_R", "Strike_R", "Defend_R", "Defend_R",
-        "Defend_R", "Defend_R", "Strike_R", "Bash", "AscendersBane", "Clothesline",
-        "Iron Wave", "Armaments", "Combust", "True Grit"
-    ],
-    "relics": ["Burning Blood"],
-    "max_hp": 82,
-    "entering_hp": 82,
-    "character": "IRONCLAD",
-    "ascension": 20,
-    "enemy": "Lots of Slimes",
-    "potion_used": False,
-    "floor": 5,
-    "damage_taken": 14
-}
