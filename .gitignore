@@ -9,6 +9,7 @@ battles/filter
 battles/clean
 
 deep_learning/logs
+deep_learning/cache
 
 .idea/
 
