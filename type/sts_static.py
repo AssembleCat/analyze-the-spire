@@ -81,8 +81,8 @@ ALL_CARDS = ['A Thousand Cuts', 'A Thousand Cuts+1', 'Accuracy', 'Accuracy+1', '
              'Weave', 'Weave+1', 'Well Laid Plans', 'Well Laid Plans+1', 'WheelKick', 'WheelKick+1', 'Whirlwind', 'Whirlwind+1', 'White Noise',
              'White Noise+1', 'Wild Strike', 'Wild Strike+1', 'WindmillStrike', 'WindmillStrike+1', 'Wireheading', 'Wireheading+1', 'Wish', 'Wish+1',
              'Worship', 'Worship+1', 'Wound', 'Wound+1', 'Wraith Form v2', 'Wraith Form v2+1', 'WreathOfFlame', 'WreathOfFlame+1', 'Writhe', 'Zap',
-             'Zap+1', 'Strike_R', 'Strike_R+1', 'Defend_R', 'Defend_R+1', 'Strike_G', 'Strike_G+1', 'Defend_G', 'Defend_G+1', 'Strike_B', 'Strike_B+1'
-    , 'Defend_B', 'Defend_B+1', 'Strike_P', 'Strike_P+1', 'Defend_P', 'Defend_P+1']
+             'Zap+1', 'Strike_R', 'Strike_R+1', 'Defend_R', 'Defend_R+1', 'Strike_G', 'Strike_G+1', 'Defend_G', 'Defend_G+1', 'Strike_B',
+             'Strike_B+1', 'Defend_B', 'Defend_B+1', 'Strike_P', 'Strike_P+1', 'Defend_P', 'Defend_P+1']
 # 공격 카드 122종류
 BASE_ATTACK_CARD = {'Immolate', 'Anger', 'Cleave', 'Reaper', 'Iron Wave', 'Reckless Charge', 'Hemokinesis', 'Body Slam', 'Blood for Blood', 'Clash',
                     'Thunderclap', 'Pummel', 'Pommel Strike', 'Twin Strike', 'Bash', 'Clothesline', 'Rampage', 'Sever Soul', 'Whirlwind',
@@ -136,127 +136,128 @@ def add_upgraded_cards(card_list):
     return upgraded_list
 
 
+# Wish choice = [BecomeAlmighty, FameAndFortune, LiveForever]
+unclassified_card = ['Ghostly', 'Steam', 'Undo', 'Vengeance',]
+
 # 직업별 [IRONCLAD, SILENT, DEFECT, WATCHER, COLORLESS]
 # 희귀도별 [BASIC, COMMON, UNCOMMON, RARE, SPECIAL]
 # 타입별 [ATTACK, SKILL, POWER]
 # 상태이상/저주카드 [STATUS, CURSE]
 
 # IRONCLAD
-# 일반 공격 16장
-IRONCLAD_ATTACK_COMMON = ["Anger", "Bash", "Body Slam", "Clash", "Cleave", "Clothesline", "Headbutt", "Heavy Blade", "Iron Wave", "Perfected Strike",
-                          "Pommel Strike", "Sword Boomerang", "Strike_R", "Thunderclap", "Twin Strike", "Wild Strike"]
+# 일반 공격 14장 + 타격 + 강타
+IRONCLAD_ATTACK_COMMON = ['Anger', 'Bash', 'Body Slam', 'Clash', 'Cleave', 'Clothesline', 'Headbutt', 'Heavy Blade', 'Iron Wave', 'Perfected Strike',
+                          'Pommel Strike', 'Strike_R', 'Sword Boomerang', 'Thunderclap', 'Twin Strike', 'Wild Strike']
 # 특별 공격 11장
-IRONCLAD_ATTACK_UNCOMMON = ["Blood for Blood", "Carnage", "Dropkick", "Hemokinesis", "Pummel", "Rampage", "Reckless Charge",
-                            "Searing Blow", "Sever Soul", "Uppercut", "Whirlwind"]
+IRONCLAD_ATTACK_UNCOMMON = ['Blood for Blood', 'Carnage', 'Dropkick', 'Hemokinesis', 'Pummel', 'Rampage', 'Reckless Charge', 'Searing Blow',
+                            'Sever Soul', 'Uppercut', 'Whirlwind']
 # 희귀 공격 5장
-IRONCLAD_ATTACK_RARE = ["Bludgeon", "Feed", "Fiend Fire", "Immolate", "Reaper"]
-# 일반 스킬 7장
-IRONCLAD_SKILL_COMMON = ["Armaments", "Defend_R", "Flex", "Havoc", "Shrug It Off", "True Grit", "Warcry"]
+IRONCLAD_ATTACK_RARE = ['Bludgeon', 'Feed', 'Fiend Fire', 'Immolate', 'Reaper']
+# 일반 스킬 6장 + 수비
+IRONCLAD_SKILL_COMMON = ['Armaments', 'Defend_R', 'Flex', 'Havoc', 'Shrug It Off', 'True Grit', 'Warcry']
 # 특별 스킬 17장
-IRONCLAD_SKILL_UNCOMMON = ["Battle Trance", "Bloodletting", "Burning Pact", "Disarm", "Dual Wield", "Entrench", "Flame Barrier", "Ghostly Armor",
-                           "Infernal Blade", "Intimidate", "Power Through", "Rage", "Second Wind", "Seeing Red", "Sentinel", "Shockwave",
-                           "Spot Weakness"]
+IRONCLAD_SKILL_UNCOMMON = ['Battle Trance', 'Bloodletting', 'Burning Pact', 'Disarm', 'Dual Wield', 'Entrench', 'Flame Barrier', 'Ghostly Armor',
+                           'Infernal Blade', 'Intimidate', 'Power Through', 'Rage', 'Second Wind', 'Seeing Red', 'Sentinel', 'Shockwave',
+                           'Spot Weakness']
 # 희귀 스킬 5장
-IRONCLAD_SKILL_RARE = ["Double Tap", "Exhume", "Impervious", "Limit Break", "Offering"]
+IRONCLAD_SKILL_RARE = ['Double Tap', 'Exhume', 'Impervious', 'Limit Break', 'Offering']
 # 특별 파워 8장
-IRONCLAD_POWER_UNCOMMON = ["Combust", "Dark Embrace", "Evolve", "Feel No Pain", "Fire Breathing", "Inflame", "Metallicize", "Rupture"]
+IRONCLAD_POWER_UNCOMMON = ['Combust', 'Dark Embrace', 'Evolve', 'Feel No Pain', 'Fire Breathing', 'Inflame', 'Metallicize', 'Rupture']
 # 희귀 파워 6장
-IRONCLAD_POWER_RARE = ["Barricade", "Berserk", "Brutality", "Corruption", "Demon Form", "Juggernaut"]
+IRONCLAD_POWER_RARE = ['Barricade', 'Berserk', 'Brutality', 'Corruption', 'Demon Form', 'Juggernaut']
 
 # SILENT
-# 일반 공격 11장
-SILENT_ATTACK_COMMON = ["Bane", "Dagger Spray", "Dagger Throw", "Flying Knee", "Neutralize", "Poisoned Stab", "Quick Slash", "Slice", "Sneaky Strike",
-                        "Strike_G", "Sucker Punch"]
+# 일반 공격 9장 + 타격 + 약화
+SILENT_ATTACK_COMMON = ['Bane', 'Dagger Spray', 'Dagger Throw', 'Flying Knee', 'Neutralize', 'Poisoned Stab', 'Quick Slash', 'Slice',
+                        'Strike_G', 'Sucker Punch', 'Underhanded Strike']
 # 특별 공격 13장
-SILENT_ATTACK_UNCOMMON = ["All-Out Attack", "Backstab", "Choke", "Dash", "Endless Agony", "Eviscerate", "Finisher", "Flechettes", "Heel Hook",
-                          "Masterful Stab", "Predator", "Riddle with Holes", "Skewer"]
+SILENT_ATTACK_UNCOMMON = ['All Out Attack', 'Backstab', 'Choke', 'Dash', 'Endless Agony', 'Eviscerate', 'Finisher', 'Flechettes', 'Heel Hook',
+                          'Masterful Stab', 'Predator', 'Riddle With Holes', 'Skewer']
 # 희귀 공격 4장
-SILENT_ATTACK_RARE = ["Die Die Die", "Glass Knife", "Grand Finale", "Unload"]
-# 일반 스킬 12장
-SILENT_SKILL_COMMON = ["Defend_G", "Acrobatics", "Backflip", "Blade Dance", "Cloak and Dagger", "Deadly Poison", "Deflect", "Dodge and Roll",
-                       "Outmaneuver", "Piercing Wail", "Prepared", "Survivor"]
+SILENT_ATTACK_RARE = ['Die Die Die', 'Glass Knife', 'Grand Finale', 'Unload']
+# 일반 스킬 10장 + 수비 + 생존자
+SILENT_SKILL_COMMON = ['Acrobatics', 'Backflip', 'Blade Dance', 'Cloak And Dagger', 'Deadly Poison', 'Deflect', 'Defend_G', 'Dodge and Roll',
+                       'Outmaneuver', 'PiercingWail', 'Prepared', 'Survivor']
 # 특별 스킬 14장
-SILENT_SKILL_UNCOMMON = ["Blur", "Bouncing Flask", "Calculated Gamble", "Catalyst", "Concentrate", "Crippling Cloud", "Distraction", "Escape Plan",
-                         "Expertise", "Leg Sweep", "Reflex", "Setup", "Tactician", "Terror"]
-# 희귀 스킬 10장
-SILENT_SKILL_RARE = ["Adrenaline", "Alchemize", "Bullet Time", "Burst", "Corpse Explosion", "Doppelganger", "Malaise", "Nightmare",
-                     "Phantasmal Killer", "Storm of Steel"]
+SILENT_SKILL_UNCOMMON = ['Blur', 'Bouncing Flask', 'Calculated Gamble', 'Catalyst', 'Concentrate', 'Crippling Poison', 'Distraction', 'Escape Plan',
+                         'Expertise', 'Leg Sweep', 'Reflex', 'Setup', 'Tactician', 'Terror']
+# 희귀 스킬 10장 -> Venomology 연금, Night Terror 악몽
+SILENT_SKILL_RARE = ['Adrenaline', 'Bullet Time', 'Burst', 'Corpse Explosion', 'Doppelganger', 'Malaise', 'Night Terror', 'Phantasmal',
+                     'Storm of Steel', 'Venomology']
 # 특별 파워 6장
-SILENT_POWER_UNCOMMON = ["Accuracy", "Caltrops", "Footwork", "Infinite Blades", "Noxious Fumes", "Well Laid Plans"]
+SILENT_POWER_UNCOMMON = ['Accuracy', 'Caltrops', 'Footwork', 'Infinite Blades', 'Noxious Fumes', 'Well Laid Plans']
 # 희귀 파워 5장
-SILENT_POWER_RARE = ["A Thousand Cuts", "After Image", "Envenom", "Tools of the Trade", "Wraith Form"]
+SILENT_POWER_RARE = ['A Thousand Cuts', 'After Image', 'Envenom', 'Tools of the Trade', 'Wraith Form v2']
 
 # DEFECT
-# 일반 공격 11장
-DEFECT_ATTACK_COMMON = ["Ball Lightning", "Barrage", "Beam Cell", "Claw", "Cold Snap", "Compile Driver", "Go for the Eyes", "Rebound", "Streamline",
-                        "Strike_B", "Sweeping Beam"]
+# 일반 공격 10장 + 타격
+DEFECT_ATTACK_COMMON = ['Ball Lightning', 'Barrage', 'Beam Cell', 'Cold Snap', 'Compile Driver', 'Gash', 'Go for the Eyes', 'Rebound', 'Strike_B',
+                        'Streamline', 'Sweeping Beam']
 # 특별 공격 8장
-DEFECT_ATTACK_UNCOMMON = ["Blizzard", "Bullseye", "Doom and Gloom", "FTL", "Melter", "Rip and Tear", "Scrape", "Sunder"]
+DEFECT_ATTACK_UNCOMMON = ['Blizzard', 'Doom and Gloom', 'FTL', 'Lockon', 'Rip and Tear', 'Melter', 'Scrape', 'Sunder']
 # 희귀 공격 5장
-DEFECT_ATTACK_RARE = ["All for One", "Core Surge", "Hyperbeam", "Meteor Strike", "Thunder Strike"]
-# 일반 스킬 11장
-DEFECT_SKILL_COMMON = ["Charge Battery", "Coolheaded", "Defend_B", "Dualcast", "Hologram", "Leap", "Recursion", "Stack", "Steam Barrier", "TURBO",
-                       "Zap"]
-# 특별 스킬 20장
-DEFECT_SKILL_UNCOMMON = ["Aggregate", "Auto-Shields", "Boot Sequence", "Chaos", "Chill", "Consume", "Darkness", "Double Energy", "Equilibrium",
-                         "Force Field", "Fusion", "Genetic Algorithm", "Glacier", "Overclock", "Recycle", "Reinforced Body", "Reprogram", "Skim",
-                         "Tempest", "White Noise"]
+DEFECT_ATTACK_RARE = ['All For One', 'Core Surge', 'Hyperbeam', 'Meteor Strike', 'Thunder Strike']
+# 일반 스킬 8장 + 수비 + 이중시전 + 파지직
+DEFECT_SKILL_COMMON = ['Conserve Battery', 'Coolheaded', 'Defend_B', 'Dualcast', 'Hologram', 'Leap', 'Redo', 'Stack', 'Steam Power', 'Turbo', 'Zap']
+# 특별 스킬 20장 -> 평형, 오버클럭 없음.
+DEFECT_SKILL_UNCOMMON = ['Aggregate', 'Auto Shields', 'BootSequence', 'Chaos', 'Chill', 'Consume', 'Darkness', 'Double Energy',
+                         'Force Field', 'Fusion', 'Genetic Algorithm', 'Glacier', 'Recycle', 'Reinforced Body', 'Reprogram', 'Skim',
+                         'Tempest', 'White Noise']
 # 희귀 스킬 6장
-DEFECT_SKILL_RARE = ["Amplify", "Fission", "Multi-Cast", "Rainbow", "Reboot", "Seek"]
+DEFECT_SKILL_RARE = ['Amplify', 'Fission', 'Multi-Cast', 'Rainbow', 'Reboot', 'Seek']
 # 특별 파워 8장
-DEFECT_POWER_UNCOMMON = ["Capacitor", "Defragment", "Heatsinks", "Hello World", "Loop", "Self Repair", "Static Discharge", "Storm"]
+DEFECT_POWER_UNCOMMON = ['Capacitor', 'Defragment', 'Heatsinks', 'Hello World', 'Loop', 'Self Repair', 'Static Discharge', 'Storm']
 # 희귀 파워 6장
-DEFECT_POWER_RARE = ["Biased Cognition", "Buffer", "Creative AI", "Echo Form", "Electrodynamics", "Machine Learning"]
+DEFECT_POWER_RARE = ['Biased Cognition', 'Buffer', 'Creative AI', 'Echo Form', 'Electrodynamics', 'Machine Learning']
 
 # WATCHER
-# 일반 공격 12장
-WATCHER_ATTACK_COMMON = ["Bowling Bash", "Consecrate", "Crush Joints", "Cut Through Fate", "Empty Fist", "Eruption", "Flurry of Blows",
-                         "Flying Sleeves",
-                         "Follow-Up", "Just Lucky", "Sash Whip", "Strike_P"]
+# 일반 공격 10장 + 티격 + 진노
+WATCHER_ATTACK_COMMON = ['BowlingBash', 'Consecrate', 'CrushJoints', 'CutThroughFate', 'EmptyFist', 'Eruption', 'FlurryOfBlows', 'FlyingSleeves',
+                         'FollowUp', 'JustLucky', 'SashWhip', 'Strike_P']
 # 특별 공격 12장
-WATCHER_ATTACK_UNCOMMON = ["Carve Reality", "Conclude", "Fear No Evil", "Reach Heaven", "Sands of Time", "Signature Move", "Talk to the Hand",
-                           "Tantrum", "Wallop", "Weave", "Wheel Kick", "Windmill Strike"]
+WATCHER_ATTACK_UNCOMMON = ['CarveReality', 'Conclude', 'FearNoEvil', 'ReachHeaven', 'SandsOfTime', 'SignatureMove', 'TalkToTheHand', 'Tantrum',
+                           'Wallop', 'Weave', 'WheelKick', 'WindmillStrike']
 # 희귀 공격 3장
-WATCHER_ATTACK_RARE = ["Brilliance", "Lesson Learned", "Ragnarok"]
-# 일반 스킬 11장
-WATCHER_SKILL_COMMON = ["Crescendo", "Defend_P", "Empty Body", "Evaluate", "Halt", "Pressure Points", "Prostrate", "Protect", "Third Eye",
-                        "Tranquility", "Vigilance"]
+WATCHER_ATTACK_RARE = ['Brilliance', 'LessonLearned', 'Ragnarok']
+# 일반 스킬 9장 + 수비 + 경각
+WATCHER_SKILL_COMMON = ['ClearTheMind', 'Crescendo', 'Defend_P', 'EmptyBody', 'Evaluate', 'Halt', 'PathToVictory', 'Prostrate', 'Protect', 'ThirdEye',
+                        'Vigilance']
 # 특별 스킬 15장
-WATCHER_SKILL_UNCOMMON = ["Collect", "Deceive Reality", "Empty Mind", "Foreign Influence", "Indignation", "Inner Peace", "Meditate", "Perseverance",
-                          "Pray", "Sanctity", "Simmering Fury", "Swivel", "Wave of the Hand", "Worship", "Wreath of Flame"]
-# 희귀 스킬 10장
-WATCHER_SKILL_RARE = ["Alpha", "Blasphemy", "Conjure Blade", "Deus Ex Machina", "Judgment", "Omniscience", "Scrawl", "Spirit Shield", "Vault", "Wish"]
-# 특별 파워 8장
-WATCHER_POWER_UNCOMMON = ["Battle Hymn", "Fasting", "Foresight", "Like Water", "Mental Fortress", "Nirvana", "Rushdown", "Study"]
+WATCHER_SKILL_UNCOMMON = ['Blasphemy', 'Collect', 'DeceiveReality', 'EmptyMind', 'ForeignInfluence', 'Indignation', 'InnerPeace', 'Meditate',
+                          'Perseverance', 'Pray', 'Sanctity', 'Swivel', 'WaveOfTheHand', 'Worship', 'WreathOfFlame']
+# 희귀 스킬 10장 -> 신성모독이 없음.
+WATCHER_SKILL_RARE = ['Alpha', 'ConjureBlade', 'DeusExMachina', 'Judgement', 'Omniscience', 'Scrawl', 'SpiritShield', 'Vault', 'Wish']
+# 특별 파워 8장 -> Adaptation 추월, Wireheading 예지
+WATCHER_POWER_UNCOMMON = ['Adaptation', 'BattleHymn', 'Fasting2', 'LikeWater', 'MentalFortress', 'Nirvana', 'Study', 'Wireheading']
 # 희귀 파워 4장
-WATCHER_POWER_RARE = ["Deva Form", "Devotion", "Establishment", "Master Reality"]
+WATCHER_POWER_RARE = ['DevaForm', 'Devotion', 'Establishment', 'MasterReality']
 
 # COLORLESS
 # 특별 공격 4장
-COLORLESS_ATTACK_UNCOMMON = ["Dramatic Entrance", "Flash of Steel", "Mind Blast", "Swift Strike"]
+COLORLESS_ATTACK_UNCOMMON = ['Dramatic Entrance', 'Flash of Steel', 'Mind Blast', 'Swift Strike']
 # 희귀 공격 1장
-COLORLESS_ATTACK_RARE = ["Hand of Greed"]
+COLORLESS_ATTACK_RARE = ['HandOfGreed']
 # 스페셜 공격 6장
-COLORLESS_ATTACK_SPECIAL = ["Bite", "Expunger", "Ritual Dagger", "Shiv", "Smite", "Through Violence"]
+COLORLESS_ATTACK_SPECIAL = ['Bite', 'Expunger', 'RitualDagger', 'Shiv', 'Smite', 'ThroughViolence']
 # 특별 스킬 16장
-COLORLESS_SKILL_UNCOMMON = ["Bandage Up", "Blind", "Dark Shackles", "Deep Breath", "Discovery", "Enlightenment", "Finesse", "Forethought",
-                            "Good Instincts", "Impatience", "Jack of All Trades", "Madness", "Panacea", "Panic Button", "Purity", "Trip"]
+COLORLESS_SKILL_UNCOMMON = ['Bandage Up', 'Blind', 'Dark Shackles', 'Deep Breath', 'Discovery', 'Enlightenment', 'Finesse', 'Forethought',
+                            'Good Instincts', 'Impatience', 'Jack Of All Trades', 'Madness', 'Panacea', 'PanicButton', 'Purity', 'Trip']
 # 희귀 스킬 10장
-COLORLESS_SKILL_RARE = ["Apotheosis", "Chrysalis", "Master of Strategy", "Metamorphosis", "Secret Technique", "Secret Weapon", "The Bomb",
-                        "Thinking Ahead", "Transmutation", "Violence"]
-# 스페셜 스킬 6장
-COLORLESS_SKILL_SPECIAL = ["Apparition", "Beta", "Insight", "J.A.X.", "Miracle", "Safety"]
+COLORLESS_SKILL_RARE = ['Apotheosis', 'Chrysalis', 'Master of Strategy', 'Metamorphosis', 'Secret Technique', 'Secret Weapon', 'The Bomb',
+                        'Thinking Ahead', 'Transmutation', 'Violence']
+# 스페셜 스킬 6장 -> 유체화가 없음(Maybe Ghostly)
+COLORLESS_SKILL_SPECIAL = ['Beta', 'Insight', 'J.A.X.', 'Miracle', 'Safety']
 # 희귀 파워 4장
-COLORLESS_POWER_RARE = ["Magnetism", "Mayhem", "Panache", "Sadistic Nature"]
+COLORLESS_POWER_RARE = ['Magnetism', 'Mayhem', 'Panache', 'Sadistic Nature']
 # 스페셜 파워 1장
-COLORLESS_POWER_SPECIAL = ["Omega"]
+COLORLESS_POWER_SPECIAL = ['Omega']
 
 # STATUS/CURSE
 # 상태이상 5장
-BASE_STATUS_CARD = ["Burn", "Dazed", "Slimed", "Void", "Wound"]
+BASE_STATUS_CARD = ['Burn', 'Dazed', 'Slimed', 'Void', 'Wound']
 # 저주 14장
-BASE_CURSE_CARD = ['Regret', 'Writhe', 'AscendersBane', 'Decay', 'Necronomicurse', 'Pain', 'Parasite', 'Doubt', 'Injury', 'Clumsy', 'CurseOfTheBell',
-                   'Normality', 'Pride', 'Shame']
+BASE_CURSE_CARD = ['AscendersBane', 'Clumsy', 'CurseOfTheBell', 'Decay', 'Doubt', 'Injury', 'Necronomicurse', 'Normality', 'Pain', 'Parasite',
+                   'Pride', 'Regret', 'Shame', 'Writhe']
 
 # 카드 조합
 IRONCLAD_ATTACK_CARD = IRONCLAD_ATTACK_COMMON + IRONCLAD_ATTACK_UNCOMMON + IRONCLAD_ATTACK_RARE
