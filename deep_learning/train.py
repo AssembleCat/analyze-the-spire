@@ -1,9 +1,7 @@
 import os
-
 import numpy as np
 
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
-
 import datetime
 import json
 import tensorflow as tf

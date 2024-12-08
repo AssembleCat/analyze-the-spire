@@ -136,9 +136,6 @@ def add_upgraded_cards(card_list):
     return upgraded_list
 
 
-# Wish choice = [BecomeAlmighty, FameAndFortune, LiveForever]
-unclassified_card = ['Ghostly', 'Steam', 'Undo', 'Vengeance',]
-
 # 직업별 [IRONCLAD, SILENT, DEFECT, WATCHER, COLORLESS]
 # 희귀도별 [BASIC, COMMON, UNCOMMON, RARE, SPECIAL]
 # 타입별 [ATTACK, SKILL, POWER]
@@ -197,12 +194,12 @@ DEFECT_ATTACK_COMMON = ['Ball Lightning', 'Barrage', 'Beam Cell', 'Cold Snap', '
 DEFECT_ATTACK_UNCOMMON = ['Blizzard', 'Doom and Gloom', 'FTL', 'Lockon', 'Rip and Tear', 'Melter', 'Scrape', 'Sunder']
 # 희귀 공격 5장
 DEFECT_ATTACK_RARE = ['All For One', 'Core Surge', 'Hyperbeam', 'Meteor Strike', 'Thunder Strike']
-# 일반 스킬 8장 + 수비 + 이중시전 + 파지직
-DEFECT_SKILL_COMMON = ['Conserve Battery', 'Coolheaded', 'Defend_B', 'Dualcast', 'Hologram', 'Leap', 'Redo', 'Stack', 'Steam Power', 'Turbo', 'Zap']
-# 특별 스킬 20장 -> 평형, 오버클럭 없음.
-DEFECT_SKILL_UNCOMMON = ['Aggregate', 'Auto Shields', 'BootSequence', 'Chaos', 'Chill', 'Consume', 'Darkness', 'Double Energy',
-                         'Force Field', 'Fusion', 'Genetic Algorithm', 'Glacier', 'Recycle', 'Reinforced Body', 'Reprogram', 'Skim',
-                         'Tempest', 'White Noise']
+# 일반 스킬 8장 + 수비 + 이중시전 + 파지직 -> Steam 증기방벽
+DEFECT_SKILL_COMMON = ['Conserve Battery', 'Coolheaded', 'Defend_B', 'Dualcast', 'Hologram', 'Leap', 'Redo', 'Stack', 'Steam', 'Turbo', 'Zap']
+# 특별 스킬 20장 -> Steam Power 오버클럭, Undo 평형
+DEFECT_SKILL_UNCOMMON = ['Aggregate', 'Auto Shields', 'BootSequence', 'Chaos', 'Chill', 'Consume', 'Darkness', 'Double Energy', 'Force Field',
+                         'Fusion', 'Genetic Algorithm', 'Glacier', 'Recycle', 'Reinforced Body', 'Reprogram', 'Skim', 'Steam Power''Tempest', 'Undo',
+                         'White Noise']
 # 희귀 스킬 6장
 DEFECT_SKILL_RARE = ['Amplify', 'Fission', 'Multi-Cast', 'Rainbow', 'Reboot', 'Seek']
 # 특별 파워 8장
@@ -225,8 +222,9 @@ WATCHER_SKILL_COMMON = ['ClearTheMind', 'Crescendo', 'Defend_P', 'EmptyBody', 'E
 # 특별 스킬 15장
 WATCHER_SKILL_UNCOMMON = ['Blasphemy', 'Collect', 'DeceiveReality', 'EmptyMind', 'ForeignInfluence', 'Indignation', 'InnerPeace', 'Meditate',
                           'Perseverance', 'Pray', 'Sanctity', 'Swivel', 'WaveOfTheHand', 'Worship', 'WreathOfFlame']
-# 희귀 스킬 10장 -> 신성모독이 없음.
-WATCHER_SKILL_RARE = ['Alpha', 'ConjureBlade', 'DeusExMachina', 'Judgement', 'Omniscience', 'Scrawl', 'SpiritShield', 'Vault', 'Wish']
+# 희귀 스킬 10장 -> Vengeance 신성모독
+# Wish choice = [BecomeAlmighty, FameAndFortune, LiveForever]
+WATCHER_SKILL_RARE = ['Alpha', 'ConjureBlade', 'DeusExMachina', 'Judgement', 'Omniscience', 'Scrawl', 'SpiritShield', 'Vault', 'Vengeance', 'Wish']
 # 특별 파워 8장 -> Adaptation 추월, Wireheading 예지
 WATCHER_POWER_UNCOMMON = ['Adaptation', 'BattleHymn', 'Fasting2', 'LikeWater', 'MentalFortress', 'Nirvana', 'Study', 'Wireheading']
 # 희귀 파워 4장
@@ -245,8 +243,8 @@ COLORLESS_SKILL_UNCOMMON = ['Bandage Up', 'Blind', 'Dark Shackles', 'Deep Breath
 # 희귀 스킬 10장
 COLORLESS_SKILL_RARE = ['Apotheosis', 'Chrysalis', 'Master of Strategy', 'Metamorphosis', 'Secret Technique', 'Secret Weapon', 'The Bomb',
                         'Thinking Ahead', 'Transmutation', 'Violence']
-# 스페셜 스킬 6장 -> 유체화가 없음(Maybe Ghostly)
-COLORLESS_SKILL_SPECIAL = ['Beta', 'Insight', 'J.A.X.', 'Miracle', 'Safety']
+# 스페셜 스킬 6장 -> Ghostly 유체화
+COLORLESS_SKILL_SPECIAL = ['Beta', 'Ghostly', 'Insight', 'J.A.X.', 'Miracle', 'Safety']
 # 희귀 파워 4장
 COLORLESS_POWER_RARE = ['Magnetism', 'Mayhem', 'Panache', 'Sadistic Nature']
 # 스페셜 파워 1장

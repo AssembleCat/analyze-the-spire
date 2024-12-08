@@ -74,5 +74,5 @@ battle_summary = {
     "watcher": watcher_count
 }
 
-with open(f"./summary/character_summary.json") as f:
+with open(f"./summary/character_summary.json", "w") as f:
     json.dump(battle_summary, f)
