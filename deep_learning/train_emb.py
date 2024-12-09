@@ -10,9 +10,9 @@ from sklearn.preprocessing import MaxAbsScaler
 from type import sts_static
 
 
-def load_data():
-    X = np.load("./cache/scaled_x.npy")
-    Y = np.load("./cache/scaled_y.npy")
+def load_data(character):
+    X = np.load(f"./cache/{character}_x.npy")
+    Y = np.load(f"./cache/{character}_y.npy")
     return X, Y
 
 
@@ -24,10 +24,21 @@ def avg_lambda_fun(x, mask):
     return sum / count
 
 
-def create_embedding_layers():
+def create_embedding_layers(character):
+    # 캐릭터별 카드풀
+    character_card = sts_static.COLORLESS_CARD
+    if character == "IRONCLAD":
+        character_card += sts_static.IRONCLAD_CARD
+    elif character == "THE_SILENT":
+        character_card += sts_static.SILENT_CARD
+    elif character == "DEFECT":
+        character_card += sts_static.DEFECT_CARD
+    elif character == "WATCHER":
+        character_card += sts_static.WATCHER_CARD
+
     # 카드 임베딩
     card_input = Input(shape=(50,), name='cards_input')
-    card_embedding = Embedding(len(sts_static.ALL_CARDS) + 1, 26, mask_zero=True)(card_input)
+    card_embedding = Embedding(len(character_card) + 1, 26, mask_zero=True)(card_input)
     card_average = Lambda(avg_lambda_fun, output_shape=(26,), mask=None)(card_embedding)
 
     # 유물 임베딩
@@ -36,14 +47,14 @@ def create_embedding_layers():
     relic_average = Lambda(avg_lambda_fun, output_shape=(13,), mask=None)(relic_embedding)
 
     # 적 임베딩
-    encounter_input = Input(shape=(1,), name='encounter_input')
-    encounter_embedding = Embedding(len(sts_static.ALL_ENEMY), 8)(encounter_input)
-    encounter_reshape = Lambda(lambda x: tf.keras.backend.mean(x, axis=1), output_shape=(8,))(encounter_embedding)
+    enemy_input = Input(shape=(1,), name='enemy_input')
+    enemy_embedding = Embedding(len(sts_static.ALL_ENEMY), 8)(enemy_input)
+    enemy_reshape = Lambda(lambda x: tf.keras.backend.mean(x, axis=1), output_shape=(8,))(enemy_embedding)
 
     # 숫자 및 부울 입력
     numbers_input = Input(shape=(5,), name='num_and_bool_input')
 
-    return card_input, card_average, relic_input, relic_average, encounter_input, encounter_reshape, numbers_input
+    return card_input, card_average, relic_input, relic_average, enemy_input, enemy_reshape, numbers_input
 
 
 def build_model(card_average, relic_average, encounter_reshape, numbers_input):
@@ -95,12 +106,12 @@ def train_model(X, Y):
         x={
             'cards_input': cards_col,
             'relics_input': relics_col,
-            'encounter_input': encounter_col,
+            'enemy_input': encounter_col,
             'num_and_bool_input': num_and_bool_col
         },
         y=Y_train,
         batch_size=32,
-        epochs=20,
+        epochs=10,
         validation_split=0.2
     )
 
@@ -108,5 +119,5 @@ def train_model(X, Y):
 
 
 if __name__ == "__main__":
-    X, Y = load_data()
+    X, Y = load_data('IRONCLAD')
     trained_model, training_history = train_model(X, Y)
