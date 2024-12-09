@@ -1,8 +1,11 @@
+import json
 import os
 import numpy as np
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 import tensorflow as tf
+from deep_learning import preprocess, scale
 from keras import Input, Model
 from keras.src.layers import Embedding, Lambda, concatenate, Dense, Dropout
 from sklearn.model_selection import train_test_split
@@ -24,17 +27,33 @@ def avg_lambda_fun(x, mask):
     return sum / count
 
 
+def preprocess_data(character):
+    x, y = None, None
+    cache_data = [file for file in os.listdir("./cache") if file.endswith(".npy")]
+    if f"{character}_x.npy" in cache_data:
+        x, y = np.load(f"./cache/{character}_x.npy"), np.load(f"./cache/{character}_y.npy")
+    else:
+        BATTLE_DATA = f"../battles/clean/{character}/"
+        json_files = [file for file in os.listdir(BATTLE_DATA) if file.endswith(".json")][:45]
+        json_data = []
+
+        print(f"total file length: {len(json_files)}")
+
+        for file in json_files:
+            with open(BATTLE_DATA + file) as json_file:
+                json_data.extend(json.load(json_file))
+
+        print(f"Preprocess target battle: {len(json_data)}")
+
+        x, y = preprocess.preprocess_battle(json_data, character)
+        x, y = scale.scale_data(x, y, character)
+
+    return x, y
+
+
 def create_embedding_layers(character):
     # 캐릭터별 카드풀
-    character_card = sts_static.COLORLESS_CARD
-    if character == "IRONCLAD":
-        character_card += sts_static.IRONCLAD_CARD
-    elif character == "THE_SILENT":
-        character_card += sts_static.SILENT_CARD
-    elif character == "DEFECT":
-        character_card += sts_static.DEFECT_CARD
-    elif character == "WATCHER":
-        character_card += sts_static.WATCHER_CARD
+    character_card = sts_static.get_character_cardpool(character)
 
     # 카드 임베딩
     card_input = Input(shape=(50,), name='cards_input')
@@ -59,36 +78,39 @@ def create_embedding_layers(character):
 
 def build_model(card_average, relic_average, encounter_reshape, numbers_input):
     merged = concatenate([card_average, relic_average, encounter_reshape, numbers_input])
-    dense_1 = Dense(40, activation='relu')(merged)
-    drop_out_1 = Dropout(.1)(dense_1)
-    dense_out = Dense(1)(drop_out_1)
+    dense_1 = Dense(500, activation='relu')(merged)
+    drop_out_1 = Dropout(.2)(dense_1)
+    dense_2 = Dense(50, activation='relu')(drop_out_1)
+    drop_out_2 = Dropout(.2)(dense_2)
+    dense_out = Dense(1)(drop_out_2)
 
     return dense_out
 
 
-def preprocess_data(X, Y):
+def split_data(X, Y):
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, shuffle=False)
 
-    cards_col = X_train[:, 0:50]
+    cards_col, cards_col_test = X_train[:, 0:50], X_test[:, 0:50]
     relic_index = 50 + 30
-    relics_col = X_train[:, 50:80]
-    encounter_index = relic_index + 1
-    encounter_col = X_train[:, relic_index:encounter_index]
-    num_and_bool_col = X_train[:, encounter_index:]
+    relics_col, relics_col_test = X_train[:, 50:80], X_test[:, 50:80]
+    enemy_index = relic_index + 1
+    enemy_col, enemy_col_test = X_train[:, relic_index:enemy_index], X_test[:, relic_index:enemy_index]
+    num_and_bool_col, num_and_bool_col_test = X_train[:, enemy_index:], X_test[:, enemy_index:]
 
     # 정규화
     max_abs_scaler = MaxAbsScaler()
     num_and_bool_col = max_abs_scaler.fit_transform(num_and_bool_col)
 
-    return cards_col, relics_col, encounter_col, num_and_bool_col, Y_train, X_test, Y_test
+    return cards_col, relics_col, enemy_col, num_and_bool_col, Y_train, cards_col_test, relics_col_test, enemy_col_test, num_and_bool_col_test, Y_test
 
 
-def train_model(X, Y):
+def train_model(X, Y, character):
     # 데이터 준비
-    cards_col, relics_col, encounter_col, num_and_bool_col, Y_train, _, _ = preprocess_data(X, Y)
+    cards_col, relics_col, enemy_col, num_and_bool_col, Y_train, cards_col_test, relics_col_test, enemy_col_test, num_and_bool_col_test, Y_test = split_data(
+        X, Y)
 
     # 임베딩 레이어 생성
-    card_input, card_average, relic_input, relic_average, encounter_input, encounter_reshape, numbers_input = create_embedding_layers()
+    card_input, card_average, relic_input, relic_average, encounter_input, encounter_reshape, numbers_input = create_embedding_layers(character)
 
     # 모델 생성
     dense_out = build_model(card_average, relic_average, encounter_reshape, numbers_input)
@@ -106,18 +128,32 @@ def train_model(X, Y):
         x={
             'cards_input': cards_col,
             'relics_input': relics_col,
-            'enemy_input': encounter_col,
+            'enemy_input': enemy_col,
             'num_and_bool_input': num_and_bool_col
         },
         y=Y_train,
         batch_size=32,
-        epochs=10,
+        epochs=5,
         validation_split=0.2
     )
+
+    # 평가
+    test_loss, test_mae, test_r2 = model.evaluate(
+        x={
+            'cards_input': cards_col_test,
+            'relics_input': relics_col_test,
+            'enemy_input': enemy_col_test,
+            'num_and_bool_input': num_and_bool_col_test
+        },
+        y=Y_test
+    )
+    print(f"Test Loss: {test_loss}")
+    print(f"Test MAE: {test_mae}")
+    print(f"Test R² Score: {test_r2}")
 
     return model, history
 
 
 if __name__ == "__main__":
-    X, Y = load_data('IRONCLAD')
-    trained_model, training_history = train_model(X, Y)
+    X, Y = preprocess_data('WATCHER')
+    trained_model, training_history = train_model(X, Y, 'WATCHER')

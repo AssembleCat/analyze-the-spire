@@ -8,15 +8,16 @@ import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from deep_learning import preprocess, scale
 
+CHARACTER = "WATCHER"
 x, y = None, None
 
 # cache 데이터 체크
 cache_data = [file for file in os.listdir("./cache") if file.endswith(".npy")]
 if cache_data:
-    x, y = np.load("./cache/scaled_x.npy"), np.load("./cache/scaled_y.npy")
+    x, y = np.load(f"./cache/{CHARACTER}_x.npy"), np.load(f"./cache/{CHARACTER}_y.npy")
 else:
-    BATTLE_DATA = "../battles/clean/"
-    json_files = [file for file in os.listdir(BATTLE_DATA) if file.endswith(".json")][:1]
+    BATTLE_DATA = f"../battles/clean/{CHARACTER}"
+    json_files = [file for file in os.listdir(BATTLE_DATA) if file.endswith(".json")][:10]
     json_data = []
 
     for file in json_files:
@@ -57,9 +58,9 @@ history = model.fit(x_train, y_train, batch_size=32, epochs=10, validation_split
 test_scores = model.evaluate(x_test, y_test, verbose=2)
 
 print(f"""
-Test loss: {test_scores[0]}
-Test metric: {test_scores[1]}
+{CHARACTER} Test loss: {test_scores[0]}
+{CHARACTER} Test metric: {test_scores[1]}
 """)
 
 # 모델 저장
-model.save("./model/analyze_the_spire.keras")
+model.save(f"./model/analyze_the_spire_{CHARACTER}.keras")

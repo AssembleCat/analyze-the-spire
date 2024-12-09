@@ -6,6 +6,22 @@ def add_upgraded_cards(card_list):
     return upgraded_list
 
 
+def get_character_cardpool(character):
+    cardpool = add_upgraded_cards(COLORLESS_CARD) + BASE_CURSE_CARD
+    if character == "IRONCLAD":
+        cardpool += add_upgraded_cards(IRONCLAD_CARD)
+    elif character == "THE_SILENT":
+        cardpool += add_upgraded_cards(SILENT_CARD)
+    elif character == "DEFECT":
+        cardpool += add_upgraded_cards(DEFECT_CARD)
+    elif character == "WATCHER":
+        cardpool += add_upgraded_cards(WATCHER_CARD)
+    else:
+        raise Exception(f"unsupported character: {character}")
+
+    return cardpool
+
+
 # 직업별 [IRONCLAD, SILENT, DEFECT, WATCHER, COLORLESS]
 # 희귀도별 [BASIC, COMMON, UNCOMMON, RARE, SPECIAL]
 # 타입별 [ATTACK, SKILL, POWER]

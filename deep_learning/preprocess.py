@@ -8,22 +8,26 @@ from type import sts_static
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 
 ENCODE_EMBEDDED = True
-card_encoder = LabelEncoder().fit(sts_static.ALL_CARDS)
 relic_encoder = LabelEncoder().fit(sts_static.ALL_RELICS)
 enemy_encoder = LabelEncoder().fit(sts_static.ALL_ENEMY)
 
 
-def preprocess_battle(data):
+def preprocess_battle(data, character):
     processed_battles, label = [], []
+    character_cardpool = sts_static.get_character_cardpool(character)
 
     for idx, battle in enumerate(data):
         if idx % 2000 == 0:
             print(f"{idx / len(data) * 100:.2f}% complete, {idx} in {len(data)}")
 
+        # 캐릭터 풀에 포함되지않은 카드가 존재할 경우 제외! -> 프리즘 조각에(PrismaticShard) 대해서도 필터
+        if any(card not in character_cardpool for card in battle["deck"]):
+            continue
+
         label.append(battle["damage_taken"])
 
         if ENCODE_EMBEDDED:
-            processed_battles.append(encode_embedded_battle(battle))
+            processed_battles.append(encode_embedded_battle(battle, character))
         else:
             processed_battles.append(encode_battle(battle))
 
@@ -33,11 +37,14 @@ def preprocess_battle(data):
     return x, y
 
 
-def encode_embedded_battle(battle):
+def encode_embedded_battle(battle, character):
     """
     embedding array로 변환 길이 = 86
     """
-    card_encoded = card_encoder.transform(remove_basic_card_suffix(np.array(battle["deck"])))
+    character_card = sts_static.get_character_cardpool(character)
+    card_encoder = LabelEncoder().fit(character_card)
+
+    card_encoded = card_encoder.transform(np.array(battle["deck"]))
     card_encoded += 1  # 0이 없도록 1 더해주기
     card_encoded = card_encoded.reshape(1, -1)  # 1개행으로 고정변환
     card_encoded = tf.keras.preprocessing.sequence.pad_sequences(card_encoded, maxlen=50, padding='post', truncating='post')
