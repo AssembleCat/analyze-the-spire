@@ -21,7 +21,7 @@ EMBEDDING_DIM_ENEMY = 8
 
 def load_battle_data(character):
     BATTLE_DATA = f"../battles/clean/{character}/"
-    json_files = [file for file in os.listdir(BATTLE_DATA) if file.endswith(".json")][:40]
+    json_files = [file for file in os.listdir(BATTLE_DATA) if file.endswith(".json")][:10]
     json_data = []
 
     print(f"total file length: {len(json_files)}")
@@ -225,4 +225,4 @@ test_loss = model.evaluate(X_test, Y_test)
 print(f"Test loss: {test_loss}")
 
 # 모델 저장
-model.save(filepath=os.path.join(MODEL_DIR, f'{character}_model.keras'))
+model.save(f'{character}_model.keras', save_format='keras')
