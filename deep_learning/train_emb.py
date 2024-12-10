@@ -11,12 +11,17 @@ from keras import Input, Model
 from keras.src.layers import Embedding, Flatten, Concatenate, Dense, Dropout
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from type import sts_static
+
 CACHE_DIR = './cache'
+MODEL_DIR = './model'
+EMBEDDING_DIM_CARD = 50
+EMBEDDING_DIM_RELIC = 30
+EMBEDDING_DIM_ENEMY = 8
 
 
 def load_battle_data(character):
     BATTLE_DATA = f"../battles/clean/{character}/"
-    json_files = [file for file in os.listdir(BATTLE_DATA) if file.endswith(".json")][:45]
+    json_files = [file for file in os.listdir(BATTLE_DATA) if file.endswith(".json")][:40]
     json_data = []
 
     print(f"total file length: {len(json_files)}")
@@ -169,10 +174,6 @@ train_data, test_data = train_test_split(battles, test_size=0.2, random_state=42
 X_train, Y_train = preprocess_data(train_data, character, card_encoder, relic_encoder, enemy_encoder)
 X_test, Y_test = preprocess_data(test_data, character, card_encoder, relic_encoder, enemy_encoder, is_train=False)
 
-EMBEDDING_DIM = 50
-EMBEDDING_DIM_RELIC = 30
-EMBEDDING_DIM_ENEMY = 8
-
 # input shape 정의
 deck_input = Input(shape=(50,), dtype='int32', name='deck')
 relic_input = Input(shape=(30,), dtype='int32', name='relics')
@@ -180,7 +181,7 @@ enemy_input = Input(shape=(1,), dtype='int32', name='enemy')
 etc_input = Input(shape=(5,), dtype='float32', name='etc')
 
 # 카드 임베딩
-card_embedding_layer = Embedding(input_dim=len(character_cardpool), output_dim=EMBEDDING_DIM)
+card_embedding_layer = Embedding(input_dim=len(character_cardpool), output_dim=EMBEDDING_DIM_CARD)
 embedded_deck = card_embedding_layer(deck_input)
 embedded_deck = Flatten()(embedded_deck)
 
@@ -222,3 +223,6 @@ model.fit(
 # 테스트셋 평가
 test_loss = model.evaluate(X_test, Y_test)
 print(f"Test loss: {test_loss}")
+
+# 모델 저장
+model.save(filepath=os.path.join(MODEL_DIR, f'{character}_model.keras'))
