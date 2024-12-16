@@ -19,19 +19,42 @@ EMBEDDING_DIM_RELIC = 30
 EMBEDDING_DIM_ENEMY = 8
 
 
-def load_battle_data(character):
+def load_battle_data(character, max_rows=None):
+    """
+    특정 캐릭터의 전투 데이터를 로드합니다.
+
+    Parameters:
+    - character (str): 데이터 폴더 내 캐릭터 이름
+    - max_rows (int, optional): 로드할 최대 ROW 수. None이면 전체 로드
+
+    Returns:
+    - json_data (list): 로드된 데이터 리스트
+    """
     BATTLE_DATA = f"../battles/clean/{character}/"
-    json_files = [file for file in os.listdir(BATTLE_DATA) if file.endswith(".json")][:10]
+    json_files = [file for file in os.listdir(BATTLE_DATA) if file.endswith(".json")]
     json_data = []
 
-    print(f"total file length: {len(json_files)}")
+    print(f"Total file count: {len(json_files)}")
+    total_rows = 0
 
     for file in json_files:
         with open(BATTLE_DATA + file) as json_file:
-            json_data.extend(json.load(json_file))
+            file_data = json.load(json_file)
+            print(f"Load file: {file}")
 
-    print(f"Preprocess target battle: {len(json_data)}")
+            if max_rows is not None:  # max_rows가 지정되었을 경우
+                remaining_rows = max_rows - total_rows
+                if len(file_data) <= remaining_rows:
+                    json_data.extend(file_data)
+                    total_rows += len(file_data)
+                else:
+                    json_data.extend(file_data[:remaining_rows])
+                    total_rows += remaining_rows
+                    break  # 목표한 ROW 수에 도달하면 루프 종료
+            else:  # max_rows가 None이면 전체로드
+                json_data.extend(file_data)
 
+    print(f"Loaded rows: {len(json_data)}")
     return json_data
 
 
@@ -122,7 +145,7 @@ def preprocess_data(data, character, card_encoder, relic_encoder, enemy_encoder,
 
     for idx, battle in enumerate(data):
         if idx % 5000 == 0:
-            print(f"{idx / len(data) * 100:.2f}% {idx+1}/{len(data)} Processing... ")
+            print(f"{idx / len(data) * 100:.2f}% {idx + 1}/{len(data)} Processing... ")
 
         # 캐릭터 카드풀에 없는 카드는 사용하지 않도록함. -> 프리즘 조각
         if any(card not in character_cardpool for card in battle["deck"]):
@@ -167,7 +190,7 @@ relic_encoder = LabelEncoder().fit(sts_static.ALL_RELICS)
 enemy_encoder = LabelEncoder().fit(sts_static.ALL_ENEMY)
 
 # 데이터 로드 및 분할
-battles = load_battle_data(character)
+battles = load_battle_data(character, 10000000)
 train_data, test_data = train_test_split(battles, test_size=0.2, random_state=42)
 
 # 전처리(인코딩)
@@ -212,7 +235,7 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4), loss=tf.ke
 model.summary()
 
 # 모델 학습
-model.fit(
+history = model.fit(
     X_train,
     Y_train,
     epochs=5,
@@ -225,4 +248,8 @@ test_loss = model.evaluate(X_test, Y_test)
 print(f"Test loss: {test_loss}")
 
 # 모델 저장
-model.save(f'{character}_model.keras', save_format='keras')
+model.save(f'{character}.keras', save_format='keras')
+
+# 히스토리 저장
+with open(f'./history/{character}_history.json', 'w') as f:
+    json.dump(history.history, f)
