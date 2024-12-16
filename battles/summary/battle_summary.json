@@ -3,5 +3,9 @@
   "processed": 31792231,
   "missing_hp_list": 6034791,
   "corrupted_card_choice": 1508,
-  "corrupted_battle": 1294
+  "corrupted_battle": 1294,
+  "defect": 104778705,
+  "ironclad": 140960807,
+  "silent": 108127226,
+  "watcher": 16357117
 }
