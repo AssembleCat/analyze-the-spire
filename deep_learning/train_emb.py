@@ -157,7 +157,7 @@ def preprocess_data(data, character, card_encoder, relic_encoder, enemy_encoder,
         # 적 라벨 인코딩
         encoded_enemy = enemy_encoder.transform([battle["enemy"]])
         # 체력 정보
-        etc_info = [battle["max_hp"], battle["entering_hp"], battle["potion_used"], battle["ascension"], battle["floor"]]
+        etc_info = [battle["potion_used"], battle["ascension"], battle["floor"]]
 
         # 각 데이터에 추가
         deck_data.append(encoded_deck)
@@ -183,14 +183,14 @@ def preprocess_data(data, character, card_encoder, relic_encoder, enemy_encoder,
     return [deck_data, relic_data, enemy_data, etc_data], damage_taken
 
 
-character = "WATCHER"
+character, battle_row = "DEFECT", 100000
 character_cardpool = sts_static.get_character_cardpool(character)
 card_encoder = LabelEncoder().fit(character_cardpool)
 relic_encoder = LabelEncoder().fit(sts_static.ALL_RELICS)
 enemy_encoder = LabelEncoder().fit(sts_static.ALL_ENEMY)
 
 # 데이터 로드 및 분할
-battles = load_battle_data(character, 10000000)
+battles = load_battle_data(character, battle_row)
 train_data, test_data = train_test_split(battles, test_size=0.2, random_state=42)
 
 # 전처리(인코딩)
@@ -201,7 +201,7 @@ X_test, Y_test = preprocess_data(test_data, character, card_encoder, relic_encod
 deck_input = Input(shape=(50,), dtype='int32', name='deck')
 relic_input = Input(shape=(30,), dtype='int32', name='relics')
 enemy_input = Input(shape=(1,), dtype='int32', name='enemy')
-etc_input = Input(shape=(5,), dtype='float32', name='etc')
+etc_input = Input(shape=(3,), dtype='float32', name='etc')
 
 # 카드 임베딩
 card_embedding_layer = Embedding(input_dim=len(character_cardpool), output_dim=EMBEDDING_DIM_CARD)
