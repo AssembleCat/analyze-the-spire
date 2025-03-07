@@ -17,6 +17,7 @@ MODEL_DIR = './model'
 EMBEDDING_DIM_CARD = 50
 EMBEDDING_DIM_RELIC = 30
 EMBEDDING_DIM_ENEMY = 8
+WATCHER_MAX_ROW = 16000000
 
 
 def load_battle_data(character, max_rows=None):
@@ -183,7 +184,7 @@ def preprocess_data(data, character, card_encoder, relic_encoder, enemy_encoder,
     return [deck_data, relic_data, enemy_data, etc_data], damage_taken
 
 
-character, battle_row = "DEFECT", 100000
+character, battle_row = "DEFECT", 10000000
 character_cardpool = sts_static.get_character_cardpool(character)
 card_encoder = LabelEncoder().fit(character_cardpool)
 relic_encoder = LabelEncoder().fit(sts_static.ALL_RELICS)
@@ -238,7 +239,7 @@ model.summary()
 history = model.fit(
     X_train,
     Y_train,
-    epochs=5,
+    epochs=10,
     batch_size=32,
     validation_split=0.2
 )
